@@ -1,15 +1,5 @@
-import { User } from "~/routes/admin.users/route";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../ui/form";
+import { Form as RemixForm, useNavigation } from "@remix-run/react";
+import { User } from "~/routes/admin.users.list/route";
 import { Input } from "../../ui/input";
 import { Button } from "~/components/ui/button";
 import {
@@ -20,283 +10,231 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { DNI_TYPES, PRIVILEGES } from "~/lib/constants";
+import { Label } from "~/components/ui/label";
+import React from "react";
+import { useToast } from "~/hooks/use-toast";
+
+export function UserForm({ user, errors, isUpdate = false }: Props) {
+  const navigation = useNavigation();
+  const isToggleing =
+    navigation.formData?.get("intent") === "activate" ||
+    (navigation.formData?.get("intent") === "deactivate" &&
+      navigation.state === "submitting");
+  const isUpdating =
+    navigation.formData?.get("intent") === "update" &&
+    navigation.state === "submitting";
+
+  const { toast } = useToast();
+
+  React.useEffect(
+    function showResponseError() {
+      if (errors?.error) {
+        toast({
+          variant: "destructive",
+          title: "Algo salió mal",
+          description: errors.error,
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [errors]
+  );
+
+  return (
+    <RemixForm method="post">
+      <div className="flex flex-row flex-wrap lg:-mx-4">
+        <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+          <Label htmlFor="name">Nombre</Label>
+          <Input
+            required
+            name="name"
+            type="text"
+            placeholder="Jonh Doe"
+            defaultValue={user?.name}
+          />
+          {errors?.name ? <p className="text-red-500">{errors.name}</p> : null}
+        </div>
+        <div className="w-full lg:w-1/2 px-4 mb-4">
+          <Label htmlFor="email">Correo Electrónico</Label>
+          <Input
+            required
+            name="email"
+            type="email"
+            placeholder="john@doe.com"
+            defaultValue={user?.email}
+          />
+          {errors?.email ? (
+            <p className="text-red-500">{errors.email}</p>
+          ) : null}
+        </div>
+      </div>
+      {!isUpdate ? (
+        <div className="flex flex-row flex-wrap lg:-mx-4">
+          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+            <Label htmlFor="password">Contraseña</Label>
+            <Input
+              required
+              name="password"
+              type="password"
+              placeholder="********"
+            />
+            {errors?.password ? (
+              <p className="text-red-500">{errors.password}</p>
+            ) : null}
+          </div>
+          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+            <Label htmlFor="rePassword">Repita la Contraseña</Label>
+            <Input
+              required
+              name="rePassword"
+              type="password"
+              placeholder="********"
+            />
+            {errors?.rePassword ? (
+              <p className="text-red-500">{errors.rePassword}</p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+      <div className="flex flex-row flex-wrap lg:-mx-4">
+        <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+          <Label htmlFor="dniType">Tipo de Documento</Label>
+          <Select required name="dniType" defaultValue={user?.dniType}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccione un tipo de documento" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(DNI_TYPES).map(([key, value]) => (
+                <SelectItem key={key} value={String(value)}>
+                  {key}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors?.dniType ? (
+            <p className="text-red-500">{errors.dniType}</p>
+          ) : null}
+        </div>
+        <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+          <Label htmlFor="dni">Documento de Identidad</Label>
+          <Input
+            required
+            name="dni"
+            placeholder="26985902"
+            defaultValue={user?.dni}
+          />
+        </div>
+      </div>
+      <div className="flex flex-row flex-wrap lg:-mx-4">
+        <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+          <Label>Privilegio</Label>
+          <Select
+            required
+            name="privilege"
+            defaultValue={user?.privilege ? String(user?.privilege) : undefined}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccione un privilegio" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(PRIVILEGES)
+                .filter(([, value]) => value !== 0)
+                .map(([key, value]) => (
+                  <SelectItem key={key} value={String(value)}>
+                    {key}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+          {errors?.privilege ? (
+            <p className="text-red-500">{errors.privilege}</p>
+          ) : null}
+        </div>
+        <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
+          <Label>Comisión</Label>
+          <Input
+            required
+            name="commission"
+            min="0"
+            step="0.01"
+            type="number"
+            placeholder="0.05"
+            defaultValue={
+              user?.commission ? String(user?.commission) : undefined
+            }
+          />
+          {errors?.commission ? (
+            <p className="text-red-500">{errors.commission}</p>
+          ) : null}
+        </div>
+      </div>
+      <input type="hidden" name="_id" value={user?._id} />
+      <div className="flex flex-row flex-wrap w-full mt-4 mb-2">
+        <div className="ml-auto flex gap-4">
+          {isUpdate ? (
+            <Button
+              disabled={isUpdating || isToggleing}
+              type="submit"
+              variant={user?.active ? "destructive" : "outline"}
+              name="intent"
+              value={
+                user?.active
+                  ? USER_FORM_INTENTS.deactivate
+                  : USER_FORM_INTENTS.activate
+              }
+            >
+              {user?.active
+                ? isToggleing
+                  ? "Desactivando..."
+                  : "Desactivar"
+                : isToggleing
+                ? "Activando..."
+                : "Activar"}
+            </Button>
+          ) : null}
+          <Button
+            disabled={isUpdating || isToggleing}
+            name="intent"
+            value={
+              isUpdate ? USER_FORM_INTENTS.update : USER_FORM_INTENTS.create
+            }
+            type="submit"
+          >
+            {isUpdate
+              ? isUpdating
+                ? "Actualizando..."
+                : "Actualizar"
+              : isUpdating
+              ? "Creando..."
+              : "Crear"}
+          </Button>
+        </div>
+      </div>
+    </RemixForm>
+  );
+}
+
+export const USER_FORM_INTENTS = {
+  create: "create",
+  update: "update",
+  deactivate: "deactivate",
+  activate: "activate",
+};
+
+export type UserFormErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+  rePassword?: string;
+  dni?: string;
+  dniType?: string;
+  privilege?: string;
+  commission?: string;
+  error?: string;
+};
 
 type Props = {
   user?: User;
   isUpdate: boolean;
+  errors?: UserFormErrors | null;
 };
-
-const formSchema = z
-  .object({
-    name: z.string().min(1, "El nombre es obligatorio"),
-    email: z.string().email({ message: "El correo no es valido" }),
-    password: z
-      .string()
-      .min(6, "La contraseña debe tener al menos 6 caracteres"),
-    rePassword: z.string(),
-    dni: z.string({ required_error: "El dni es obligatorio" }),
-    dniType: z
-      .string({ required_error: "El dniType es obligatorio" })
-      .min(1, "El dniType es obligatorio"),
-    privilege: z
-      .string({ required_error: "El privilegio es obligatorio" })
-      .min(1, "El privilegio es obligatorio")
-      .transform((value) => Number(value)),
-    commission: z
-      .string({ required_error: "La comisión es obligatorio" })
-      .transform((value) => Number(value)),
-  })
-  .superRefine(({ rePassword, password }, ctx) => {
-    if (rePassword !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: "Las contraseñas no coinciden",
-        path: ["rePassword"],
-      });
-    }
-  });
-
-export function UserForm({ user, isUpdate = false }: Props) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: user?.name ?? "",
-      email: user?.email ?? "",
-      password: user?.password ?? "",
-      rePassword: user?.password ?? "",
-      dni: user?.dni ?? "",
-      dniType: user?.dniType ?? "",
-      privilege: user?.privilege ?? 3, // 3: Solo ver
-      commission: user?.commission ? user.commission : 0,
-    },
-  });
-
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-  }
-
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex flex-row flex-wrap lg:-mx-4">
-          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre</FormLabel>
-                  <FormControl>
-                    <Input
-                      required
-                      type="text"
-                      placeholder="Jonh Doe"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Correo Electrónico</FormLabel>
-                  <FormControl>
-                    <Input
-                      required
-                      type="email"
-                      placeholder="john@doe.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        {!isUpdate ? (
-          <div className="flex flex-row flex-wrap lg:-mx-4">
-            <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
-                    <FormControl>
-                      <Input
-                        required
-                        type="password"
-                        placeholder="********"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-              <FormField
-                control={form.control}
-                name="rePassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Repita la Contraseña</FormLabel>
-                    <FormControl>
-                      <Input
-                        required
-                        type="password"
-                        placeholder="********"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-        ) : null}
-        <div className="flex flex-row flex-wrap lg:-mx-4">
-          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="dniType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tipo de Documento</FormLabel>
-                  <FormControl>
-                    <Select
-                      required
-                      {...field}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Seleccione un tipo de documento" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(DNI_TYPES).map(([key, value]) => (
-                          <SelectItem key={key} value={String(value)}>
-                            {key}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="dni"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Documento de Identidad</FormLabel>
-                  <FormControl>
-                    <Input required placeholder="26985902" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-row flex-wrap lg:-mx-4">
-          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="privilege"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Privilegio</FormLabel>
-                  <FormControl>
-                    <Select
-                      {...field}
-                      value={String(field.value)}
-                      onValueChange={field.onChange}
-                      required
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Seleccione un privilegio" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(PRIVILEGES).map(([key, value]) => (
-                          <SelectItem key={key} value={String(value)}>
-                            {key}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
-            <FormField
-              control={form.control}
-              name="commission"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Comisión</FormLabel>
-                  <FormControl>
-                    <Input
-                      required
-                      min="0"
-                      step="0.01"
-                      type="number"
-                      placeholder="0.05"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-        <div className="flex flex-row flex-wrap w-full mt-4 mb-2">
-          <div className="ml-auto">
-            {isUpdate &&
-              (user?.active ? (
-                <Button
-                  //onClick={desactive}
-                  type="button"
-                  //disabled={disabledButton}
-                  color="danger"
-                  variant="outline"
-                >
-                  Eliminar
-                </Button>
-              ) : (
-                <Button
-                  //onClick={reactive}
-                  type="button"
-                  //disabled={disabledButton}
-                  color="success"
-                  variant="outline"
-                >
-                  Activar
-                </Button>
-              ))}
-            <Button type="submit" /*disabled={disabledButton}*/ color="primary">
-              {isUpdate ? "Actualizar" : "Crear"}
-            </Button>
-          </div>
-        </div>
-      </form>
-    </Form>
-  );
-}

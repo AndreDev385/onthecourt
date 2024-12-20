@@ -1,10 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
-import { getUsers } from "~/lib/api/users";
+import { getUsers } from "~/lib/api/users/getUsers";
 import { columns } from "./columns";
 import { DataTable } from "../../components/shared/dataTable";
 import { AddItemToTable } from "~/components/shared/addItemToTable";
 
 export type User = {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -31,7 +32,7 @@ export default function UsersPage() {
 
   return (
     <section className="container mx-auto py-10">
-      <AddItemToTable href="/admin/create-user" text="Usuarios" />
+      <AddItemToTable href="/admin/users/create" text="Usuarios" />
       <DataTable columns={columns} data={users} text="Usuarios" />
     </section>
   );

@@ -1,5 +1,5 @@
-import { getUsers } from "~/lib/api/users";
-import { User } from "../admin.users/route";
+import { getUsers } from "~/lib/api/users/getUsers";
+import { User } from "../admin.users.list/route";
 import { useLoaderData } from "@remix-run/react";
 import { DataTable } from "~/components/shared/dataTable";
 import { columns } from "./columns";

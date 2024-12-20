@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EditButton } from "~/components/shared/editButtonIcon";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
 
 export type UserRow = {
@@ -38,15 +37,6 @@ export const columns: ColumnDef<UserRow>[] = [
     accessorKey: "email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
-    ),
-  },
-  {
-    accessorKey: "_id",
-    header: "Acciones",
-    cell: ({ row }) => (
-      <div className="flex">
-        <EditButton href={`/admin/users/${row.getValue("_id")}`} />
-      </div>
     ),
   },
 ];
