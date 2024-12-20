@@ -3,6 +3,7 @@ import { User } from "../admin.users/route";
 import { useLoaderData } from "@remix-run/react";
 import { DataTable } from "~/components/shared/dataTable";
 import { columns } from "./columns";
+import { AddItemToTable } from "~/components/shared/addItemToTable";
 
 export async function loader() {
   const users = await getUsers();
@@ -14,6 +15,7 @@ export default function ClientsPage() {
 
   return (
     <div className="container mx-auto py-10">
+      <AddItemToTable text="Clientes" />
       <DataTable columns={columns} data={clients} text="Clientes" />
     </div>
   );

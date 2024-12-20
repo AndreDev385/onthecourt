@@ -41,14 +41,12 @@ export const columns: ColumnDef<UserRow>[] = [
     ),
   },
   {
-    accessorKey: "actions",
+    accessorKey: "_id",
     header: "Acciones",
-    cell: ({ row }) => {
-      return (
-        <div className="flex">
-          <EditButton href={`/admin/users/${row.getValue("_id")}`} />
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="flex">
+        <EditButton href={`/admin/users/${row.getValue("_id")}`} />
+      </div>
+    ),
   },
 ];

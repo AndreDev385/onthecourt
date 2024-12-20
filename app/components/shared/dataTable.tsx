@@ -104,7 +104,7 @@ export function DataTable<TData, TValue>({
                 value={search}
                 onChange={onChange}
                 placeholder="Buscador"
-                className="bg-gray-200 w-full h-10 px-5 pr-10 rounded-full text-sm focus:outline-none text-gray-600 placeholder-gray-400"
+                className="border-gray-200 border w-full h-10 px-5 pr-10 rounded-full text-sm focus:outline-none text-gray-600 placeholder-gray-400"
               />
               <button
                 type="button"

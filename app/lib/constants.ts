@@ -8,4 +8,5 @@ export const PRIVILEGES = {
 export const DNI_TYPES = {
   Venezuelano: 1,
   Extranjero: 2,
+  Juridico: 3,
 };

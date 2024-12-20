@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { getUsers } from "~/lib/api/users";
 import { columns } from "./columns";
 import { DataTable } from "../../components/shared/dataTable";

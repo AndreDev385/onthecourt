@@ -64,14 +64,12 @@ export const columns: ColumnDef<UserRow>[] = [
     cell: ({ row }) => mapPrivilege(row.getValue("privilege")),
   },
   {
-    accessorKey: "actions",
+    accessorKey: "_id",
     header: "Acciones",
-    cell: ({ row }) => {
-      return (
-        <div className="flex">
-          <EditButton href={`/admin/users/${row.getValue("_id")}`} />
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="flex">
+        <EditButton href={`/admin/users/${row.getValue("_id")}`} />
+      </div>
+    ),
   },
 ];

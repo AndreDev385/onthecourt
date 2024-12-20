@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Icon } from "./icon";
 
 type Props = {
-  href: string;
+  href?: string;
   text: string;
 };
 
@@ -15,12 +15,14 @@ export function AddItemToTable({ href, text }: Props) {
       </div>
       <div className="px-4 w-1/2 flex">
         <div className="ml-auto">
-          <Link to={href}>
-            <Button variant="ghost" className="font-bold text-sm">
-              <Icon icon="plus" />
-              CREAR
-            </Button>
-          </Link>
+          {href ? (
+            <Link to={href}>
+              <Button variant="ghost" className="font-bold text-sm">
+                <Icon icon="plus" />
+                CREAR
+              </Button>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>
