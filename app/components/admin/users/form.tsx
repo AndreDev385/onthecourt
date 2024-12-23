@@ -1,5 +1,4 @@
 import { Form as RemixForm, useNavigation } from "@remix-run/react";
-import { User } from "~/routes/admin.users.list/route";
 import { Input } from "../../ui/input";
 import { Button } from "~/components/ui/button";
 import {
@@ -13,15 +12,17 @@ import { DNI_TYPES, PRIVILEGES } from "~/lib/constants";
 import { Label } from "~/components/ui/label";
 import React from "react";
 import { useToast } from "~/hooks/use-toast";
+import { User } from "~/types";
 
 export function UserForm({ user, errors, isUpdate = false }: Props) {
   const navigation = useNavigation();
+
   const isToggleing =
-    navigation.formData?.get("intent") === "activate" ||
-    (navigation.formData?.get("intent") === "deactivate" &&
+    navigation.formData?.get("intent") === USER_FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === USER_FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
   const isUpdating =
-    navigation.formData?.get("intent") === "update" &&
+    navigation.formData?.get("intent") === USER_FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   const { toast } = useToast();
@@ -99,7 +100,11 @@ export function UserForm({ user, errors, isUpdate = false }: Props) {
       <div className="flex flex-row flex-wrap lg:-mx-4">
         <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
           <Label htmlFor="dniType">Tipo de Documento</Label>
-          <Select required name="dniType" defaultValue={user?.dniType}>
+          <Select
+            required
+            name="dniType"
+            defaultValue={user?.dniType ? `${user?.dniType}` : undefined}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Seleccione un tipo de documento" />
             </SelectTrigger>
@@ -230,7 +235,7 @@ export type UserFormErrors = {
   dniType?: string;
   privilege?: string;
   commission?: string;
-  error?: string;
+  error?: boolean;
 };
 
 type Props = {

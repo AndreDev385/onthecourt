@@ -2,12 +2,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EditButton } from "~/components/shared/editButtonIcon";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
 
-export type BrandRow = {
+export type CategoryRow = {
   _id: string;
   name: string;
 };
 
-export const columns: ColumnDef<BrandRow>[] = [
+export const columns: ColumnDef<CategoryRow>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -19,7 +19,7 @@ export const columns: ColumnDef<BrandRow>[] = [
     header: "Acciones",
     cell: ({ row }) => (
       <div className="flex">
-        <EditButton href={`/admin/brands/${row.getValue("_id")}`} />
+        <EditButton href={`/admin/categories/${row.getValue("_id")}`} />
       </div>
     ),
   },

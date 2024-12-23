@@ -43,7 +43,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!privilege) errors.privilege = "El privilegio es obligatorio";
   if (!commission) errors.commission = "La comisión es obligatorio";
 
-  if (!_id) errors.error = "Error al buscar datos del usuario";
+  if (!_id) errors.error = true;
 
   // call endpoint
   try {
@@ -69,8 +69,8 @@ export async function action({ request }: ActionFunctionArgs) {
       });
     }
   } catch (error) {
-    if (error instanceof Error) errors.error = error.message;
-    if (typeof error === "string") errors.error = error;
+    errors.error = true;
+    return { errors, intent: String(intent) };
   }
 
   return { errors, intent: String(intent) };
@@ -78,8 +78,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.id, "Error al buscar datos del usuario");
-  const user = await getUser(params.id);
-  console.log({ user });
+  const { data: user, errors } = await getUser(params.id);
+
+  if (errors && Object.values(errors).length > 0) {
+    throw new Error("Error al buscar datos del usuario");
+  }
+
+  invariant(user, "Error al buscar datos del usuario");
   return user;
 };
 
@@ -106,6 +111,7 @@ export default function EditUserPage() {
         description: `El usuario ha sido ${action}`,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actionData]);
 
   return (

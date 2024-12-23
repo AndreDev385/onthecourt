@@ -1,8 +1,8 @@
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
-export async function updateUser(
-  record: UpdateUserInput | ToggleActiveUser
+export async function updateCategory(
+  record: ToggleActiveCategory | UpdateCategoryInput
 ): Promise<ApiResponse<null>> {
   const _id = record._id;
   delete record._id;
@@ -12,7 +12,7 @@ export async function updateUser(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: UPDATE_USER,
+      query: UPDATE_CATEGORY,
       variables: { record, filter: { _id } },
     }),
   });
@@ -21,27 +21,22 @@ export async function updateUser(
   return { data: null, errors };
 }
 
-type ToggleActiveUser = {
-  _id: string;
+type ToggleActiveCategory = {
+  _id?: string;
   active: boolean;
 };
 
-type UpdateUserInput = {
-  _id?: string;
+type UpdateCategoryInput = {
+  _id: string;
   name: string;
-  email: string;
-  dni: string;
-  dniType: string;
-  privilege: number;
-  commission: number;
 };
 
-export const UPDATE_USER = `#graphql
-  mutation UPDATE_USER(
-    $record: UpdateOneUserInput!
-    $filter: FilterUpdateOneUserInput!
+export const UPDATE_CATEGORY = `#graphql
+  mutation UPDATE_CATEGORY(
+    $record: UpdateOneCategoryInput!
+    $filter: FilterUpdateOneCategoryInput!
   ) {
-    updateUser(record: $record, filter: $filter) {
+    updateCategory(record: $record, filter: $filter) {
       record {
         _id
       }

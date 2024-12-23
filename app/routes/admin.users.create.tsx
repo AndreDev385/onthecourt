@@ -1,5 +1,6 @@
 import { ActionFunctionArgs } from "@remix-run/node";
 import { Link, redirect, useActionData } from "@remix-run/react";
+import invariant from "tiny-invariant";
 import { UserForm, UserFormErrors } from "~/components/admin/users/form";
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
@@ -41,7 +42,7 @@ export async function action({ request }: ActionFunctionArgs) {
   // call endpoint
   let record;
   try {
-    record = await createUser({
+    const { data, errors: apiErrors } = await createUser({
       name: name as string,
       email: email as string,
       password: password as string,
@@ -50,10 +51,18 @@ export async function action({ request }: ActionFunctionArgs) {
       privilege: Number(privilege),
       commission: Number(commission),
     });
+
+    if (apiErrors && Object.values(errors).length > 0) {
+      errors.error = true;
+      return errors;
+    }
+    record = data;
   } catch (e) {
-    if (e instanceof Error) errors.error = e.message;
-    if (typeof e === "string") errors.error = e;
+    errors.error = true;
+    return errors;
   }
+
+  invariant(record);
   return Object.keys(errors).length > 0
     ? errors
     : redirect(`/admin/users/${record._id}`);

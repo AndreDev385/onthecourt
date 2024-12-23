@@ -1,13 +1,20 @@
 import { getUsers } from "~/lib/api/users/getUsers";
-import { User } from "../admin.users.list/route";
 import { useLoaderData } from "@remix-run/react";
 import { DataTable } from "~/components/shared/dataTable";
-import { columns } from "./columns";
+import { columns, UserRow } from "./columns";
 import { AddItemToTable } from "~/components/shared/addItemToTable";
+import invariant from "tiny-invariant";
 
 export async function loader() {
-  const users = await getUsers();
-  return users.filter((u: User) => u.privilege === 0);
+  const { data: users, errors } = await getUsers();
+
+  if (errors && Object.values(errors).length > 0) {
+    throw new Error("Error al cargar usuarios");
+  }
+
+  invariant(users);
+
+  return users.filter((u) => u.privilege === 0);
 }
 
 export default function ClientsPage() {
@@ -16,7 +23,11 @@ export default function ClientsPage() {
   return (
     <div className="container mx-auto py-10">
       <AddItemToTable text="Clientes" />
-      <DataTable columns={columns} data={clients} text="Clientes" />
+      <DataTable
+        columns={columns}
+        data={clients as UserRow[]}
+        text="Clientes"
+      />
     </div>
   );
 }

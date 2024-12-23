@@ -26,3 +26,28 @@ export type User = {
   updatedAt?: Date;
   __typename?: string;
 };
+
+export type Category = {
+  _id: string;
+  name: string;
+  slug: string;
+  active: boolean;
+  photo?: string;
+  products?: Array<Product | string>;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __typename?: string;
+};
+
+export type Currency = {
+  _id: string;
+  slug: string;
+  name: string;
+  symbol: string;
+  rate: number;
+  principal?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  active?: boolean;
+  __typename?: string;
+};

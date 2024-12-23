@@ -2,29 +2,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EditButton } from "~/components/shared/editButtonIcon";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
 
-export type UserRow = {
+export type CurrencyRow = {
+  _id: string;
+  slug: string;
   name: string;
-  email: string;
-  active: boolean;
-  privilege: number;
+  symbol: string;
+  rate: number;
 };
 
-function mapPrivilege(privilege: number): string {
-  switch (privilege) {
-    case 0:
-      return "Cliente";
-    case 1:
-      return "Administrador";
-    case 2:
-      return "Editor";
-    case 3:
-      return "Lector";
-    default:
-      return "Usuario";
-  }
-}
-
-export const columns: ColumnDef<UserRow>[] = [
+export const columns: ColumnDef<CurrencyRow>[] = [
   {
     accessorKey: "active",
     header: "",
@@ -51,24 +37,28 @@ export const columns: ColumnDef<UserRow>[] = [
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "symbol",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="Símbolo" />
     ),
   },
   {
-    accessorKey: "privilege",
+    accessorKey: "rate",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Privilegio" />
+      <DataTableColumnHeader column={column} title="Tasa" />
     ),
-    cell: ({ row }) => mapPrivilege(row.getValue("privilege")),
+    cell: ({ row }) => (
+      <div className="">
+        {((row.getValue("rate") as number) / 100).toFixed(2)}
+      </div>
+    ),
   },
   {
     accessorKey: "_id",
     header: "Acciones",
     cell: ({ row }) => (
       <div className="flex">
-        <EditButton href={`/admin/users/${row.getValue("_id")}`} />
+        <EditButton href={`/admin/currencies/${row.getValue("_id")}`} />
       </div>
     ),
   },

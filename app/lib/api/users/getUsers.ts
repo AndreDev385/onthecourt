@@ -1,6 +1,8 @@
+import { User } from "~/types";
 import { API_URL } from "../config";
+import { ApiResponse } from "../response";
 
-export async function getUsers() {
+export async function getUsers(): Promise<ApiResponse<User[]>> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -11,9 +13,9 @@ export async function getUsers() {
     }),
   });
 
-  const { data } = await response.json();
+  const { data, errors } = await response.json();
 
-  return data.users;
+  return { data: data.users, errors };
 }
 
 const GET_USERS = `#graphql

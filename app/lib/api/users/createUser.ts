@@ -1,6 +1,10 @@
+import { User } from "~/types";
 import { API_URL } from "../config";
+import { ApiResponse } from "../response";
 
-export async function createUser(record: CreateUserInput) {
+export async function createUser(
+  record: CreateUserInput
+): Promise<ApiResponse<User>> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -12,9 +16,9 @@ export async function createUser(record: CreateUserInput) {
     }),
   });
 
-  const { data } = await response.json();
+  const { data, errors } = await response.json();
 
-  return data.createUser.record;
+  return { data: data?.createUser?.record, errors };
 }
 
 type CreateUserInput = {
