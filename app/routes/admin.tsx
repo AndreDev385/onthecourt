@@ -56,7 +56,7 @@ const configLinks = [
   { href: "/admin/locations/list", text: "Sucursales" },
   { href: "/admin/suppliers/list", text: "Proveedores" },
   { href: "/admin/promotions/list", text: "Promociones" },
-  { href: "/admin/shipping/list", text: "Envíos" },
+  { href: "/admin/shippings/list", text: "Opciones de envío" },
 ];
 
 const adminLinks = [

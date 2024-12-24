@@ -75,7 +75,7 @@ export default function CreateUserPage() {
     <div>
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
-          <h1 className="text-2xl font-bold">Crear Usuario</h1>
+          <h1 className="text-2xl font-bold">Crear usuario</h1>
           <Link to="/admin/users/list">
             <Button variant="ghost" className="font-bold text-sm">
               <Icon icon="arrow-left" />

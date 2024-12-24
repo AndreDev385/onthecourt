@@ -51,3 +51,28 @@ export type Currency = {
   active?: boolean;
   __typename?: string;
 };
+
+export type Location = {
+  _id: string;
+  name: string;
+  address: string;
+  slug?: string;
+  shippingOptions?: Array<Shipping | string>;
+  lat?: number;
+  lon?: number;
+  active?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __typename?: string;
+};
+
+export type Shipping = {
+  _id: string;
+  name: string;
+  price: number;
+  slug?: string;
+  active?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __typename?: string;
+};

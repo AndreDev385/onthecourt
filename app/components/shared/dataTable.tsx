@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
         <div className="flex flex-row flex-wrap w-full mb-2">
           <div className="w-full md:w-1/2 lg:w-2/3 inline-flex">
             <h2 className="text-base leading-normal text-gray-600 my-auto">
-              Buscar {text}
+              Buscar {text.toLowerCase()}
             </h2>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/3">

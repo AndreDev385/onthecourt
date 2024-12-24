@@ -85,7 +85,7 @@ export default function EditCategoryPage() {
     <div>
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
-          <h1 className="text-2xl font-bold">Editar Marca</h1>
+          <h1 className="text-2xl font-bold">Editar categoría</h1>
           <Link to="/admin/categories/list">
             <Button variant="ghost" className="font-bold text-sm">
               <Icon icon="arrow-left" />
