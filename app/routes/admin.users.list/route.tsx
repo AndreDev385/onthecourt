@@ -13,7 +13,6 @@ export async function loader() {
   }
 
   invariant(users);
-
   return users.filter((u) => u.privilege === 0);
 }
 

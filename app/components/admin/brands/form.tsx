@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
+import { FORM_INTENTS } from "~/lib/constants";
 import { Brand } from "~/types";
 
 export function BrandsForm({ brand, errors, isUpdate = false }: Props) {
@@ -11,12 +12,12 @@ export function BrandsForm({ brand, errors, isUpdate = false }: Props) {
   const { toast } = useToast();
 
   const isToggleing =
-    navigation.formData?.get("intent") === BRAND_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === BRAND_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
 
   const isUpdating =
-    navigation.formData?.get("intent") === BRAND_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   React.useEffect(
@@ -58,9 +59,7 @@ export function BrandsForm({ brand, errors, isUpdate = false }: Props) {
               variant={brand?.active ? "destructive" : "outline"}
               name="intent"
               value={
-                brand?.active
-                  ? BRAND_FORM_INTENTS.deactivate
-                  : BRAND_FORM_INTENTS.activate
+                brand?.active ? FORM_INTENTS.deactivate : FORM_INTENTS.activate
               }
             >
               {brand?.active
@@ -75,9 +74,7 @@ export function BrandsForm({ brand, errors, isUpdate = false }: Props) {
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate ? BRAND_FORM_INTENTS.update : BRAND_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -93,13 +90,6 @@ export function BrandsForm({ brand, errors, isUpdate = false }: Props) {
     </Form>
   );
 }
-
-export const BRAND_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
-};
 
 export type BrandFormErrors = {
   _id?: string;

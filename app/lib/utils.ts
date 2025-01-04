@@ -16,3 +16,39 @@ export function validateDni(dni: string) {
   if (!numericPattern.test(dni)) return false;
   return true;
 }
+
+export function validateString(string: string) {
+  if (string === null || string === undefined) {
+    return false;
+  }
+
+  if (
+    String(string).trim() === "" ||
+    String(string).length <= 0 ||
+    String(string).trim().length <= 0
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+export function validateNumber(number: unknown) {
+  if (number === null || number === undefined || number === false) {
+    return false;
+  }
+
+  if (Array.isArray(number)) {
+    return false;
+  }
+
+  if (String(number).trim().length <= 0) {
+    return false;
+  }
+
+  const _number = Number(number);
+
+  return !Number.isNaN(_number);
+}
+
+export const DATE_FORMAT = "yyyy-MM-dd";

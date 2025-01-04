@@ -10,3 +10,10 @@ export const DNI_TYPES = {
   Extranjero: 2,
   Juridico: 3,
 } as const;
+
+export const FORM_INTENTS = {
+  create: "create",
+  update: "update",
+  deactivate: "deactivate",
+  activate: "activate",
+};

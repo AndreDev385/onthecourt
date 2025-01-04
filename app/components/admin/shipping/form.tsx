@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
+import { FORM_INTENTS } from "~/lib/constants";
 import { Shipping } from "~/types";
 
 export function ShippingForm({ errors, shipping, isUpdate = false }: Props) {
@@ -11,12 +12,12 @@ export function ShippingForm({ errors, shipping, isUpdate = false }: Props) {
   const { toast } = useToast();
 
   const isToggleing =
-    navigation.formData?.get("intent") === SHIPPING_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === SHIPPING_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
 
   const isUpdating =
-    navigation.formData?.get("intent") === SHIPPING_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   React.useEffect(
@@ -70,8 +71,8 @@ export function ShippingForm({ errors, shipping, isUpdate = false }: Props) {
               name="intent"
               value={
                 shipping?.active
-                  ? SHIPPING_FORM_INTENTS.deactivate
-                  : SHIPPING_FORM_INTENTS.activate
+                  ? FORM_INTENTS.deactivate
+                  : FORM_INTENTS.activate
               }
             >
               {shipping?.active
@@ -86,11 +87,7 @@ export function ShippingForm({ errors, shipping, isUpdate = false }: Props) {
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate
-                ? SHIPPING_FORM_INTENTS.update
-                : SHIPPING_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -117,11 +114,4 @@ export type ShippingFormErrors = {
   apiError?: boolean;
   name?: string;
   price?: string;
-};
-
-export const SHIPPING_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
 };

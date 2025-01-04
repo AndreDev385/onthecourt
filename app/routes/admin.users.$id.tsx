@@ -2,17 +2,14 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import React from "react";
 import invariant from "tiny-invariant";
-import {
-  USER_FORM_INTENTS,
-  UserForm,
-  UserFormErrors,
-} from "~/components/admin/users/form";
+import { UserForm, UserFormErrors } from "~/components/admin/users/form";
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { useToast } from "~/hooks/use-toast";
 import { getUser } from "~/lib/api/users/getUser";
 import { updateUser } from "~/lib/api/users/updateUser";
+import { FORM_INTENTS } from "~/lib/constants";
 import { validateDni, validateEmail } from "~/lib/utils";
 
 type UpdateUserErrors = Omit<UserFormErrors, "password" | "rePassword">;
@@ -47,17 +44,17 @@ export async function action({ request }: ActionFunctionArgs) {
 
   // call endpoint
   try {
-    if (intent === USER_FORM_INTENTS.activate) {
+    if (intent === FORM_INTENTS.activate) {
       await updateUser({
         _id: _id as string,
         active: true,
       });
-    } else if (intent === USER_FORM_INTENTS.deactivate) {
+    } else if (intent === FORM_INTENTS.deactivate) {
       await updateUser({
         _id: _id as string,
         active: false,
       });
-    } else if (intent === USER_FORM_INTENTS.update) {
+    } else if (intent === FORM_INTENTS.update) {
       await updateUser({
         _id: _id as string,
         name: name as string,
@@ -119,12 +116,12 @@ export default function EditUserPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Editar usuario</h1>
-          <Link to="/admin/users/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/users/list">
               <Icon icon="arrow-left" />
               USUARIOS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <UserForm user={user} isUpdate={true} errors={actionData?.errors} />

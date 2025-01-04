@@ -1,16 +1,12 @@
 import { Form, useNavigation } from "@remix-run/react";
 import React from "react";
+
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
+import MultipleSelect from "~/components/ui/multi-select";
 import { useToast } from "~/hooks/use-toast";
+import { FORM_INTENTS } from "~/lib/constants";
 import { Location } from "~/types";
 
 export function LocationForm({
@@ -22,14 +18,20 @@ export function LocationForm({
   const navigation = useNavigation();
   const { toast } = useToast();
 
+  const [selected, setSelected] = React.useState<string[]>(
+    location?.shippingOptions?.map((shipping) => shipping._id) ?? []
+  );
+
   const isToggleing =
-    navigation.formData?.get("intent") === LOCATION_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === LOCATION_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
 
   const isUpdating =
-    navigation.formData?.get("intent") === LOCATION_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
+
+  const updateShippingOptions = React.useCallback(setSelected, [setSelected]);
 
   React.useEffect(
     function showResponseError() {
@@ -74,19 +76,16 @@ export function LocationForm({
       <div className="flex flex-row flex-wrap lg:-mx-4">
         <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
           <Label htmlFor="name">Opciones de envío</Label>
-          <Select required name="shippingOptions">
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Seleccione un privilegio" />
-            </SelectTrigger>
-            <SelectContent>
-              {shippingOptions.map(([key, value]) => (
-                <SelectItem key={key} value={String(value)}>
-                  {key}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors?.name ? <p className="text-red-500">{errors.name}</p> : null}
+          <MultipleSelect
+            name="shippingOptions"
+            placeholder="Seleccione al menos 1 opción de envió"
+            onChange={updateShippingOptions}
+            values={shippingOptions}
+            selected={selected}
+          />
+          {errors?.shippingOptions ? (
+            <p className="text-red-500">{errors.shippingOptions}</p>
+          ) : null}
         </div>
       </div>
       <input type="hidden" name="_id" value={location?._id} />
@@ -100,8 +99,8 @@ export function LocationForm({
               name="intent"
               value={
                 location?.active
-                  ? LOCATION_FORM_INTENTS.deactivate
-                  : LOCATION_FORM_INTENTS.activate
+                  ? FORM_INTENTS.deactivate
+                  : FORM_INTENTS.activate
               }
             >
               {location?.active
@@ -116,11 +115,7 @@ export function LocationForm({
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate
-                ? LOCATION_FORM_INTENTS.update
-                : LOCATION_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -141,18 +136,12 @@ type Props = {
   errors?: LocationFormErrors;
   isUpdate?: boolean;
   location?: Location;
-  shippingOptions: string[];
+  shippingOptions: { text: string; value: string }[];
 };
 
 export type LocationFormErrors = {
   apiError?: boolean;
   name?: string;
   address?: string;
-};
-
-export const LOCATION_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
+  shippingOptions?: string;
 };

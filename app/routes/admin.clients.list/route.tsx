@@ -13,8 +13,7 @@ export async function loader() {
   }
 
   invariant(users);
-
-  return users.filter((u) => u.privilege === 0);
+  return users.filter((u) => u.privilege !== 0);
 }
 
 export default function ClientsPage() {

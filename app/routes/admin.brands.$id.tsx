@@ -1,17 +1,14 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import {
-  BRAND_FORM_INTENTS,
-  BrandFormErrors,
-  BrandsForm,
-} from "~/components/admin/brands/form";
+import { BrandFormErrors, BrandsForm } from "~/components/admin/brands/form";
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { getBrand } from "~/lib/api/brands/getBrand";
 import { getBrands } from "~/lib/api/brands/getBrands";
 import { updateBrand } from "~/lib/api/brands/updateBrand";
+import { FORM_INTENTS } from "~/lib/constants";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -28,6 +25,7 @@ export async function action({ request }: ActionFunctionArgs) {
   // check if brand already exists
   const { data: brands } = await getBrands();
   if (
+    (intent === FORM_INTENTS.create || intent === FORM_INTENTS.update) &&
     brands?.find(
       (brand) => brand.name.toLowerCase() === String(name).toLowerCase()
     )
@@ -41,17 +39,17 @@ export async function action({ request }: ActionFunctionArgs) {
 
   // call endpoint
   try {
-    if (intent === BRAND_FORM_INTENTS.activate) {
+    if (intent === FORM_INTENTS.activate) {
       await updateBrand({
         _id: _id as string,
         active: true,
       });
-    } else if (intent === BRAND_FORM_INTENTS.deactivate) {
+    } else if (intent === FORM_INTENTS.deactivate) {
       await updateBrand({
         _id: _id as string,
         active: false,
       });
-    } else if (intent === BRAND_FORM_INTENTS.update) {
+    } else if (intent === FORM_INTENTS.update) {
       await updateBrand({
         _id: _id as string,
         name: name as string,
@@ -87,12 +85,12 @@ export default function BrandsPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Editar marca</h1>
-          <Link to="/admin/brands/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/brands/list">
               <Icon icon="arrow-left" />
               MARCAS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <BrandsForm

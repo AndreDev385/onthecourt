@@ -9,10 +9,10 @@ export async function loader() {
   const { data, errors } = await getLocations();
 
   if (errors && Object.values(errors).length > 0) {
-    throw new Error("Error loading brands");
+    throw new Error("Error al cargar marcas");
   }
 
-  invariant(data);
+  invariant(data, "Error al cargar marcas");
   return data;
 }
 

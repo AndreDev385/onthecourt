@@ -16,12 +16,12 @@ export function AddItemToTable({ href, text }: Props) {
       <div className="px-4 w-1/2 flex">
         <div className="ml-auto">
           {href ? (
-            <Link to={href}>
-              <Button variant="ghost" className="font-bold text-sm">
+            <Button asChild variant="ghost" className="font-bold text-sm">
+              <Link to={href}>
                 <Icon icon="plus" />
                 CREAR
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           ) : null}
         </div>
       </div>

@@ -76,12 +76,12 @@ export default function CreateUserPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Crear usuario</h1>
-          <Link to="/admin/users/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/users/list">
               <Icon icon="arrow-left" />
               USUARIOS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <UserForm isUpdate={false} errors={actionData} />

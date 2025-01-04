@@ -4,7 +4,6 @@ import {
   Users,
   Users2,
   Settings,
-  Home,
   HandCoins,
   CalendarArrowDown,
   Tag,
@@ -55,7 +54,7 @@ const configLinks = [
   { href: "/admin/currencies/list", text: "Monedas" },
   { href: "/admin/locations/list", text: "Sucursales" },
   { href: "/admin/suppliers/list", text: "Proveedores" },
-  { href: "/admin/promotions/list", text: "Promociones" },
+  { href: "/admin/promo-codes/list", text: "Promociones" },
   { href: "/admin/shippings/list", text: "Opciones de envío" },
 ];
 
@@ -69,17 +68,13 @@ function AdminSidebar() {
     <Sidebar className="p-4">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>
-            <Home className="mr-2" />
-            Principal
-          </SidebarGroupLabel>
           <SidebarMenu>
             {outerLinks.map((link) => (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton asChild>
                   <Link to={link.href}>
                     <link.icon />
-                    {link.text}
+                    <p className="text-lg">{link.text}</p>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -90,7 +85,8 @@ function AdminSidebar() {
           <Collapsible className="group/collapsible">
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <HandCoins className="mr-2" /> Administración
+                <HandCoins className="mr-2" />
+                <p className="text-lg font-bold">Administración</p>
                 <ChevronDown className="ml-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
@@ -100,7 +96,9 @@ function AdminSidebar() {
                   {adminLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
-                        <Link to={link.href}>{link.text}</Link>
+                        <Link to={link.href}>
+                          <p className="text-lg">{link.text}</p>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -113,7 +111,8 @@ function AdminSidebar() {
           <Collapsible className="group/collapsible">
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <Settings className="mr-2" /> Configuración
+                <Settings className="mr-2" />
+                <p className="text-lg font-bold">Configuración</p>
                 <ChevronDown className="ml-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
@@ -123,7 +122,9 @@ function AdminSidebar() {
                   {configLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
-                        <Link to={link.href}>{link.text}</Link>
+                        <Link to={link.href}>
+                          <p className="text-lg">{link.text}</p>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}

@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
+import { FORM_INTENTS } from "~/lib/constants";
 import { Category } from "~/types";
 
 export function CategoryForm({ category, errors, isUpdate = false }: Props) {
@@ -11,12 +12,12 @@ export function CategoryForm({ category, errors, isUpdate = false }: Props) {
   const { toast } = useToast();
 
   const isToggleing =
-    navigation.formData?.get("intent") === CATEGORY_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === CATEGORY_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
 
   const isUpdating =
-    navigation.formData?.get("intent") === CATEGORY_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   React.useEffect(
@@ -59,8 +60,8 @@ export function CategoryForm({ category, errors, isUpdate = false }: Props) {
               name="intent"
               value={
                 category?.active
-                  ? CATEGORY_FORM_INTENTS.deactivate
-                  : CATEGORY_FORM_INTENTS.activate
+                  ? FORM_INTENTS.deactivate
+                  : FORM_INTENTS.activate
               }
             >
               {category?.active
@@ -75,11 +76,7 @@ export function CategoryForm({ category, errors, isUpdate = false }: Props) {
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate
-                ? CATEGORY_FORM_INTENTS.update
-                : CATEGORY_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -95,13 +92,6 @@ export function CategoryForm({ category, errors, isUpdate = false }: Props) {
     </Form>
   );
 }
-
-export const CATEGORY_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
-};
 
 export type CategoryFormErrors = {
   _id?: string;

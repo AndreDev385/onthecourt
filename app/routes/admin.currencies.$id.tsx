@@ -2,7 +2,6 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import {
-  CURRENCY_FORM_INTENTS,
   CurrencyForm,
   CurrencyFormErrors,
 } from "~/components/admin/currencies/form";
@@ -11,6 +10,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { getCurrency } from "~/lib/api/currencies/getCurrency";
 import { updateCurrency } from "~/lib/api/currencies/updateCurrency";
+import { FORM_INTENTS } from "~/lib/constants";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -23,7 +23,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const errors: CurrencyFormErrors = {};
 
-  invariant(_id, "Error al buscar datos del usuario");
+  invariant(_id, "Error al cargar datos de la moneda");
   if (!name) errors.name = "El nombre es obligatorio";
   if (!symbol) errors.symbol = "El símbolo es obligatorio";
   if (!rate) errors.rate = "La tasa es obligatoria";
@@ -36,17 +36,17 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    if (intent === CURRENCY_FORM_INTENTS.activate) {
+    if (intent === FORM_INTENTS.activate) {
       await updateCurrency({
         _id: _id as string,
         active: true,
       });
-    } else if (intent === CURRENCY_FORM_INTENTS.deactivate) {
+    } else if (intent === FORM_INTENTS.deactivate) {
       await updateCurrency({
         _id: _id as string,
         active: false,
       });
-    } else if (intent === CURRENCY_FORM_INTENTS.update) {
+    } else if (intent === FORM_INTENTS.update) {
       await updateCurrency({
         _id: _id as string,
         name: name as string,
@@ -82,12 +82,12 @@ export default function EditCurrencyPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Editar moneda</h1>
-          <Link to="/admin/currencies/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/currencies/list">
               <Icon icon="arrow-left" />
               MONEDAS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <CurrencyForm

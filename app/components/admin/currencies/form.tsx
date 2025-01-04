@@ -6,18 +6,19 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
 import { Currency } from "~/types";
+import { FORM_INTENTS } from "~/lib/constants";
 
 export function CurrencyForm({ errors, isUpdate = false, currency }: Props) {
   const navigation = useNavigation();
   const { toast } = useToast();
 
   const isToggleing =
-    navigation.formData?.get("intent") === CURRENCY_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === CURRENCY_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
 
   const isUpdating =
-    navigation.formData?.get("intent") === CURRENCY_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   React.useEffect(
@@ -85,8 +86,8 @@ export function CurrencyForm({ errors, isUpdate = false, currency }: Props) {
               name="intent"
               value={
                 currency?.active
-                  ? CURRENCY_FORM_INTENTS.deactivate
-                  : CURRENCY_FORM_INTENTS.activate
+                  ? FORM_INTENTS.deactivate
+                  : FORM_INTENTS.activate
               }
             >
               {currency?.active
@@ -101,11 +102,7 @@ export function CurrencyForm({ errors, isUpdate = false, currency }: Props) {
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate
-                ? CURRENCY_FORM_INTENTS.update
-                : CURRENCY_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -133,11 +130,4 @@ export type CurrencyFormErrors = {
   symbol?: string;
   rate?: string;
   apiError?: boolean;
-};
-
-export const CURRENCY_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
 };

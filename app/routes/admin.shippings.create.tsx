@@ -58,12 +58,12 @@ export default function CreateShippingPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Crear opción de envío</h1>
-          <Link to="/admin/shippings/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/shippings/list">
               <Icon icon="arrow-left" />
               OPCIONES DE ENVÍO
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <ShippingForm isUpdate={false} errors={actionData} />

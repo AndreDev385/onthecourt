@@ -1,3 +1,4 @@
+import { Location } from "~/types";
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 

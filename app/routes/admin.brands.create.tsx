@@ -46,12 +46,12 @@ export default function CreateBrandPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Crear marca</h1>
-          <Link to="/admin/brands/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/brands/list">
               <Icon icon="arrow-left" />
               MARCAS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <BrandsForm isUpdate={false} errors={actionData} />

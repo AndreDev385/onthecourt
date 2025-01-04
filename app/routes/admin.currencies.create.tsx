@@ -59,12 +59,12 @@ export default function CreateCurrencyPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Crear moneda</h1>
-          <Link to="/admin/currencies/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/currencies/list">
               <Icon icon="arrow-left" />
               MONEDAS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <CurrencyForm isUpdate={false} errors={actionData} />

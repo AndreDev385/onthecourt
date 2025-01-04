@@ -52,12 +52,12 @@ export default function CreateCategoryPage() {
       <Card className="mt-16 max-w-[800px] mx-auto">
         <CardHeader className="flex flex-row items-center justify-between">
           <h1 className="text-2xl font-bold">Crear categoría</h1>
-          <Link to="/admin/categories/list">
-            <Button variant="ghost" className="font-bold text-sm">
+          <Button asChild variant="ghost" className="font-bold text-sm">
+            <Link to="/admin/categories/list">
               <Icon icon="arrow-left" />
               CATEGORÍAS
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </CardHeader>
         <CardContent>
           <CategoryForm isUpdate={false} errors={actionData} />

@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { DNI_TYPES, PRIVILEGES } from "~/lib/constants";
+import { DNI_TYPES, FORM_INTENTS, PRIVILEGES } from "~/lib/constants";
 import { Label } from "~/components/ui/label";
 import React from "react";
 import { useToast } from "~/hooks/use-toast";
@@ -18,11 +18,11 @@ export function UserForm({ user, errors, isUpdate = false }: Props) {
   const navigation = useNavigation();
 
   const isToggleing =
-    navigation.formData?.get("intent") === USER_FORM_INTENTS.activate ||
-    (navigation.formData?.get("intent") === USER_FORM_INTENTS.deactivate &&
+    navigation.formData?.get("intent") === FORM_INTENTS.activate ||
+    (navigation.formData?.get("intent") === FORM_INTENTS.deactivate &&
       navigation.state === "submitting");
   const isUpdating =
-    navigation.formData?.get("intent") === USER_FORM_INTENTS.update &&
+    navigation.formData?.get("intent") === FORM_INTENTS.update &&
     navigation.state === "submitting";
 
   const { toast } = useToast();
@@ -183,9 +183,7 @@ export function UserForm({ user, errors, isUpdate = false }: Props) {
               variant={user?.active ? "destructive" : "outline"}
               name="intent"
               value={
-                user?.active
-                  ? USER_FORM_INTENTS.deactivate
-                  : USER_FORM_INTENTS.activate
+                user?.active ? FORM_INTENTS.deactivate : FORM_INTENTS.activate
               }
             >
               {user?.active
@@ -200,9 +198,7 @@ export function UserForm({ user, errors, isUpdate = false }: Props) {
           <Button
             disabled={isUpdating || isToggleing}
             name="intent"
-            value={
-              isUpdate ? USER_FORM_INTENTS.update : USER_FORM_INTENTS.create
-            }
+            value={isUpdate ? FORM_INTENTS.update : FORM_INTENTS.create}
             type="submit"
           >
             {isUpdate
@@ -218,13 +214,6 @@ export function UserForm({ user, errors, isUpdate = false }: Props) {
     </RemixForm>
   );
 }
-
-export const USER_FORM_INTENTS = {
-  create: "create",
-  update: "update",
-  deactivate: "deactivate",
-  activate: "activate",
-};
 
 export type UserFormErrors = {
   name?: string;
