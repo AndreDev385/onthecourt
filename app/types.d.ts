@@ -123,7 +123,7 @@ export type PromoCode = {
 
 export type Product = {
   slug?: string;
-  title?: string;
+  title: string;
   description?: string;
   priority?: number;
   isService?: boolean;
@@ -135,14 +135,14 @@ export type Product = {
   variantValues?: Array<VariantValue>;
   volatileInventory?: boolean;
   // supplier?: SupplierDocument | Schema.Types.ObjectId;
-  price?: number;
-  compareAtPrice?: number;
+  price: number;
+  compareAtPrice: number;
   sku?: string;
   categories?: Array<Category>;
   extraInfo?: Array<{ _id: string; name: string; value: string }>;
   rating?: number;
   comments?: Array<Comment>;
-  _id?: string;
+  _id: string;
   createdAt?: Date;
   updatedAt?: Date;
   __typename?: string;
@@ -163,8 +163,8 @@ export type VariantValue = {
     variant2?: string;
     variant3?: string;
   };
-  price?: number;
-  compareAtPrice?: number;
+  price: number;
+  compareAtPrice: number;
   quantity?: number;
   photo?: string;
   sku?: string;
@@ -176,3 +176,23 @@ export type VariantValue = {
   updatedAt?: Date;
   __typename?: string;
 };
+
+export interface Order {
+  _id: string;
+  status: number;
+  paid?: boolean;
+  subtotal?: number;
+  tax?: number;
+  extraFees?: number;
+  discount?: number;
+  total: number;
+  commission?: number;
+  shipping?: Shipping;
+  products?: Array<OrderProduct>;
+  client: User;
+  seller?: User;
+  phone?: string;
+  charges?: Array<Charge>;
+  createdAt: Date;
+  updatedAt?: Date;
+}

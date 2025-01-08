@@ -4,6 +4,7 @@ import { columns, UserRow } from "./columns";
 import { DataTable } from "../../components/shared/dataTable";
 import { AddItemToTable } from "~/components/shared/addItemToTable";
 import invariant from "tiny-invariant";
+import { PRIVILEGES } from "~/lib/constants";
 
 export async function loader() {
   const { data: users, errors } = await getUsers();
@@ -13,7 +14,7 @@ export async function loader() {
   }
 
   invariant(users);
-  return users.filter((u) => u.privilege === 0);
+  return users.filter((u) => u.privilege !== PRIVILEGES.Cliente);
 }
 
 export default function UsersPage() {

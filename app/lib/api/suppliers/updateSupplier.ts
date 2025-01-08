@@ -22,15 +22,14 @@ export async function updateSupplier(
 }
 
 type ToggleActiveSupplier = {
-  _id?: string;
+  _id: string;
   active: boolean;
 };
 
 type UpdateSupplierInput = {
-  _id: string;
+  _id?: string;
   name: string;
-  slug: string;
-  active: boolean;
+  products: Array<string>;
 };
 
 export const UPDATE_SUPPLIER = `#graphql

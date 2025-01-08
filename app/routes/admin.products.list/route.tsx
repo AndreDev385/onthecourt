@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 import { AddItemToTable } from "~/components/shared/addItemToTable";
 import { columns } from "./columns";
 import { DataTable } from "~/components/shared/dataTable";
-import { getProducts } from "~/lib/api/products/getProducts";
+import { getProducts } from "~/lib/api/products/getProductsDashboard";
 import invariant from "tiny-invariant";
 
 export async function loader() {

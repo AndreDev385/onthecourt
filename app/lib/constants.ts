@@ -17,3 +17,16 @@ export const FORM_INTENTS = {
   deactivate: "deactivate",
   activate: "activate",
 };
+
+export const ORDER_STATUS = {
+  pending: 0,
+  check: 1,
+  paid: 2,
+  delivered: 3,
+  credit: 4,
+  creditDelivered: 5,
+  creditPaid: 6,
+  canceled: 7,
+};
+
+export type OrderValue = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];

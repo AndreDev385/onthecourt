@@ -11,7 +11,7 @@ export async function getEditProductInfo(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: GET_PRODUCT,
+      query: GET_EDIT_PRODUCT_INFO,
       variables: {
         filter: {
           _id: id,
@@ -37,7 +37,7 @@ type EditProductInfo = {
   product: Product;
 };
 
-export const GET_PRODUCT = `#graphql
+const GET_EDIT_PRODUCT_INFO = `#graphql
   query GET_PRODUCT($filter: FilterFindOneProductInput!) {
     locations(filter: { active: true }) {
       name

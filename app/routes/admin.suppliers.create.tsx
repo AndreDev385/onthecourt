@@ -1,16 +1,55 @@
 import { ActionFunctionArgs } from "@remix-run/node";
-import { Link, useActionData } from "@remix-run/react";
+import { Link, redirect, useActionData, useLoaderData } from "@remix-run/react";
+import invariant from "tiny-invariant";
+import {
+  SupplierForm,
+  SupplierFormErrors,
+} from "~/components/admin/suppliers/form";
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { getProducts } from "~/lib/api/products/getProductsDashboard";
+import { createSupplier } from "~/lib/api/suppliers/createSupplier";
 
 export async function action({ request }: ActionFunctionArgs) {
-  // TODO: finish this section after completing Product CRUD
-  return null;
+  const form = await request.formData();
+
+  const name = form.get("name");
+  const products = form.getAll("products");
+
+  const errors: SupplierFormErrors = {};
+
+  if (!name) errors.name = "El nombre es obligatorio";
+  if (products.length === 0)
+    errors.selectedProducts = "Seleccione al menos un producto";
+
+  if (Object.values(errors).length > 0) return { errors, success: false };
+
+  const { data, errors: apiErrors } = await createSupplier({
+    name: String(name),
+    products: products.map(String),
+  });
+
+  if (apiErrors && Object.values(apiErrors).length > 0)
+    return { errors: apiErrors, success: false };
+
+  invariant(data, "Error al crear proveedor");
+  return redirect(`/admin/suppliers/${data?._id}`);
+}
+
+export async function loader() {
+  const { data: products, errors } = await getProducts();
+
+  if (errors && Object.values(errors).length > 0)
+    throw new Error("Error al cargar productos");
+  invariant(products, "Error al cargar productos");
+
+  return products.map((p) => ({ value: p._id, text: p.title }));
 }
 
 export default function CreateSupplierPage() {
   const actionData = useActionData<typeof action>();
+  const products = useLoaderData<typeof loader>();
   return (
     <div>
       <Card className="mt-16 max-w-[800px] mx-auto">
@@ -19,11 +58,17 @@ export default function CreateSupplierPage() {
           <Button asChild variant="ghost" className="font-bold text-sm">
             <Link to="/admin/suppliers/list">
               <Icon icon="arrow-left" />
-              OPCIONES DE ENVÍO
+              PROVEEDORES
             </Link>
           </Button>
         </CardHeader>
-        <CardContent></CardContent>
+        <CardContent>
+          <SupplierForm
+            errors={actionData?.errors}
+            products={products}
+            isUpdate={false}
+          />
+        </CardContent>
       </Card>
     </div>
   );

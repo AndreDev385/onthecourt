@@ -12,6 +12,7 @@ import { Input } from "~/components/ui/input";
 import { validateNumber } from "~/lib/utils";
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/shared/icon";
 
 interface VariantTableProps {
   variants: Array<Variant>;
@@ -248,30 +249,11 @@ function VariantValueForm({
         />
       </TableCell>
       <TableCell className="align-middle p-3 border-t border-gray-300">
-        <div className="float-right flex">
-          <Button
-            type="button"
-            variant="ghost"
-            className="bg-transparent p-0 m-0 mr-2 focus:outline-none outline-none text-red-700"
-            onClick={toggle}
-          >
-            <span className="sr-only">Eliminar</span>
-            <svg
-              fill="none"
-              className="w-6 h-6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          </Button>
+        <div className="float-right flex gap-2">
           {_id && !_id.includes("-") ? (
             <Button variant="ghost">
               <Link
-                to={`/admin/products/${productId}/variant/${_id ?? ""}`}
+                to={`/admin/product-variants/${productId}/${_id ?? ""}`}
                 className="bg-transparent p-0 m-0 focus:outline-none outline-none text-indigo-700"
               >
                 <svg
@@ -295,6 +277,15 @@ function VariantValueForm({
               </svg>
             </Button>
           )}
+          <Button
+            type="button"
+            variant="ghost"
+            className="bg-transparent p-0 m-0 mr-2 focus:outline-none outline-none text-red-700"
+            onClick={toggle}
+          >
+            <span className="sr-only">Eliminar</span>
+            <Icon icon="delete" />
+          </Button>
         </div>
       </TableCell>
     </TableRow>

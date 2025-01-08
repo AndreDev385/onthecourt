@@ -5,7 +5,7 @@ import { UpdateProductForm } from "~/components/admin/products/updateProductForm
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { getEditProductInfo } from "~/lib/api/products/getProduct";
+import { getEditProductInfo } from "~/lib/api/products/getEditProductInfo";
 import { Product } from "~/types";
 
 export async function loader({ params }: LoaderFunctionArgs) {

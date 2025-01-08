@@ -22,8 +22,6 @@ export function UpdateProductForm({
 }: Props) {
   const { toast } = useToast();
 
-  console.log("UPDATE PRODUCT FORM");
-
   const [disabledButton, setDisabledButton] = React.useState(false);
   const [active, setActive] = React.useState(product?.active ?? true);
   const [basicInfo, setBasicInfo] = React.useState<BasicInfo>({

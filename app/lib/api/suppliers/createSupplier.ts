@@ -22,8 +22,7 @@ export async function createSupplier(
 
 export type CreateSupplierInput = {
   name: string;
-  slug: string;
-  active: boolean;
+  products: Array<string>;
 };
 
 export const CREATE_SUPPLIER = `#graphql

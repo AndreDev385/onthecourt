@@ -1,4 +1,5 @@
-import { Link, Outlet } from "@remix-run/react";
+import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Form, Link, Outlet, redirect } from "@remix-run/react";
 import {
   ChevronDown,
   Users,
@@ -7,7 +8,10 @@ import {
   HandCoins,
   CalendarArrowDown,
   Tag,
+  LogOut,
 } from "lucide-react";
+import { destroyAdminSession, getAdminSession } from "~/adminSessions";
+import { Button } from "~/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -26,6 +30,27 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "~/components/ui/sidebar";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getAdminSession(request.headers.get("Cookie"));
+
+  console.log("Has token", session.has("token"), session.data);
+  if (!session.has("token")) {
+    // Redirect to the home page if they are already signed in.
+    return redirect("/admin-access");
+  }
+
+  return null;
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const session = await getAdminSession(request.headers.get("Cookie"));
+  return redirect("/admin-access", {
+    headers: {
+      "Set-Cookie": await destroyAdminSession(session),
+    },
+  });
+}
 
 export default function AdminLayout() {
   return (
@@ -132,6 +157,21 @@ function AdminSidebar() {
               </SidebarGroupContent>
             </CollapsibleContent>
           </Collapsible>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <Form method="POST" className="flex justify-start">
+                <Button
+                  className="w-full text-lg p-0 font-normal flex justify-start px-2"
+                  type="submit"
+                  variant="ghost"
+                >
+                  <LogOut /> Cerrar sesión
+                </Button>
+              </Form>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />

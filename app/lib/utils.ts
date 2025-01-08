@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { FORM_INTENTS } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -52,3 +53,20 @@ export function validateNumber(number: unknown) {
 }
 
 export const DATE_FORMAT = "yyyy-MM-dd";
+
+export function mapIntentToMessage(intent: string) {
+  switch (intent) {
+    case FORM_INTENTS.activate:
+      return "activado";
+    case FORM_INTENTS.deactivate:
+      return "desactivado";
+    case FORM_INTENTS.update:
+      return "actualizado";
+    default:
+      return "actualizado";
+  }
+}
+
+export function formatMoney(value: number): string {
+  return (value / 100).toFixed(2);
+}

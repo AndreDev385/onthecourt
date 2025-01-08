@@ -1,18 +1,9 @@
-import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { redirect } from "@remix-run/react";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
+export function loader() {
+  return redirect("/store");
+}
 
 export default function Index() {
-  return (
-    <div>
-      <h1>Welcome to Remix!</h1>
-      <Link to="/admin">Admin</Link>
-    </div>
-  );
+  return;
 }

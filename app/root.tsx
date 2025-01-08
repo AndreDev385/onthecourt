@@ -11,6 +11,7 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
+import "@splidejs/react-splide/css";
 import { Toaster } from "./components/ui/toaster";
 
 export const links: LinksFunction = () => [
