@@ -87,7 +87,7 @@ export function UpdateProductForm({
       setDisabledButton(true);
       const check = checkProduct(basicInfo, images, variants, variantValues);
       if (check.success) {
-        await updateProduct({
+        const data = {
           filter: { _id: product._id! },
           data: {
             title: basicInfo.title,
@@ -96,11 +96,8 @@ export function UpdateProductForm({
             priority: Number(basicInfo.priority),
             isService: basicInfo.isService ?? false,
             volatileInventory: basicInfo?.volatileInventory ?? false,
-            price: parseInt(String((basicInfo.price as number) * 100), 10),
-            compareAtPrice: parseInt(
-              String((basicInfo.compareAtPrice as number) * 100),
-              10
-            ),
+            price: (basicInfo.price as number) * 100,
+            compareAtPrice: (basicInfo.compareAtPrice as number) * 100,
             photos: images,
             brand: basicInfo.brand as string,
             categories: basicInfo.categories.map((c) => c._id!),
@@ -138,7 +135,7 @@ export function UpdateProductForm({
                     ),
                     sku: sku as string,
                     quantity: quantity as number,
-                    location: (location as { _id: string })._id,
+                    location: location as string,
                     disabled: _disabled as boolean,
                     photo: photo,
                   })
@@ -163,14 +160,11 @@ export function UpdateProductForm({
                       variant2: value?.variant2,
                       variant3: value?.variant3,
                     },
-                    price: parseInt(String((price as number) * 100), 10),
-                    compareAtPrice: parseInt(
-                      String((compareAtPrice as number) * 100),
-                      10
-                    ),
+                    price: (price as number) * 100,
+                    compareAtPrice: (compareAtPrice as number) * 100,
                     sku,
                     quantity: quantity as number,
-                    location: (location as { _id: string })._id,
+                    location: location as string,
                     disabled: _disabled as boolean,
                     photo,
                   })
@@ -182,7 +176,11 @@ export function UpdateProductForm({
                 value,
               })) ?? [],
           },
-        });
+        };
+
+        const { errors } = await updateProduct(data);
+        if (errors && Object.values(errors).length > 0)
+          throw new Error("Error al actualizar producto");
         toast({
           title: "Éxito",
           description: "El producto ha sido actualizado!",
