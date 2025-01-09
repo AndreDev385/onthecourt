@@ -2,11 +2,11 @@ import { useLoaderData } from "@remix-run/react";
 import { AddItemToTable } from "~/components/shared/addItemToTable";
 import { columns } from "./columns";
 import { DataTable } from "~/components/shared/dataTable";
-import { getProducts } from "~/lib/api/products/getProductsDashboard";
+import { getProductsDashboard } from "~/lib/api/products/getProductsDashboard";
 import invariant from "tiny-invariant";
 
 export async function loader() {
-  const { data, errors } = await getProducts();
+  const { data, errors } = await getProductsDashboard();
 
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error al cargar productos");

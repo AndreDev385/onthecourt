@@ -12,7 +12,7 @@ type SessionFlashData = {
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
     cookie: {
-      name: "__otc_admin_session",
+      name: "__otc_client_session",
       httpOnly: true,
       maxAge: 60 * 60 * 24,
       path: "/",
@@ -20,8 +20,4 @@ const { getSession, commitSession, destroySession } =
     },
   });
 
-export {
-  getSession as getAdminSession,
-  commitSession as commitAdminSession,
-  destroySession as destroyAdminSession,
-};
+export { getSession, commitSession, destroySession };

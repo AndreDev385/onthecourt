@@ -44,12 +44,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const session = await getAdminSession(request.headers.get("Cookie"));
-  return redirect("/admin-access", {
-    headers: {
-      "Set-Cookie": await destroyAdminSession(session),
-    },
-  });
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+  if (intent === "logout") {
+    const session = await getAdminSession(request.headers.get("Cookie"));
+    return redirect("/admin-access", {
+      headers: {
+        "Set-Cookie": await destroyAdminSession(session),
+      },
+    });
+  }
+  return null;
 }
 
 export default function AdminLayout() {
@@ -163,6 +168,8 @@ function AdminSidebar() {
             <SidebarMenuItem>
               <Form method="POST" className="flex justify-start">
                 <Button
+                  name="intent"
+                  value="logout"
                   className="w-full text-lg p-0 font-normal flex justify-start px-2"
                   type="submit"
                   variant="ghost"

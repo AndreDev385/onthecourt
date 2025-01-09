@@ -22,7 +22,9 @@ export function UpdateProductForm({
 }: Props) {
   const { toast } = useToast();
 
-  const [disabledButton, setDisabledButton] = React.useState(false);
+  const [isUpdating, setIsUpdating] = React.useState(false);
+  const [isToggleing, setIsToggleing] = React.useState(false);
+
   const [active, setActive] = React.useState(product?.active ?? true);
   const [basicInfo, setBasicInfo] = React.useState<BasicInfo>({
     title: product?.title ?? "",
@@ -84,7 +86,7 @@ export function UpdateProductForm({
     try {
       e.preventDefault();
       NProgress.start();
-      setDisabledButton(true);
+      setIsUpdating(true);
       const check = checkProduct(basicInfo, images, variants, variantValues);
       if (check.success) {
         const data = {
@@ -202,7 +204,7 @@ export function UpdateProductForm({
       }
     } finally {
       NProgress.done();
-      setDisabledButton(false);
+      setIsUpdating(false);
     }
   };
 
@@ -212,7 +214,7 @@ export function UpdateProductForm({
     e.preventDefault();
     try {
       NProgress.start();
-      setDisabledButton(true);
+      setIsToggleing(true);
       await updateProduct({
         filter: { _id: product._id! },
         data: { active: !active },
@@ -221,7 +223,6 @@ export function UpdateProductForm({
       toast({
         title: `Producto ${active ? "desactivado" : "activado"} con éxito`,
       });
-      setDisabledButton(false);
     } catch (err) {
       if (err instanceof Error) {
         toast({
@@ -232,7 +233,7 @@ export function UpdateProductForm({
       }
     } finally {
       NProgress.done();
-      setDisabledButton(false);
+      setIsToggleing(false);
     }
   };
 
@@ -274,13 +275,14 @@ export function UpdateProductForm({
                 variant={active ? "destructive" : "outline"}
                 name="intent"
                 onClick={toggleDisable}
+                disabled={isToggleing || isUpdating}
                 value={active ? FORM_INTENTS.deactivate : FORM_INTENTS.activate}
               >
                 {active
-                  ? disabledButton
+                  ? isToggleing
                     ? "Desactivando..."
                     : "Desactivar"
-                  : disabledButton
+                  : isToggleing
                   ? "Activando..."
                   : "Activar"}
               </Button>
@@ -289,10 +291,10 @@ export function UpdateProductForm({
               <Button
                 type="button"
                 onClick={onSubmit}
-                disabled={disabledButton}
+                disabled={isUpdating || isToggleing}
                 color="primary"
               >
-                Actualizar
+                {isUpdating ? "Actualizando..." : "Actualizar"}
               </Button>
             </div>
           </div>

@@ -11,6 +11,7 @@ export function ProductCardSlider({ products }: ProductCardSliderProps) {
       options={{
         gap: ".5rem",
         padding: { right: "2rem" },
+        perPage: 4,
         breakpoints: {
           1440: {
             perPage: 4,

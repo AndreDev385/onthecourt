@@ -1,4 +1,3 @@
-import { VariantValue } from "~/types";
 import { API_URL } from "../config";
 
 export async function updateProduct(record: UpdateProductInput) {
@@ -14,6 +13,7 @@ export async function updateProduct(record: UpdateProductInput) {
   });
 
   const { data, errors } = await response.json();
+  console.log(data, errors, "updateProduct");
   return { data: data?.updateProduct, errors };
 }
 

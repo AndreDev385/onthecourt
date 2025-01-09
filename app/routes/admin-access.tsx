@@ -17,7 +17,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { useToast } from "~/hooks/use-toast";
-import { signIn } from "~/lib/api/auth/admin-access";
+import { signIn } from "~/lib/api/auth/adminAccess";
 import { validateEmail } from "~/lib/utils";
 
 export async function loader({ request }: LoaderFunctionArgs) {

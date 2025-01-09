@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import React from "react";
 
-export function ProductRating({ rating }: Props) {
+export function ProductRating({ rating, size = 5 }: Props) {
   const [stars, setStars] = React.useState<
     Array<{
       idx: number;
@@ -25,7 +25,7 @@ export function ProductRating({ rating }: Props) {
         {stars?.map((star) => (
           <svg
             key={star?.id}
-            className={`w-4 h-4 ${
+            className={`w-${size} h-${size} ${
               star?.active ? "text-yellow-400" : "text-gray-400"
             }`}
             fill="currentColor"
@@ -41,6 +41,6 @@ export function ProductRating({ rating }: Props) {
 }
 
 type Props = {
-  readonly: boolean;
   rating: number;
+  size?: number;
 };

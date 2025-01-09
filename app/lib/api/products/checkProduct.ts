@@ -44,7 +44,6 @@ export function checkProduct(
 }
 
 function checkBasicInfo(info: BasicInfo): TCheckErrorMessage {
-  console.log(info, "INFO");
   const { title, priority } = info;
   if (checkString(title)) {
     return { success: false, msg: "Titulo Inválido" };

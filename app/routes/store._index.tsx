@@ -23,9 +23,7 @@ export default function LandingPage() {
       <section id="promotions">Promotions Section</section>
       <section id="popular">Popular Section</section>
       <section className="px-4">
-        <ProductCardSlider
-          products={[...items, ...items, ...items].reverse()}
-        />
+        <ProductCardSlider products={items} />
       </section>
     </>
   );
