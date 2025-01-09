@@ -36,6 +36,7 @@ type Response = {
     photos: string[];
     price: number;
     rating: number;
+    isService: boolean;
     compareAtPrice: number;
     volatileInventory: boolean;
     brand: {
@@ -97,6 +98,7 @@ const GET_PRODUCT = `#graphql
         photos
         price
         rating
+        isService
         compareAtPrice
         volatileInventory
         brand {

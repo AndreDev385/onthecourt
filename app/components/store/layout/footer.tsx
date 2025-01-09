@@ -62,7 +62,7 @@ const socials = [
         />
       </svg>
     ),
-    href: "",
+    href: "ig",
   },
   {
     icon: (
@@ -80,6 +80,6 @@ const socials = [
         />
       </svg>
     ),
-    href: "",
+    href: "whatsap",
   },
 ];

@@ -47,6 +47,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -87,7 +88,31 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.splide__slide {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.splide__slide.is-active {
+  opacity: 1;
+  border-color: #3b82f6;
+  /* Tailwind's blue-500 */
+}
+
+.splide__track,
+.splide__list {
+  height: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .splide__track--nav>.splide__list>.splide__slide {
+    border: none;
+    opacity: 1;
   }
 }

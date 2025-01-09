@@ -10,11 +10,13 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import React from "react";
+import invariant from "tiny-invariant";
 import { destroySession, getSession } from "~/clientSessions";
 import { Footer } from "~/components/store/layout/footer";
 import Header from "~/components/store/layout/header";
 import { useToast } from "~/hooks/use-toast";
 import { logOut } from "~/lib/api/auth/logOut";
+import { getCurrentUser } from "~/lib/api/users/getCurrentUser";
 
 export const meta: MetaFunction = () => {
   return [{ title: "On the court" }];
@@ -24,8 +26,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const cookieHeader = request.headers.get("Cookie");
   // TODO: get user's shopping cart info
   const session = await getSession(cookieHeader);
-  if (session.has("token")) return { isLoggedIn: true };
-  return { isLoggedIn: false };
+  if (!session.has("token")) {
+    return null;
+  }
+
+  const { data } = await getCurrentUser(session.data.token!);
+  invariant(data, "Usuario no encontrado");
+  return data;
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -51,7 +58,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Store() {
-  const { isLoggedIn } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { toast } = useToast();
 
@@ -67,7 +74,7 @@ export default function Store() {
 
   return (
     <div className="h-screen flex flex-col">
-      <Header isLoggedIn={isLoggedIn} />
+      <Header isLoggedIn={!!data} />
       <div className="flex-1">
         <Outlet />
       </div>

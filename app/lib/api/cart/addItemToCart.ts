@@ -3,7 +3,7 @@ import { ApiResponse } from "../response";
 
 export async function addItemToCart(
   data: AddItemToCartInput
-): Promise<ApiResponse<unknown>> {
+): Promise<ApiResponse<null>> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -15,8 +15,8 @@ export async function addItemToCart(
     }),
   });
 
-  const { errors, data: res } = await response.json();
-  return { data: res, errors };
+  const { errors } = await response.json();
+  return { errors };
 }
 
 type AddItemToCartInput = {

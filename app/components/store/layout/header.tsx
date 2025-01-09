@@ -1,8 +1,14 @@
 import { useState } from "react";
-import { Form, Link, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useNavigation,
+  useRouteLoaderData,
+} from "@remix-run/react";
 import { CartIcon } from "./cartIcon";
 import { Menu, X, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { CurrentUser } from "~/lib/api/users/getCurrentUser";
 
 export default function Header({
   isLoggedIn = false,
@@ -10,6 +16,7 @@ export default function Header({
   isLoggedIn: boolean;
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const data = useRouteLoaderData<CurrentUser | null>("routes/store");
 
   const links = [
     {
@@ -80,7 +87,7 @@ export default function Header({
 
         {/* Cart Icon */}
         <div className="mr-4 flex justify-end items-center gap-2">
-          <CartIcon />
+          <CartIcon itemCount={data?.client.shopCart.items.length} />
           {isLoggedIn ? (
             <div className="hidden lg:block">
               <LogOutButton />
