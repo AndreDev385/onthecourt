@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { ActionFunctionArgs } from "@remix-run/node";
 import {
   Form,
   Link,
@@ -6,6 +6,7 @@ import {
   useActionData,
   useNavigation,
 } from "@remix-run/react";
+import { Loader2 } from "lucide-react";
 import invariant from "tiny-invariant";
 import { commitSession, getSession } from "~/clientSessions";
 import { Button } from "~/components/ui/button";
@@ -19,10 +20,6 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { signUp } from "~/lib/api/auth/signUp";
 import { validateEmail } from "~/lib/utils";
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  return null;
-}
 
 export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -42,16 +39,12 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (Object.values(errors).length > 0) return { errors };
 
-  console.log("errors", errors);
-
   // call endpoint
   const { data, errors: apiErrors } = await signUp({
     name: String(name),
     email: String(email),
     password: String(password),
   });
-
-  console.log("data and errors", data, apiErrors);
 
   if (apiErrors && Object.values(apiErrors).length > 0) {
     errors.apiError = true;
@@ -124,7 +117,14 @@ export default function SignUpPage() {
               disabled={submitting}
               className="w-full uppercase"
             >
-              {submitting ? "Creando..." : "Crear"}
+              {submitting ? (
+                <>
+                  Creando...
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Crear"
+              )}
             </Button>
           </CardFooter>
         </Form>

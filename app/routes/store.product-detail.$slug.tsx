@@ -38,6 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   console.log(item);
 }
+
 export default function ProductDetailPage() {
   const { product } = useLoaderData<typeof loader>();
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Link, useNavigation } from "@remix-run/react";
 import { CartIcon } from "./cartIcon";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 export default function Header({
@@ -168,7 +168,14 @@ function LogOutButton({ light }: { light?: boolean }) {
         variant="ghost"
         type="submit"
       >
-        {submitting ? "Cerrando..." : "Cerrar sesión"}
+        {submitting ? (
+          <>
+            Cerrando...
+            <Loader2 className="animate-spin" />
+          </>
+        ) : (
+          "Cerrar sesión"
+        )}
       </Button>
     </Form>
   );

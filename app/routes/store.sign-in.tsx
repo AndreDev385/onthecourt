@@ -7,6 +7,7 @@ import {
   useActionData,
   useNavigation,
 } from "@remix-run/react";
+import { Loader2 } from "lucide-react";
 import invariant from "tiny-invariant";
 import { commitSession, getSession } from "~/clientSessions";
 import { Button } from "~/components/ui/button";
@@ -112,7 +113,14 @@ export default function SignInPage() {
               disabled={submitting}
               className="w-full uppercase"
             >
-              {submitting ? "Ingresando..." : "Ingresar"}
+              {submitting ? (
+                <>
+                  Ingresando...
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Ingresar"
+              )}
             </Button>
           </CardFooter>
         </Form>
