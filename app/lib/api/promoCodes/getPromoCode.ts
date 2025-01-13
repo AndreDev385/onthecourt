@@ -2,9 +2,11 @@ import { PromoCode } from "~/types";
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
-export async function getPromoCode(
-  id: string
-): Promise<ApiResponse<PromoCode>> {
+export async function getPromoCode(filter: {
+  _id?: string;
+  active?: boolean;
+  code?: string;
+}): Promise<ApiResponse<PromoCode>> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -12,15 +14,14 @@ export async function getPromoCode(
     },
     body: JSON.stringify({
       query: GET_PROMO_CODE,
-      variables: { filter: { _id: id } },
+      variables: { filter },
     }),
   });
 
   const { data, errors } = await response.json();
 
-  // map fixed and percentage to isFixed
   return {
-    data: { ...data?.promoCode, isFixed: data.promoCode.fixed },
+    data: data?.promoCode,
     errors,
   };
 }

@@ -8,7 +8,7 @@ import {
 import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { getProducts } from "~/lib/api/products/getProductsDashboard";
+import { getProductsDashboard } from "~/lib/api/products/getProductsDashboard";
 import { createSupplier } from "~/lib/api/suppliers/createSupplier";
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -38,7 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export async function loader() {
-  const { data: products, errors } = await getProducts();
+  const { data: products, errors } = await getProductsDashboard();
 
   if (errors && Object.values(errors).length > 0)
     throw new Error("Error al cargar productos");

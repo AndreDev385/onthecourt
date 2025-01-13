@@ -61,7 +61,7 @@ export function PromoCodeForm({ isUpdate = false, promoCode, errors }: Props) {
         <div className="space-y-2 w-full lg:w-1/2 px-4 mb-4">
           <Label htmlFor="type">Tipo de promoción</Label>
           <RadioGroup
-            defaultValue={promoCode?.isFixed ? "fixed" : "percentage"}
+            defaultValue={promoCode?.fixed ? "fixed" : "percentage"}
             name="type"
           >
             <div className="flex items-center space-x-2">

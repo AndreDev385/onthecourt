@@ -105,14 +105,13 @@ export type Supplier = {
   __typename?: string;
 };
 
-// refactor to isFixed to check if it is a fixed or percentage
 export type PromoCode = {
   _id: string;
   slug: string;
   name: string;
   code: string;
   discount: number;
-  isFixed: boolean;
+  fixed: boolean;
   percentage: boolean;
   expirationDate: Date;
   active: boolean;

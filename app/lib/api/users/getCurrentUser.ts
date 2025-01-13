@@ -21,6 +21,7 @@ export async function getCurrentUser(
 
 export type CurrentUser = {
   _id: string;
+  name: string;
   client: {
     _id: string;
     shopCart: {
@@ -36,6 +37,7 @@ const CURRENT_USER = `#graphql
 query CURRENT_USER {
   me {
     _id
+    name
     client {
       _id
       shopCart {

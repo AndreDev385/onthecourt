@@ -1,0 +1,318 @@
+import React from "react";
+import { Form, useNavigation } from "@remix-run/react";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { Label } from "~/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { useDebounce } from "~/hooks/use-debounce";
+import { PromoCode } from "~/types";
+import { getPromoCode } from "~/lib/api/promoCodes/getPromoCode";
+import { Loader2 } from "lucide-react";
+import { Input } from "~/components/ui/input";
+import { CurrentUser } from "~/lib/api/users/getCurrentUser";
+import { PAYMENT_METHODS } from "~/lib/constants";
+
+export function CheckoutForm({
+  user,
+  errors,
+  selectedCode,
+  setSelectedCode,
+  selectedCurrencyId,
+  setSelectedCurrencyId,
+  selectedShipping,
+  setSelectedShipping,
+  location,
+  currencies,
+}: Props) {
+  const navigation = useNavigation();
+
+  const submitting = navigation.state === "submitting";
+
+  const [code, setCode] = React.useState<string>("");
+  const debouncedCode = useDebounce(code, 500);
+
+  const [selectedPayMethod, setSelectedPayMethod] = React.useState<string>("");
+
+  React.useEffect(
+    function validatePromoCode() {
+      if (debouncedCode.trim() == "") return;
+      getPromoCode({ code: debouncedCode, active: true }).then(
+        ({ data, errors }) => {
+          if (
+            (errors && Object.values(errors).length > 0) ||
+            !data ||
+            new Date(data.expirationDate) <= new Date()
+          ) {
+            setSelectedCode(null);
+            return;
+          }
+          setSelectedCode(data);
+        }
+      );
+    },
+    [debouncedCode, setSelectedCode]
+  );
+
+  const enableSubmit =
+    Boolean(selectedCurrencyId) &&
+    Boolean(selectedPayMethod) &&
+    Boolean(selectedShipping);
+
+  return (
+    <div className="flex justify-center md:justify-end order-last md:order-first">
+      <Card className="max-w-lg w-full">
+        <Form method="POST">
+          <input type="hidden" name="userId" value={user._id} />
+          <input
+            type="hidden"
+            name="shopCartId"
+            value={user.client.shopCart._id}
+          />
+          <CardContent className="flex flex-col gap-4 pt-6">
+            <div className="mb-4 space-y-2">
+              <Label htmlFor="currency">Moneda</Label>
+              <Select
+                value={selectedCurrencyId}
+                onValueChange={(v) => setSelectedCurrencyId(v)}
+                name="currency"
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccione una moneda" />
+                </SelectTrigger>
+                <SelectContent>
+                  {currencies.map((currency) => (
+                    <SelectItem key={currency._id} value={currency._id}>
+                      {currency.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors?.currency ? (
+                <p className="text-sm text-red-500">{errors.currency}</p>
+              ) : null}
+            </div>
+            <div className="mb-4 space-y-2">
+              <Label
+                htmlFor="promoCode"
+                className={`${selectedCode === null ? "text-red-500" : ""}${
+                  selectedCode ? "text-green-500" : ""
+                }`}
+              >
+                Código de promoción
+              </Label>
+              <Input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                name="promoCode"
+                type="text"
+                className={`${selectedCode === null ? "border-red-500" : ""}${
+                  selectedCode ? "border-green-500 text-green-500" : ""
+                }`}
+              />
+              {selectedCode === null ? (
+                <p className="text-sm text-red-500">
+                  El código de promoción no existe o no está activo
+                </p>
+              ) : null}
+            </div>
+            <div className="mb-4 space-y-2">
+              <Label htmlFor="shippingMethod">Tipo de envío</Label>
+              <Select
+                name="shippingMethod"
+                value={selectedShipping}
+                onValueChange={setSelectedShipping}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccione un tipo de envío" />
+                </SelectTrigger>
+                <SelectContent>
+                  {location.shippingOptions.map((option) => (
+                    <SelectItem key={option._id} value={option._id}>
+                      {option.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors?.shipping ? (
+                <p className="text-sm text-red-500">{errors.shipping}</p>
+              ) : null}
+            </div>
+            <div className="mb-4 space-y-2">
+              <Label htmlFor="payMethod">Método de pago</Label>
+              <Select
+                name="payMethod"
+                value={selectedPayMethod}
+                onValueChange={setSelectedPayMethod}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccione un método de pago" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PAYMENT_METHODS.filter(
+                    (m) =>
+                      m.currency ===
+                      currencies.find((c) => c._id == selectedCurrencyId)?.name
+                  ).map((method) => (
+                    <SelectItem key={method.value} value={method.value}>
+                      {method.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors?.paymentMethod ? (
+                <p className="text-sm text-red-500">{errors.paymentMethod}</p>
+              ) : null}
+            </div>
+            <div className="mb-4 space-y-2">
+              <Label htmlFor="phoneNumber">Número de teléfono</Label>
+              <Input
+                required
+                name="phoneNumber"
+                type="text"
+                placeholder="0414-1234567"
+              />
+              {errors?.phoneNumber ? (
+                <p className="text-sm text-red-500">{errors.phoneNumber}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address">Dirección</Label>
+              <Input name="address" type="text" />
+              {errors?.address ? (
+                <p className="text-sm text-red-500">{errors.address}</p>
+              ) : null}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ref">Referencia</Label>
+              <Input name="ref" type="text" />
+              <small className="text-sm text-muted-foreground">
+                Ingresa la referencia del pago si aplica
+              </small>
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col">
+            <Button
+              type="submit"
+              name="intent"
+              value="createOrder"
+              disabled={!enableSubmit || submitting}
+              className="w-full uppercase"
+            >
+              {submitting ? (
+                <>
+                  Cargando...
+                  <Loader2 className="animate-spin" />
+                </>
+              ) : (
+                "Pagar"
+              )}
+            </Button>
+            <div className="block mt-4">
+              {selectedPayMethod !== "" ? (
+                <div className="text-center mb-4">
+                  <p>
+                    Gracias por comprar en On The Court, utilice los siguientes
+                    datos para realizar su pago, al terminar recuerde enviar su
+                    comprobante de pago al número de teléfono{" "}
+                    <a
+                      href={`https://api.whatsapp.com/send?phone=+584269158594&text=${encodeURIComponent(
+                        `Hola te escribe ${
+                          user!.name
+                        } de On the Court. Adjunto te envio los datos de pago de mi orden.`
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-green-500"
+                    >
+                      0426-915-8594
+                    </a>
+                  </p>
+                </div>
+              ) : null}
+              {selectedPayMethod === "zelle" ? (
+                <div className="text-center">
+                  <p className="text-lg leading-normal font-semibold">
+                    Datos para el pago
+                  </p>
+                  <p className="">Correo: lgmacarilu@gmail.com</p>
+                </div>
+              ) : null}
+              {selectedPayMethod === "paypal" ? (
+                <div className="text-center">
+                  <p className="text-lg leading-normal font-semibold">
+                    Datos para el pago
+                  </p>
+                  <p className="">Correo: onthecourt.online@gmail.com</p>
+                </div>
+              ) : null}
+              {selectedPayMethod === "transferencia" ? (
+                <div className="text-center">
+                  <p className="text-lg leading-normal font-semibold">
+                    Datos para el pago
+                  </p>
+                  <p className="my-2">
+                    <span className="font-semibold">Pago móvil:</span>
+                    <br />
+                    Riccardo González | Banesco
+                    <br />
+                    Telf: 0424-1611221 | C.I. 24.897.839
+                  </p>
+                  <p className="my-2">
+                    <span className="font-semibold">
+                      Transferencia Bancaria
+                    </span>
+                    <br />
+                    Riccardo González | C.I. 24.897.839 | Banesco | Corriente
+                    <br />
+                    Cuenta: 0134 0060 14 0601044459
+                    <br />
+                    Correo: riccardo_glez@hotmail.com
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </CardFooter>
+        </Form>
+      </Card>
+    </div>
+  );
+}
+
+type Props = {
+  user: CurrentUser;
+  selectedCurrencyId?: string;
+  setSelectedCurrencyId: (id: string) => void;
+  selectedCode: PromoCode | undefined | null;
+  setSelectedCode: (code: PromoCode | null) => void;
+  selectedShipping?: string;
+  setSelectedShipping: (shipping: string) => void;
+  currencies: {
+    _id: string;
+    name: string;
+    symbol: string;
+    rate: number;
+  }[];
+  location: {
+    shippingOptions: {
+      _id: string;
+      name: string;
+      price: number;
+    }[];
+  };
+  errors?: CheckoutFormErrors;
+};
+
+export type CheckoutFormErrors = {
+  currency?: string;
+  paymentMethod?: string;
+  shipping?: string;
+  phoneNumber?: string;
+  address?: string;
+  apiError?: string;
+};

@@ -15,10 +15,9 @@ export async function getPromoCodes(): Promise<ApiResponse<PromoCode[]>> {
 
   const { data, errors } = await response.json();
 
-  // map fixed and percentage to isFixed
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: data?.promoCodes.map((pc: any) => ({ ...pc, isFixed: pc.fixed })),
+    data: data?.promoCodes,
     errors,
   };
 }

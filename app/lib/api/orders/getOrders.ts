@@ -1,11 +1,10 @@
-import { Order } from "~/types";
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
 export async function getOrders(
   skip?: number,
   limit?: number
-): Promise<ApiResponse<Order[]>> {
+): Promise<ApiResponse<Response[]>> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -24,6 +23,19 @@ export async function getOrders(
   const { data, errors } = await response.json();
   return { errors, data: data?.orders };
 }
+
+type Response = {
+  _id: string;
+  status: number;
+  total: number;
+  createdAt: Date;
+  client: {
+    name: string;
+  };
+  seller: {
+    name: string;
+  };
+};
 
 const GET_ORDERS = `#graphql
   query GET_ORDERS($skip: Int, $limit: Int) {

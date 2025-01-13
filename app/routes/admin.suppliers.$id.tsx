@@ -10,7 +10,7 @@ import { Icon } from "~/components/shared/icon";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { useToast } from "~/hooks/use-toast";
-import { getProducts } from "~/lib/api/products/getProductsDashboard";
+import { getProductsDashboard } from "~/lib/api/products/getProductsDashboard";
 import { getSupplier } from "~/lib/api/suppliers/getSupplier";
 import { updateSupplier } from "~/lib/api/suppliers/updateSupplier";
 import { FORM_INTENTS } from "~/lib/constants";
@@ -62,7 +62,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export async function loader({ params }: ActionFunctionArgs) {
   invariant(params.id, "Error al cargar datos del proveedor");
-  const { data: products, errors } = await getProducts();
+  const { data: products, errors } = await getProductsDashboard();
 
   if (errors && Object.values(errors).length > 0)
     throw new Error("Error al cargar productos");

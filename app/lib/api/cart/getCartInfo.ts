@@ -37,6 +37,9 @@ export type CartItem = {
     title: string;
     description: string;
     slug: string;
+    variants: {
+      title: string;
+    }[];
     brand?: {
       _id: string;
       name: string;
@@ -66,6 +69,9 @@ query ShopCart($filter: FilterFindOneShopCartInput) {
         title
         description
         slug
+        variants {
+          title
+        }
         brand {
           _id
           name

@@ -7,7 +7,7 @@ export type PromoCodeRow = {
   name: string;
   code: string;
   discount: number;
-  isFixed: boolean;
+  fixed: boolean;
   active: boolean;
 };
 
@@ -50,7 +50,7 @@ export const columns: ColumnDef<PromoCodeRow>[] = [
     ),
     cell: ({ row }) => {
       const discount: number = row.getValue("discount");
-      const isFixed: boolean = row.getValue("isFixed");
+      const isFixed: boolean = row.getValue("fixed");
       return (
         <div className="">
           {isFixed ? (discount * 100)?.toFixed(2) : discount?.toFixed(2)}
@@ -59,12 +59,12 @@ export const columns: ColumnDef<PromoCodeRow>[] = [
     },
   },
   {
-    accessorKey: "type",
+    accessorKey: "fixed",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Tipo" />
     ),
     cell: ({ row }) => (
-      <div className="">{row.getValue("isFixed") ? "Fijo" : "Porcentaje"}</div>
+      <div className="">{row.getValue("fixed") ? "Fijo" : "Porcentaje"}</div>
     ),
   },
   {

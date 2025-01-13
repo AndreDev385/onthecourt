@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { EditButton } from "~/components/shared/editButtonIcon";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
 import { ORDER_STATUS, OrderValue } from "~/lib/constants";
+import { format } from "date-fns";
 
 export type OrderRow = {
   _id: string;
@@ -34,7 +35,7 @@ export const columns: ColumnDef<OrderRow>[] = [
     ),
     cell: ({ row }) => {
       const client: { name: string } = row.getValue("client");
-      return <div className="">{client.name}</div>;
+      return <div className="">{client?.name}</div>;
     },
   },
   {
@@ -44,7 +45,8 @@ export const columns: ColumnDef<OrderRow>[] = [
     ),
     cell: ({ row }) => {
       const seller: { name: string } = row.getValue("seller");
-      return <div className="">{seller.name}</div>;
+      console.log({ seller });
+      return <div className="">{seller?.name}</div>;
     },
   },
   {
@@ -52,6 +54,10 @@ export const columns: ColumnDef<OrderRow>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Fecha de creación" />
     ),
+    cell: ({ row }) => {
+      const createdAt: Date = row.getValue("createdAt");
+      return <div className="">{format(createdAt, "dd/MM/yyyy")}</div>;
+    },
   },
   {
     accessorKey: "total",

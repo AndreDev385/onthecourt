@@ -51,7 +51,7 @@ export async function action({ request }: ActionFunctionArgs) {
         _id: _id as string,
         name: name as string,
         symbol: symbol as string,
-        rate: numberRate,
+        rate: numberRate * 100,
       });
     }
   } catch (_) {

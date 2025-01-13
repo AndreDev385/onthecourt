@@ -73,7 +73,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.id, "Error al código de promoción");
-  const { data, errors } = await getPromoCode(params.id);
+  const { data, errors } = await getPromoCode({ _id: params.id });
 
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error al cargar datos del usuario");

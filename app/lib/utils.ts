@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { FORM_INTENTS } from "./constants";
+import { PromoCode } from "~/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -69,4 +70,25 @@ export function mapIntentToMessage(intent: string) {
 
 export function formatMoney(value: number): string {
   return (value / 100).toFixed(2);
+}
+
+export function getDiscount(subtotal: number, _promoCode: PromoCode | null) {
+  if (!_promoCode) {
+    return 0;
+  }
+  if (_promoCode?.expirationDate >= new Date()) {
+    return 0;
+  }
+  let _discount = 0;
+  if (_promoCode?.fixed) {
+    _discount = _promoCode.discount as number;
+  }
+  if (_promoCode?.percentage) {
+    _discount = subtotal * ((_promoCode.discount as number) / 100);
+  }
+  if (_discount < 0) {
+    _discount = subtotal;
+  }
+  console.log(_discount, subtotal, _promoCode.discount, "DESCUENTO");
+  return _discount;
 }
