@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { EditButton } from "~/components/shared/editButtonIcon";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
 import { ORDER_STATUS, OrderValue } from "~/lib/constants";
 import { format } from "date-fns";
+import { Eye } from "lucide-react";
+import { Link } from "@remix-run/react";
 
 export type OrderRow = {
   _id: string;
@@ -10,9 +11,6 @@ export type OrderRow = {
   total: number;
   createdAt: Date;
   client: {
-    name: string;
-  };
-  seller?: {
     name: string;
   };
 };
@@ -36,17 +34,6 @@ export const columns: ColumnDef<OrderRow>[] = [
     cell: ({ row }) => {
       const client: { name: string } = row.getValue("client");
       return <div className="">{client?.name}</div>;
-    },
-  },
-  {
-    accessorKey: "client",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Vendedor" />
-    ),
-    cell: ({ row }) => {
-      const seller: { name: string } = row.getValue("seller");
-      console.log({ seller });
-      return <div className="">{seller?.name}</div>;
     },
   },
   {
@@ -75,7 +62,9 @@ export const columns: ColumnDef<OrderRow>[] = [
     header: "Acciones",
     cell: ({ row }) => (
       <div className="flex">
-        <EditButton href={`/admin/orders/${row.getValue("_id")}`} />
+        <Link to={`/admin/orders/${row.getValue("_id")}`}>
+          <Eye />
+        </Link>
       </div>
     ),
   },

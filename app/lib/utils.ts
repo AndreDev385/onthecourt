@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { FORM_INTENTS } from "./constants";
+import { FORM_INTENTS, ORDER_STATUS, OrderValue } from "./constants";
 import { PromoCode } from "~/types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -91,4 +91,27 @@ export function getDiscount(subtotal: number, _promoCode: PromoCode | null) {
   }
   console.log(_discount, subtotal, _promoCode.discount, "DESCUENTO");
   return _discount;
+}
+
+export function mapStatusToClientText(status: OrderValue) {
+  switch (status) {
+    case ORDER_STATUS.pending:
+      return "Confirmando pago";
+    case ORDER_STATUS.check:
+      return "En proceso";
+    case ORDER_STATUS.paid:
+      return "Pago confirmado";
+    case ORDER_STATUS.delivered:
+      return "Entregado";
+    case ORDER_STATUS.credit:
+      return "Credito";
+    case ORDER_STATUS.creditDelivered:
+      return "Credito entregado";
+    case ORDER_STATUS.creditPaid:
+      return "Credito pagado";
+    case ORDER_STATUS.canceled:
+      return "Cancelado";
+    default:
+      return "Pendiente";
+  }
 }

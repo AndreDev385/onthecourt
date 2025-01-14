@@ -71,7 +71,17 @@ export default function Header({
                 </Link>
               </li>
             ))}
-            {!isLoggedIn ? (
+            {isLoggedIn ? (
+              <li className="flex justify-center items-center">
+                <Link
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg text-white"
+                  to="/store/orders/list"
+                >
+                  Ordenes
+                </Link>
+              </li>
+            ) : (
               <li className="flex justify-center items-center">
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -81,7 +91,7 @@ export default function Header({
                   Ingresar
                 </Link>
               </li>
-            ) : null}
+            )}
           </ul>
         </nav>
 
@@ -130,9 +140,25 @@ export default function Header({
                   </li>
                 ))}
                 {isLoggedIn ? (
-                  <li>
-                    <LogOutButton light />
-                  </li>
+                  <>
+                    <li className="w-full flex justify-start items-center">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className="w-full justify-start text-black"
+                      >
+                        <Link
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          to="/store/orders/list"
+                        >
+                          Ordenes
+                        </Link>
+                      </Button>
+                    </li>
+                    <li>
+                      <LogOutButton light />
+                    </li>
+                  </>
                 ) : (
                   <li className="w-full flex justify-start items-center">
                     <Button

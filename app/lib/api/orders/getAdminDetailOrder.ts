@@ -1,7 +1,7 @@
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
-export async function getOrder(
+export async function getAdminDetailOrder(
   orderId: string
 ): Promise<ApiResponse<Response>> {
   const response = await fetch(API_URL, {
@@ -19,8 +19,7 @@ export async function getOrder(
   });
 
   const { data, errors } = await response.json();
-  console.log({ data, errors });
-  return { errors, data: data };
+  return { errors, data };
 }
 
 type Response = {
@@ -38,10 +37,6 @@ type Response = {
     total: number;
     commission: number;
     phone: string;
-    shipping: {
-      name: string;
-      price: number;
-    };
     products: {
       title: string;
       photo: string;
@@ -70,7 +65,7 @@ type Response = {
   };
 };
 
-const GET_ORDER = `#graphql
+export const GET_ORDER = `#graphql
   query GET_ORDER($filter: FilterFindOneOrderInput!) {
     currencies(filter: { active: true }) {
       _id
@@ -86,10 +81,6 @@ const GET_ORDER = `#graphql
       total
       commission
       phone
-      shipping {
-        name
-        price
-      }
       products {
         title
         photo

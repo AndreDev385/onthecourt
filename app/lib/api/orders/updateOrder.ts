@@ -1,6 +1,7 @@
+import { ORDER_STATUS } from "~/lib/constants";
 import { API_URL } from "../config";
 
-export async function updateOrder(data: UpdateOrderInput) {
+async function updateOrder(data: UpdateOrderInput) {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -19,10 +20,38 @@ export async function updateOrder(data: UpdateOrderInput) {
   return { errors };
 }
 
+export async function markOrderCanceled(orderId: string) {
+  return await updateOrder({
+    orderId,
+    status: ORDER_STATUS.canceled,
+  });
+}
+
+export async function markOrderDelivered(orderId: string, paid: boolean) {
+  return await updateOrder({
+    orderId,
+    status: ORDER_STATUS.delivered,
+    paid,
+    createBill: false,
+  });
+}
+
+export async function markOrderPaid(orderId: string, status: number) {
+  return await updateOrder({
+    orderId,
+    status:
+      status === ORDER_STATUS.delivered
+        ? ORDER_STATUS.delivered
+        : ORDER_STATUS.paid,
+    paid: true,
+    createBill: true,
+  });
+}
+
 type UpdateOrderInput = {
   orderId: string;
-  status: string;
-  paid: boolean;
+  status: number;
+  paid?: boolean;
   createBill?: boolean;
 };
 

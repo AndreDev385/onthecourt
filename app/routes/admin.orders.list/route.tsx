@@ -2,11 +2,11 @@ import { AddItemToTable } from "~/components/shared/addItemToTable";
 import { DataTable } from "~/components/shared/dataTable";
 import { columns } from "./columns";
 import { useLoaderData } from "@remix-run/react";
-import { getOrders } from "~/lib/api/orders/getOrders";
+import { getOrderForAdminTable } from "~/lib/api/orders/getOrdersForAdminTable";
 import invariant from "tiny-invariant";
 
 export async function loader() {
-  const { data, errors } = await getOrders();
+  const { data, errors } = await getOrderForAdminTable();
 
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error al cargar ordenes");

@@ -1,9 +1,8 @@
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
-export async function getOrders(
-  skip?: number,
-  limit?: number
+export async function getClientOrders(
+  clientId: string
 ): Promise<ApiResponse<Response[]>> {
   const response = await fetch(API_URL, {
     method: "POST",
@@ -14,8 +13,7 @@ export async function getOrders(
     body: JSON.stringify({
       query: GET_ORDERS,
       variables: {
-        skip,
-        limit,
+        filter: { client: clientId },
       },
     }),
   });
@@ -27,29 +25,28 @@ export async function getOrders(
 type Response = {
   _id: string;
   status: number;
+  shipping: {
+    name: string;
+  };
   total: number;
-  createdAt: Date;
-  client: {
-    name: string;
-  };
-  seller: {
-    name: string;
-  };
+  products: {
+    photo: string;
+    title: string;
+  }[];
 };
 
 const GET_ORDERS = `#graphql
-  query GET_ORDERS($skip: Int, $limit: Int) {
-    orders(skip: $skip, limit: $limit) {
-      _id
-      status
-      total
-      createdAt
-      client {
-        name
-      }
-      seller {
-        name
-      }
+query Orders($filter: FilterFindManyOrderInput) {
+  orders(filter: $filter) {
+    _id
+    status
+    shipping {
+      name
+    }
+    total
+    products {
+      photo
+      title
     }
   }
-`;
+}`;

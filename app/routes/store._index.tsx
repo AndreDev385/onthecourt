@@ -18,13 +18,13 @@ export default function LandingPage() {
   const { items, pageInfo } = useLoaderData<typeof loader>();
 
   return (
-    <>
+    <div className="container mx-auto">
       <section id="hero">Hero Section</section>
       <section id="promotions">Promotions Section</section>
       <section id="popular">Popular Section</section>
       <section className="px-4">
         <ProductCardSlider products={items} />
       </section>
-    </>
+    </div>
   );
 }

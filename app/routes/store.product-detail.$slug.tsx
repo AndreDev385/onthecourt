@@ -12,9 +12,11 @@ import React from "react";
 import invariant from "tiny-invariant";
 import { ProductPhotoSlider } from "~/components/store/products/productPhotoSlider";
 import { ProductRating } from "~/components/store/products/productRating";
+import { SuggestionCard } from "~/components/store/products/suggestionCard";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Separator } from "~/components/ui/separator";
 import { useToast } from "~/hooks/use-toast";
 import { addItemToCart } from "~/lib/api/cart/addItemToCart";
 import { getProduct } from "~/lib/api/products/getProduct";
@@ -72,7 +74,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function ProductDetailPage() {
   const currentUser: CurrentUser | null | undefined =
     useRouteLoaderData("routes/store");
-  const { product } = useLoaderData<typeof loader>();
+  const { product, suggestions } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
 
@@ -155,17 +157,21 @@ export default function ProductDetailPage() {
     [selectedVariant, quantity, product]
   );
 
+  console.log({
+    suggestions,
+  });
+
   return (
     <div className="my-12">
-      <div className="lg:grid lg:grid-cols-12 lg:gap-8 px-4 container mx-auto">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-8 px-4 mx-auto">
         {/* Div for desktop */}
-        <div className="col-span-8 hidden lg:block top-24 self-start md:sticky">
+        <div className="col-span-7 hidden lg:block top-24 self-start md:sticky">
           <div className="flex justify-center">
             <ProductPhotoSlider isMobile={false} photos={product.photos} />
           </div>
         </div>
         {/* aside for desktop - mobile complete*/}
-        <aside className="relative max-lg:mb-10 lg:col-span-4">
+        <aside className="relative max-lg:mb-10 lg:col-span-5">
           {/* General Info */}
           <div className="mb-4">
             <div className="grid grid-cols-[1fr,auto] items-baseline gap-x-4 gap-y-2 lg:grid-cols-1">
@@ -340,6 +346,24 @@ export default function ProductDetailPage() {
               </Button>
             )}
           </Form>
+          {/* Location */}
+          {/* TODO location section */}
+          {/* Suggestions */}
+          {suggestions.length > 0 ? (
+            <>
+              <Separator className="my-8" />
+              <div>
+                <h2 className="text-2xl font-bold mb-4">
+                  Otros clientes también vieron
+                </h2>
+                <div className="grid grid-cols-2">
+                  {suggestions.map((s) => (
+                    <SuggestionCard key={s.title} suggestion={s} />
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : null}
         </aside>
       </div>
     </div>
