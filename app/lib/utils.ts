@@ -115,3 +115,26 @@ export function mapStatusToClientText(status: OrderValue) {
       return "Pendiente";
   }
 }
+
+export function mapStatusToText(status: OrderValue) {
+  switch (status) {
+    case ORDER_STATUS.pending:
+      return "Pendiente";
+    case ORDER_STATUS.check:
+      return "En proceso";
+    case ORDER_STATUS.paid:
+      return "Pagado";
+    case ORDER_STATUS.delivered:
+      return "Entregado";
+    case ORDER_STATUS.credit:
+      return "Credito";
+    case ORDER_STATUS.creditDelivered:
+      return "Credito entregado";
+    case ORDER_STATUS.creditPaid:
+      return "Credito pagado";
+    case ORDER_STATUS.canceled:
+      return "Cancelado";
+    default:
+      return "Pendiente";
+  }
+}

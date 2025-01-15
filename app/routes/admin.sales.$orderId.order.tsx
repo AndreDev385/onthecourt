@@ -1,29 +1,15 @@
-import { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { useActionData, useLoaderData } from "@remix-run/react";
+import { ActionFunctionArgs } from "@remix-run/node";
+import { useActionData, useRouteLoaderData } from "@remix-run/react";
 import React from "react";
 import invariant from "tiny-invariant";
 import { CancelOrder } from "~/components/admin/orders/cancelOrder";
-import ChargeCard from "~/components/admin/orders/chargeCard";
-import { ClientCard } from "~/components/admin/orders/clientCard";
-import { ProductTable } from "~/components/admin/orders/productTable";
 import { StatusCard } from "~/components/admin/orders/statusCard";
 import { useToast } from "~/hooks/use-toast";
-import { getAdminDetailOrder } from "~/lib/api/orders/getAdminDetailOrder";
 import {
   markOrderCanceled,
   markOrderDelivered,
   markOrderPaid,
 } from "~/lib/api/orders/updateOrder";
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  invariant(params.id, "Ha ocurrido un error al obtener la orden");
-  const { data, errors } = await getAdminDetailOrder(params.id);
-  if (errors && Object.values(errors).length > 0) {
-    throw new Error("Ha ocurrido un error al obtener la orden");
-  }
-  invariant(data, "Ha ocurrido un error al obtener la orden");
-  return data;
-}
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -72,8 +58,12 @@ export const UPDATE_ORDER_ACTIONS = {
   markDelivered: "markDelivered",
 };
 
-export default function OrderDetailPage() {
-  const { order } = useLoaderData<typeof loader>();
+export default function OrderSectionPage() {
+  const data = useRouteLoaderData<{ order: Order } | undefined>(
+    "routes/admin.sales.$orderId"
+  );
+  const { order } = data ?? {};
+  invariant(order, "Ha ocurrido un error al obtener la orden");
   const actionData = useActionData<typeof action>();
 
   const { toast } = useToast();
@@ -98,28 +88,15 @@ export default function OrderDetailPage() {
   }, [actionData, toast]);
 
   return (
-    <div className="mt-8">
-      <section className="flex flex-col flex-wrap mx-auto px-4">
-        <article className="grid grid-cols-1 md:grid-cols-[1fr,0.5fr] gap-4 w-full">
-          <div className="w-full flex flex-col gap-4">
-            <ProductTable order={order} />
-            <StatusCard
-              status={order.status}
-              paid={order.paid}
-              _id={order._id}
-            />
-            {order?.status !== 7 && <CancelOrder _id={order._id} />}
-          </div>
-          <div className="w-full flex flex-col gap-4 order-first md:order-last">
-            <ClientCard
-              name={order.client.name ?? ""}
-              email={order.client.email ?? ""}
-              phone={order.phone ?? ""}
-            />
-            <ChargeCard charges={order.charges} />
-          </div>
-        </article>
-      </section>
+    <div className="flex flex-col gap-4">
+      <StatusCard status={order.status} paid={order.paid} _id={order._id} />
+      {order.status !== 7 && <CancelOrder _id={order._id} />}
     </div>
   );
 }
+
+type Order = {
+  _id: string;
+  status: number;
+  paid: boolean;
+};

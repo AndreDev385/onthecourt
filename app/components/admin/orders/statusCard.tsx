@@ -3,7 +3,7 @@ import { CircleAlert, CircleCheckBig, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { ORDER_STATUS } from "~/lib/constants";
-import { UPDATE_ORDER_ACTIONS } from "~/routes/admin.orders.$id";
+import { UPDATE_ORDER_ACTIONS } from "~/routes/admin.sales.$orderId.order";
 
 function deliverText(status: number) {
   if (status === 3 || status === 5) {

@@ -9,6 +9,7 @@ import {
   CalendarArrowDown,
   Tag,
   LogOut,
+  Wallet,
 } from "lucide-react";
 import { destroyAdminSession, getAdminSession } from "~/adminSessions";
 import { Button } from "~/components/ui/button";
@@ -73,9 +74,10 @@ export default function AdminLayout() {
 
 const outerLinks = [
   { href: "/admin/products/list", text: "Productos", icon: Tag },
-  { href: "/admin/orders/list", text: "Ordenes", icon: CalendarArrowDown },
   { href: "/admin/users/list", text: "Usuarios", icon: Users },
   { href: "/admin/clients/list", text: "Clientes", icon: Users2 },
+  { href: "/admin/orders/list", text: "Ordenes", icon: CalendarArrowDown },
+  { href: "/admin/sales", text: "Ventas", icon: Wallet },
 ];
 
 const configLinks = [
@@ -102,7 +104,7 @@ function AdminSidebar() {
             {outerLinks.map((link) => (
               <SidebarMenuItem key={link.href}>
                 <SidebarMenuButton asChild>
-                  <Link to={link.href}>
+                  <Link to={link.href} prefetch="intent">
                     <link.icon />
                     <p className="text-lg">{link.text}</p>
                   </Link>
@@ -126,7 +128,7 @@ function AdminSidebar() {
                   {adminLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
-                        <Link to={link.href}>
+                        <Link to={link.href} prefetch="intent">
                           <p className="text-lg">{link.text}</p>
                         </Link>
                       </SidebarMenuButton>
@@ -152,7 +154,7 @@ function AdminSidebar() {
                   {configLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
-                        <Link to={link.href}>
+                        <Link to={link.href} prefetch="intent">
                           <p className="text-lg">{link.text}</p>
                         </Link>
                       </SidebarMenuButton>

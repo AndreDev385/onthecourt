@@ -58,15 +58,12 @@ export function ProductTable({ order }: Props) {
 
 type Props = {
   order: {
-    _id: string;
     status: number;
     paid: boolean;
     subtotal: number;
     tax: number;
     discount: number;
     total: number;
-    commission: number;
-    phone: string;
     products: {
       title: string;
       photo: string;
@@ -75,22 +72,6 @@ type Props = {
       variant3: string;
       price: number;
       quantity: number;
-      location: {
-        name: string;
-      };
     }[];
-    client: {
-      name: string;
-      email: string;
-    };
-    charges: {
-      ref: string;
-      bank: string;
-      method: string;
-      amount: number;
-      createdAt: string;
-    }[];
-    updatedAt: string;
-    createdAt: string;
   };
 };

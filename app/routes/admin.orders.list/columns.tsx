@@ -1,9 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "~/components/ui/table-header";
-import { ORDER_STATUS, OrderValue } from "~/lib/constants";
+import { OrderValue } from "~/lib/constants";
 import { format } from "date-fns";
 import { Eye } from "lucide-react";
 import { Link } from "@remix-run/react";
+import { mapStatusToText } from "~/lib/utils";
 
 export type OrderRow = {
   _id: string;
@@ -62,33 +63,13 @@ export const columns: ColumnDef<OrderRow>[] = [
     header: "Acciones",
     cell: ({ row }) => (
       <div className="flex">
-        <Link to={`/admin/orders/${row.getValue("_id")}`}>
+        <Link
+          to={`/admin/sales/${row.getValue("_id")}/order`}
+          prefetch="intent"
+        >
           <Eye />
         </Link>
       </div>
     ),
   },
 ];
-
-function mapStatusToText(status: OrderValue) {
-  switch (status) {
-    case ORDER_STATUS.pending:
-      return "Pendiente";
-    case ORDER_STATUS.check:
-      return "En proceso";
-    case ORDER_STATUS.paid:
-      return "Pagado";
-    case ORDER_STATUS.delivered:
-      return "Entregado";
-    case ORDER_STATUS.credit:
-      return "Credito";
-    case ORDER_STATUS.creditDelivered:
-      return "Credito entregado";
-    case ORDER_STATUS.creditPaid:
-      return "Credito pagado";
-    case ORDER_STATUS.canceled:
-      return "Cancelado";
-    default:
-      return "Pendiente";
-  }
-}

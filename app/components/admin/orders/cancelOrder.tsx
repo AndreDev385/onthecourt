@@ -1,7 +1,7 @@
 import { Form } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { UPDATE_ORDER_ACTIONS } from "~/routes/admin.orders.$id";
+import { UPDATE_ORDER_ACTIONS } from "~/routes/admin.sales.$orderId.order";
 
 type Props = {
   _id: string;

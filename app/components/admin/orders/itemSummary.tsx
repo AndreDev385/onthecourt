@@ -11,8 +11,8 @@ export function ItemSummary({
 }: Props) {
   return (
     <article className="flex flex-row flex-wrap mb-4 -mx-2 pb-4 border-b border-gray-200">
-      <div className="w-16 h-16 px-2">
-        <img src={photo} alt={title} className="w-16 h-16" />
+      <div className="w-20 h-20 aspect-square">
+        <img src={photo} alt={title} className="object-cover" />
       </div>
       <div className="flex-1 px-2 h-full flex flex-col flex-wrap justify-start my-auto">
         <h2 className="text-indigo-700 text-lg">{title}</h2>
