@@ -18,10 +18,11 @@ import { ValueForm } from "~/components/admin/products/variants/valueForm";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { getVariant } from "~/lib/api/products/getVariant";
-import { FORM_INTENTS, mapIntentToMessage } from "~/lib/constants";
+import { FORM_INTENTS } from "~/lib/constants";
 import { Product } from "~/types";
 import { updateVariantValue } from "~/lib/api/products/updateVariantValue";
 import { useToast } from "~/hooks/use-toast";
+import { mapIntentToMessage } from "~/lib/utils";
 
 export async function action({ request }: ActionFunctionArgs) {
   const form = await request.formData();

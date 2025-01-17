@@ -50,7 +50,7 @@ export default function Header({
             <Link to="/" className="flex items-center justify-center">
               <img
                 src="/logo.png"
-                className="w-full max-w-40"
+                className="w-full max-w-60"
                 alt="On the Court"
               />
             </Link>
@@ -66,6 +66,7 @@ export default function Header({
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-lg text-white"
                   to={link.href}
+                  prefetch="intent"
                 >
                   {link.text}
                 </Link>
@@ -77,6 +78,7 @@ export default function Header({
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-lg text-white"
                   to="/store/orders/list"
+                  prefetch="intent"
                 >
                   Ordenes
                 </Link>

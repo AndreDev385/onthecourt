@@ -1,10 +1,16 @@
-import { API_URL } from "../config";
+import { API_URL, PAGINATION_CONFIG } from "../config";
 import { ApiResponse } from "../response";
 
 export async function getProducts(
   page: number = 1,
-  perPage: number = 10
+  filter: {
+    brand: string | null;
+    categories?: string[];
+  }
 ): Promise<ApiResponse<Response>> {
+  if (filter.categories?.length === 0) delete filter.categories;
+  const cleanFilters = removeFalsyValues(filter);
+  console.log({ cleanFilters });
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -14,14 +20,27 @@ export async function getProducts(
       query: GET_PRODUCTS,
       variables: {
         page,
-        perPage,
-        filter: {},
+        perPage: PAGINATION_CONFIG.limit,
+        filter: {
+          isService: false,
+          ...cleanFilters,
+        },
       },
     }),
   });
 
   const { data, errors } = await response.json();
-  return { data: data.productPagination, errors };
+  return { data: data?.productPagination, errors };
+}
+
+function removeFalsyValues(
+  obj: Record<string, unknown>
+): Record<string, unknown> {
+  const newObj: Record<string, unknown> = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value != undefined && value != null && value != "") newObj[key] = value;
+  });
+  return newObj;
 }
 
 type Response = {

@@ -28,11 +28,7 @@ export default function OrderDetailPage() {
     },
     {
       path: `/admin/sales/${order._id}/delivery-note`,
-      label: "Nota de entrega",
-    },
-    {
-      path: `/admin/sales/${order._id}/invoice`,
-      label: "Factura",
+      label: "Nota de entrega y Factura",
     },
   ];
 

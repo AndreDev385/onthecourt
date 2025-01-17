@@ -1,30 +1,17 @@
-import { useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
-import { ProductCardSlider } from "~/components/store/products/productSlider";
-import { getProducts } from "~/lib/api/products/getProducts";
+import Hero from "~/components/store/landing/hero";
 
 export async function loader() {
-  const { data, errors } = await getProducts();
-
-  if (errors && Object.values(errors).length > 0) {
-    throw new Error(JSON.stringify(errors));
-  }
-
-  invariant(data, "Error al buscar productos");
-  return data;
+  return null;
 }
 
 export default function LandingPage() {
-  const { items, pageInfo } = useLoaderData<typeof loader>();
-
   return (
-    <div className="container mx-auto">
-      <section id="hero">Hero Section</section>
+    <div>
+      <section className="aspect-video w-full" id="hero">
+        <Hero />
+      </section>
       <section id="promotions">Promotions Section</section>
       <section id="popular">Popular Section</section>
-      <section className="px-4">
-        <ProductCardSlider products={items} />
-      </section>
     </div>
   );
 }
