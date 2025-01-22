@@ -5,11 +5,11 @@ import {
   Users,
   Users2,
   Settings,
-  HandCoins,
   CalendarArrowDown,
   Tag,
   LogOut,
   Wallet,
+  TableOfContents,
 } from "lucide-react";
 import { destroyAdminSession, getAdminSession } from "~/adminSessions";
 import { Button } from "~/components/ui/button";
@@ -91,8 +91,10 @@ const configLinks = [
 ];
 
 const adminLinks = [
-  { href: "/admin/delivery-notes/list", text: "Notas de entrega" },
-  { href: "/admin/invoices/list", text: "Facturas" },
+  { href: "/admin/carousel", text: "Carousel" },
+  { href: "/admin/promotions", text: "Promociones" },
+  { href: "/admin/banner", text: "Banner" },
+  { href: "/admin/categories-links", text: "Categorías" },
 ];
 
 function AdminSidebar() {
@@ -117,15 +119,15 @@ function AdminSidebar() {
           <Collapsible className="group/collapsible">
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <HandCoins className="mr-2" />
-                <p className="text-lg font-bold">Administración</p>
+                <Settings className="mr-2" />
+                <p className="text-lg font-bold">Configuración</p>
                 <ChevronDown className="ml-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu className="flex flex-col gap-2">
-                  {adminLinks.map((link) => (
+                  {configLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
                         <Link to={link.href} prefetch="intent">
@@ -143,15 +145,15 @@ function AdminSidebar() {
           <Collapsible className="group/collapsible">
             <SidebarGroupLabel asChild>
               <CollapsibleTrigger>
-                <Settings className="mr-2" />
-                <p className="text-lg font-bold">Configuración</p>
+                <TableOfContents className="mr-2" />
+                <p className="text-lg font-bold">CMS</p>
                 <ChevronDown className="ml-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </CollapsibleTrigger>
             </SidebarGroupLabel>
             <CollapsibleContent>
               <SidebarGroupContent>
                 <SidebarMenu className="flex flex-col gap-2">
-                  {configLinks.map((link) => (
+                  {adminLinks.map((link) => (
                     <SidebarMenuItem key={link.href}>
                       <SidebarMenuButton asChild>
                         <Link to={link.href} prefetch="intent">

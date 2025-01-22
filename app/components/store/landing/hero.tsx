@@ -11,7 +11,7 @@ export default function FullWidthHero() {
         />
         <div className="absolute inset-0 bg-gray-900 opacity-75" />
       </div>
-      <div className="relative mx-auto max-w-7xl py-24 px-6 sm:py-32 lg:px-8">
+      <div className="relative mx-auto max-w-7xl py-32 px-6 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
           Tu Juego, Nuestra Pasión
         </h1>

@@ -27,10 +27,6 @@ export default function Header({
       href: "/store/products",
       text: "Productos",
     },
-    {
-      href: "/store/brands",
-      text: "Marcas",
-    },
   ];
 
   return (
