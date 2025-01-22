@@ -3,6 +3,7 @@ import { redirect, useActionData, useLoaderData } from "@remix-run/react";
 import React from "react";
 import invariant from "tiny-invariant";
 import { getSession } from "~/clientSessions";
+import ErrorDisplay from "~/components/shared/error";
 import {
   CheckoutForm,
   CheckoutFormErrors,
@@ -25,26 +26,18 @@ export async function action({ request }: ActionFunctionArgs) {
   invariant(cartInfo);
 
   const formData = await request.formData();
+  const form = Object.fromEntries(formData);
 
-  const shopCartId = formData.get("shopCartId");
-  const userId = formData.get("userId");
-  invariant(shopCartId, "Error al crear orden");
-  invariant(userId, "Error al crear orden");
-
-  const currency = formData.get("currency");
-  const promoCode = formData.get("promoCode");
-  const shippingMethod = formData.get("shippingMethod");
-  const payMethod = formData.get("payMethod");
-  const phoneNumber = formData.get("phoneNumber");
-  const address = formData.get("address");
-  const ref = formData.get("ref");
+  invariant(form.shopCartId, "Error al crear orden");
+  invariant(form.userId, "Error al crear orden");
 
   const errors: CheckoutFormErrors = {};
 
-  if (!currency) errors.currency = "Elige una moneda";
-  if (!shippingMethod) errors.shipping = "Elige un método de envío";
-  if (!payMethod) errors.paymentMethod = "Elige un método de pago";
-  if (!phoneNumber) errors.phoneNumber = "El número de teléfono es obligatorio";
+  if (!form.currency) errors.currency = "Elige una moneda";
+  if (!form.shippingMethod) errors.shipping = "Elige un método de envío";
+  if (!form.payMethod) errors.paymentMethod = "Elige un método de pago";
+  if (!form.phoneNumber)
+    errors.phoneNumber = "El número de teléfono es obligatorio";
 
   if (Object.values(errors).length > 0) {
     return { success: false, errors };
@@ -60,14 +53,14 @@ export async function action({ request }: ActionFunctionArgs) {
   const { currencies, location } = checkoutData;
 
   const selectedShipping = location.shippingOptions.find(
-    (s) => s._id === String(shippingMethod)
+    (s) => s._id === String(form.shippingMethod)
   );
   invariant(selectedShipping);
 
   let discount = 0;
-  if (promoCode) {
+  if (form.promoCode) {
     const { data } = await getPromoCode({
-      code: String(promoCode),
+      code: String(form.promoCode),
       active: true,
     });
     if (data) {
@@ -75,37 +68,28 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   }
 
-  const selectedCurrency = currencies.find((c) => c._id === String(currency));
+  const selectedCurrency = currencies.find(
+    (c) => c._id === String(form.currency)
+  );
   const rate = (selectedCurrency?.rate ?? 100) / 100;
 
-  console.log({
-    subTotal,
-    discount,
-    selectedShipping: selectedShipping.price,
-    rate,
-    selectedCurrency: selectedCurrency?.rate,
-  });
-
-  const data = {
-    shopCartId: String(shopCartId),
-    userId: String(userId),
+  const { data: orderData, errors: apiErrors } = await createOrder({
+    shopCartId: String(form.shopCartId),
+    userId: String(form.userId),
     charges: [
       {
-        method: String(payMethod),
+        method: String(form.payMethod),
         bank: "",
-        ref: payMethod === "efectivo" ? "efectivo" : String(ref),
+        ref: form.payMethod === "efectivo" ? "efectivo" : String(form.ref),
         amount: (subTotal - discount + selectedShipping.price) * rate,
       },
     ],
-    phone: String(phoneNumber),
-    address: String(address ?? ""),
+    phone: String(form.phoneNumber),
+    address: String(form.address ?? ""),
     rate,
-    promoCode: String(promoCode).trim(), // user input
-    shipping: String(shippingMethod), // _id
-  };
-
-  const { data: orderData, errors: apiErrors } = await createOrder(data);
-  console.log({ orderData, apiErrors });
+    promoCode: String(form.promoCode).trim(), // user input
+    shipping: String(form.shippingMethod), // _id
+  });
 
   if (apiErrors && Object.values(apiErrors).length > 0) {
     errors.apiError = "Ha ocurrido un error al crear el pedido";
@@ -165,7 +149,7 @@ export default function CheckoutPage() {
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 lg:px-0 my-16">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-2 lg:px-0 my-16">
       {/* FORM */}
       <CheckoutForm
         user={user}
@@ -197,4 +181,8 @@ export default function CheckoutPage() {
       />
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />;
 }

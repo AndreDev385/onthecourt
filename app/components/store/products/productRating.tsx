@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import React from "react";
 import { Star } from "lucide-react";
 
-export function ProductRating({ rating, setRating, size = 6 }: Props) {
+export function ProductRating({ rating, setRating, size = 5 }: Props) {
   const [stars, setStars] = React.useState<
     Array<{
       idx: number;

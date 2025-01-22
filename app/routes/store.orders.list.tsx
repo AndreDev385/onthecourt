@@ -2,6 +2,7 @@ import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getSession } from "~/clientSessions";
+import ErrorDisplay from "~/components/shared/error";
 import OrderSummary from "~/components/store/orders/orderSummary";
 import { getClientOrders } from "~/lib/api/orders/getClientOrders";
 import { getCurrentUser } from "~/lib/api/users/getCurrentUser";
@@ -15,13 +16,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const { data, errors } = await getCurrentUser(session.get("token")!);
 
   if (errors && Object.values(errors).length > 0) {
-    throw new Error("Ha ocurrido un error al obtener tus datos de usuario");
+    throw new Response("Ha ocurrido un error al obtener tus datos de usuario", {
+      status: 500,
+    });
   }
   invariant(data, "No se pudo obtener el usuario");
 
   const { data: orders, errors: orderErrors } = await getClientOrders(data._id);
   if (orderErrors && Object.values(orderErrors).length > 0) {
-    throw new Error("Ha ocurrido un error al obtener tus pedidos");
+    throw new Response("Ha ocurrido un error al obtener tus pedidos", {
+      status: 500,
+    });
   }
   invariant(orders, "No se pudo obtener los pedidos");
 
@@ -43,4 +48,8 @@ export default function OrdersListPage() {
       </div>
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />;
 }

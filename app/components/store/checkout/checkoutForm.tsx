@@ -16,7 +16,7 @@ import { getPromoCode } from "~/lib/api/promoCodes/getPromoCode";
 import { Loader2 } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { CurrentUser } from "~/lib/api/users/getCurrentUser";
-import { PAYMENT_METHODS } from "~/lib/constants";
+import { PAYMENT_METHODS, PAYMETHODS_VALUES } from "~/lib/constants";
 
 export function CheckoutForm({
   user,
@@ -221,7 +221,7 @@ export function CheckoutForm({
                     datos para realizar su pago, al terminar recuerde enviar su
                     comprobante de pago al número de teléfono{" "}
                     <a
-                      href={`https://api.whatsapp.com/send?phone=+584269158594&text=${encodeURIComponent(
+                      href={`https://api.whatsapp.com/send?phone=+584242710248&text=${encodeURIComponent(
                         `Hola te escribe ${
                           user!.name
                         } de On the Court. Adjunto te envio los datos de pago de mi orden.`
@@ -230,50 +230,62 @@ export function CheckoutForm({
                       rel="noreferrer"
                       className="text-green-500"
                     >
-                      0426-915-8594
+                      0424-2710248
                     </a>
                   </p>
                 </div>
               ) : null}
-              {selectedPayMethod === "zelle" ? (
+              {selectedPayMethod === PAYMETHODS_VALUES.zelle ? (
                 <div className="text-center">
-                  <p className="text-lg leading-normal font-semibold">
-                    Datos para el pago
+                  <p>
+                    <strong>Zelle</strong>
                   </p>
                   <p className="">Correo: lgmacarilu@gmail.com</p>
                 </div>
               ) : null}
-              {selectedPayMethod === "paypal" ? (
+              {selectedPayMethod === PAYMETHODS_VALUES.paypal ? (
                 <div className="text-center">
-                  <p className="text-lg leading-normal font-semibold">
-                    Datos para el pago
+                  <p>
+                    <strong>PayPal</strong>
                   </p>
                   <p className="">Correo: onthecourt.online@gmail.com</p>
                 </div>
               ) : null}
-              {selectedPayMethod === "transferencia" ? (
+              {selectedPayMethod === PAYMETHODS_VALUES.transferencia ? (
                 <div className="text-center">
-                  <p className="text-lg leading-normal font-semibold">
-                    Datos para el pago
-                  </p>
-                  <p className="my-2">
-                    <span className="font-semibold">Pago móvil:</span>
-                    <br />
-                    Riccardo González | Banesco
-                    <br />
-                    Telf: 0424-1611221 | C.I. 24.897.839
-                  </p>
-                  <p className="my-2">
-                    <span className="font-semibold">
-                      Transferencia Bancaria
-                    </span>
-                    <br />
-                    Riccardo González | C.I. 24.897.839 | Banesco | Corriente
-                    <br />
-                    Cuenta: 0134 0060 14 0601044459
-                    <br />
-                    Correo: riccardo_glez@hotmail.com
-                  </p>
+                  <div className="my-2 flex flex-col gap-2">
+                    <div>
+                      <p>
+                        <strong>Transferencia en Bs</strong>
+                      </p>
+                      <p>Banco:&nbsp;Banco Fondo Común (BFC)</p>
+                      <p>Nro. de cuenta:&nbsp;0151 0100 81 1001568121</p>
+                      <p>RIF:&nbsp;J50249928-8</p>
+                    </div>
+                    <div>
+                      <p>
+                        <strong>Cuenta custodia en divisas (Venezuela)</strong>
+                      </p>
+                      <p>Banco:&nbsp;Banco Fondo Común (BFC)</p>
+                      <p>Nro. de cuenta:&nbsp;0151 0100 83 1001568139</p>
+                      <p>RIF:&nbsp;J50249928-8</p>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+              {selectedPayMethod === PAYMETHODS_VALUES.pago_movil ? (
+                <div className="text-center">
+                  <div className="my-2">
+                    <p>
+                      <strong>Pago móvil</strong>
+                    </p>
+                    <p>Banco:&nbsp;Banco Fondo Común (BFC)</p>
+                    <p>
+                      Titular o razón social:&nbsp;Inversiones On The Court C.A.
+                    </p>
+                    <p>RIF:&nbsp;J50249928-8</p>
+                    <p>Número telefónico:&nbsp;04242710248</p>
+                  </div>
                 </div>
               ) : null}
             </div>

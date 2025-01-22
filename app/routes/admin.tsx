@@ -12,6 +12,7 @@ import {
   TableOfContents,
 } from "lucide-react";
 import { destroyAdminSession, getAdminSession } from "~/adminSessions";
+import ErrorDisplay from "~/components/shared/error";
 import { Button } from "~/components/ui/button";
 import {
   Collapsible,
@@ -188,4 +189,8 @@ function AdminSidebar() {
       <SidebarFooter />
     </Sidebar>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />;
 }

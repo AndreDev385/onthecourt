@@ -10,6 +10,7 @@ import { ShoppingCart } from "lucide-react";
 import React from "react";
 import invariant from "tiny-invariant";
 import { getSession } from "~/clientSessions";
+import ErrorDisplay from "~/components/shared/error";
 import { CartItemCard } from "~/components/store/cart/cartItemCard";
 import { Button } from "~/components/ui/button";
 import { useToast } from "~/hooks/use-toast";
@@ -128,4 +129,8 @@ export default function CartPage() {
       )}
     </div>
   );
+}
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />;
 }

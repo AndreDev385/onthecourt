@@ -33,10 +33,22 @@ export type OrderValue = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
 type Methods = Array<{ title: string; value: string; currency: string }>;
 
+export const PAYMETHODS_VALUES = {
+  paypal: "paypal",
+  zelle: "zelle",
+  transferencia: "transferencia",
+  pago_movil: "pago movil",
+} as const;
+
 export const PAYMENT_METHODS: Methods = [
   {
     title: "Transferencia",
     value: "transferencia",
+    currency: "Bolivar",
+  },
+  {
+    title: "Pago móvil",
+    value: "pago movil",
     currency: "Bolivar",
   },
   {
