@@ -1,9 +1,11 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { ShoppingCart } from "lucide-react";
 import invariant from "tiny-invariant";
 import { getSession } from "~/clientSessions";
 import ErrorDisplay from "~/components/shared/error";
 import OrderSummary from "~/components/store/orders/orderSummary";
+import { Button } from "~/components/ui/button";
 import { getClientOrders } from "~/lib/api/orders/getClientOrders";
 import { getCurrentUser } from "~/lib/api/users/getCurrentUser";
 
@@ -39,12 +41,28 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function OrdersListPage() {
   const { orders } = useLoaderData<typeof loader>();
 
-  return (
+  return orders.length > 0 ? (
     <div className="container mx-auto py-10 px-8 lg:px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {orders.map((order) => (
           <OrderSummary key={order._id} order={order} />
         ))}
+      </div>
+    </div>
+  ) : (
+    <div className="flex flex-col items-center justify-center gap-8 mt-12">
+      <h2 className="text-4xl font-bold text-center">
+        Aún no has realizado ningún pedido
+      </h2>
+      <div className="flex flex-col items-center justify-center gap-8">
+        <p className="text-lg text-center">
+          No hay ningún producto en tu carrito, añade algunos y empieza a
+          comprar
+        </p>
+        <ShoppingCart className="w-24 h-24 text-primary" />
+        <Button className="p-6 uppercase font-bold">
+          <Link to="/store">Empieza a comprar</Link>
+        </Button>
       </div>
     </div>
   );

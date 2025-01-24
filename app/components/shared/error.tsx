@@ -13,6 +13,7 @@ export default function ErrorDisplay() {
   let ErrorIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
   if (isRouteErrorResponse(error)) {
+    console.log({ error });
     switch (error.status) {
       case 404:
         errorTitle = "Página no encontrada";
@@ -27,7 +28,7 @@ export default function ErrorDisplay() {
         break;
       default:
         errorTitle = `Error ${error.status}`;
-        errorMessage = error.data.message || "Ha ocurrido un error inesperado.";
+        errorMessage = error.data ?? "Ha ocurrido un error inesperado.";
         ErrorIcon = ExclamationTriangleIcon;
     }
   } else if (error instanceof Error) {

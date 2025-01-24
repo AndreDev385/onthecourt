@@ -19,6 +19,7 @@ import { AddToCartForm, FormErrors } from "./form";
 import { Suggestions } from "./suggestions";
 import { Variants } from "./variants";
 import { Separator } from "~/components/ui/separator";
+import ErrorDisplay from "~/components/shared/error";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.slug, "Id de producto no encontrado");
@@ -201,6 +202,7 @@ async function handleAddProductToCart(
   form: Record<string, FormDataEntryValue>
 ) {
   const errors: FormErrors = {};
+  console.log({ form });
 
   invariant(form.productId, "Ha ocurrido un error al agregar al carrito");
   invariant(form.shopCartId, "Ha ocurrido un error al agregar al carrito");
@@ -242,3 +244,7 @@ type SelectedVariant = {
   location: { _id: string };
   quantity?: number;
 };
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />;
+}

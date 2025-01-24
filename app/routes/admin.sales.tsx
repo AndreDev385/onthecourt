@@ -28,31 +28,39 @@ export default function SalesLayout() {
           <h2 className="text-xl text-gray-600">Lista de Ordenes</h2>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-[auto,1fr] gap-4 border border-gray-200 rounded-lg min-h-[60vh]">
-            {/* Orders List */}
-            <div className="sticky h-full overflow-y-scroll px-4">
-              {orders.map((o) => (
-                <Link
-                  key={o._id}
-                  to={`/admin/sales/${o._id}`}
-                  prefetch="intent"
-                >
-                  <div className="flex flex-col gap-2 border-b border-gray-200 py-4 px-2 last:border-none w-[300px]">
-                    <div className="flex justify-between">
-                      <p>{o.client.name}</p>
-                      <p>${formatMoney(o.total)}</p>
+          {orders.length > 0 ? (
+            <div className="grid grid-cols-[auto,1fr] gap-4 border border-gray-200 rounded-lg min-h-[60vh]">
+              {/* Orders List */}
+              <div className="sticky h-full overflow-y-scroll px-4">
+                {orders.map((o) => (
+                  <Link
+                    key={o._id}
+                    to={`/admin/sales/${o._id}`}
+                    prefetch="intent"
+                  >
+                    <div className="flex flex-col gap-2 border-b border-gray-200 py-4 px-2 last:border-none w-[300px]">
+                      <div className="flex justify-between">
+                        <p>{o.client.name}</p>
+                        <p>${formatMoney(o.total)}</p>
+                      </div>
+                      <div className="flex justify-between">
+                        <p>{format(o.createdAt, "dd/MM/yyyy")}</p>
+                        <p>{mapStatusToText(o.status)}</p>
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <p>{format(o.createdAt, "dd/MM/yyyy")}</p>
-                      <p>{mapStatusToText(o.status)}</p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
+              </div>
+              {/* Detail */}
+              <Outlet />
             </div>
-            {/* Detail */}
-            <Outlet />
-          </div>
+          ) : (
+            <div className="flex items-center justify-center my-12">
+              <h2 className="text-4xl font-bold text-center">
+                Aún no se ha concretado ninguna orden
+              </h2>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

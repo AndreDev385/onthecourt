@@ -9,10 +9,11 @@ import { getHomeProducts } from "~/lib/api/products/homeProducts";
 
 export async function loader() {
   const { data: products, errors } = await getHomeProducts();
-  if (errors && Object.values(errors).length > 0)
+  if (errors && Object.values(errors).length > 0) {
     throw new Response("Ha ocurrido un error al cargar los productos", {
       status: 500,
     });
+  }
   invariant(products, "Ha ocurrido un error al cargar los productos");
 
   const { data: landingInfo, errors: landingErrors } = await getLandingInfo();
