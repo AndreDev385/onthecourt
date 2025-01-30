@@ -1,8 +1,16 @@
-import { Location } from "~/types";
 import { API_URL } from "../config";
 import { ApiResponse } from "../response";
 
-export async function getLocations(): Promise<ApiResponse<Location[]>> {
+export async function getLocations(): Promise<
+  ApiResponse<
+    {
+      _id: string;
+      name: string;
+      address: string;
+      active: boolean;
+    }[]
+  >
+> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -22,7 +30,7 @@ export const GET_LOCATIONS = `#graphql
     locations(skip: $skip, limit: $limit) {
       _id
       name
-    address
+      address
       active
     }
   }

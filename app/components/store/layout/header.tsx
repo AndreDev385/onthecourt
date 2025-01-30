@@ -1,22 +1,26 @@
 import { useState } from "react";
-import {
-  Form,
-  Link,
-  useNavigation,
-  useRouteLoaderData,
-} from "@remix-run/react";
+import { Form, Link, useNavigation } from "@remix-run/react";
 import { CartIcon } from "./cartIcon";
 import { Menu, X, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { CurrentUser } from "~/lib/api/users/getCurrentUser";
+import { LocationIcon } from "./location";
 
-export default function Header({
-  isLoggedIn = false,
+export function Header({
+  user,
+  locations,
+  selectedLocation,
 }: {
-  isLoggedIn: boolean;
+  selectedLocation?: string;
+  user?: CurrentUser | null;
+  locations?: {
+    _id: string;
+    name: string;
+    address: string;
+    active: boolean;
+  }[];
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const data = useRouteLoaderData<CurrentUser | null>("routes/store");
 
   const links = [
     {
@@ -28,6 +32,8 @@ export default function Header({
       text: "Productos",
     },
   ];
+
+  const isLoggedIn = !!user;
 
   return (
     <header className="bg-gray-900 text-white">
@@ -95,7 +101,8 @@ export default function Header({
 
         {/* Cart Icon */}
         <div className="mr-4 flex justify-end items-center gap-2">
-          <CartIcon itemCount={data?.client.shopCart.items.length} />
+          <LocationIcon selectedLocation={selectedLocation} locations={locations} />
+          <CartIcon itemCount={user?.client.shopCart.items.length} />
           {isLoggedIn ? (
             <div className="hidden lg:block">
               <LogOutButton />
@@ -191,9 +198,8 @@ function LogOutButton({ light }: { light?: boolean }) {
   return (
     <Form method="post">
       <Button
-        className={`${
-          light ? "text-black w-full justify-start" : "text-white"
-        }`}
+        className={`${light ? "text-black w-full justify-start" : "text-white"
+          }`}
         name="intent"
         value="logout"
         variant="ghost"

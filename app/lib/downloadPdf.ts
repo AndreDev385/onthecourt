@@ -4,7 +4,7 @@ import { formatMoney } from "./utils";
 import { logo } from "./logo";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 
-const TITLE = "BodeBar";
+const TITLE = "On the court";
 const RIF = "-";
 const ADDRESS = "-";
 const CITY = "Caracas";
@@ -152,9 +152,8 @@ export function generateDeliveryNoteDD(
       title: `Nota de Entrega N${deliveryNote.controlNumber} ${TITLE}`,
       author: `${TITLE}`,
       subject: `Nota de Entrega N${deliveryNote.controlNumber || ""} ${TITLE}`,
-      keywords: `${TITLE}, Nota de Entrega, Tennis, ${
-        deliveryNote.controlNumber || ""
-      }`,
+      keywords: `${TITLE}, Nota de Entrega, Tennis, ${deliveryNote.controlNumber || ""
+        }`,
       creator: `${TITLE}`,
       producer: `${TITLE}`,
     },

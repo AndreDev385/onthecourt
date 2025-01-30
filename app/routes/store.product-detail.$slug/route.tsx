@@ -43,13 +43,14 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function ProductDetailPage() {
-  const currentUser: CurrentUser | null | undefined =
-    useRouteLoaderData("routes/store");
+  const data: StoreLayoutData = useRouteLoaderData("routes/store");
+  useRouteLoaderData("routes/store");
   const { product, suggestions } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
 
   const { toast } = useToast();
 
+  const [variantValues, setVariantValues] = React.useState(product.variantValues)
   const [selectedVariantOptions, setSelectedVariantOptions] = React.useState<
     string[]
   >([]);
@@ -64,12 +65,12 @@ export default function ProductDetailPage() {
 
   const findVariantValue = React.useCallback(
     () =>
-      product.variantValues.find((variantValue) =>
+      variantValues.find((variantValue) =>
         Object.values(variantValue.value).every((v, idx) =>
           v ? v == selectedVariantOptions[idx] : true
         )
       ),
-    [product.variantValues, selectedVariantOptions]
+    [variantValues, selectedVariantOptions]
   );
 
   React.useEffect(
@@ -103,6 +104,19 @@ export default function ProductDetailPage() {
     [findVariantValue, selectedVariantOptions]
   );
 
+  React.useEffect(() => {
+    if (product) {
+      if (!product?.isService && data?.selectedLocation) {
+        setVariantValues(
+          product.variantValues.filter(
+            (variantValue) =>
+              variantValue.location._id === data?.selectedLocation,
+          ),
+        );
+      }
+    }
+  }, [product, data?.selectedLocation]);
+
   return (
     <div className="my-12">
       <div className="lg:grid lg:grid-cols-12 lg:gap-8 px-4 mx-auto">
@@ -119,7 +133,7 @@ export default function ProductDetailPage() {
             title={product.title}
             description={product.description}
             rating={product.rating}
-            variantValues={product.variantValues}
+            variantValues={variantValues}
             selectedVariant={selectedVariant}
           />
           {/* Images in mobile for mobile */}
@@ -137,7 +151,7 @@ export default function ProductDetailPage() {
           </div>
           {/* Form */}
           <AddToCartForm
-            currentUser={currentUser}
+            currentUser={data?.user}
             selectedVariant={selectedVariant}
             product={product}
             actionData={actionData}
@@ -152,7 +166,7 @@ export default function ProductDetailPage() {
       <Separator className="my-8" />
       <div className="px-4">
         <ProductCommentsSection
-          user={currentUser ?? undefined}
+          user={data?.user ?? undefined}
           productId={product._id}
           comments={product.comments}
         />
@@ -248,3 +262,18 @@ type SelectedVariant = {
 export function ErrorBoundary() {
   return <ErrorDisplay />;
 }
+
+type StoreLayoutData =
+  | {
+    user: CurrentUser | null | undefined;
+    locations: Location[];
+    selectedLocation?: string;
+  }
+  | undefined;
+
+type Location = {
+  _id: string;
+  name: string;
+  address: string;
+  active: boolean;
+};
