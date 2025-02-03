@@ -103,6 +103,7 @@ export function AddToCartForm({
           disabled={!selectedVariant || submitting || STOCK_UNAVAILABLE}
           className="w-full uppercase font-bold py-6"
           type="submit"
+          variant="client"
         >
           {submitting ? (
             <>
@@ -121,6 +122,7 @@ export function AddToCartForm({
       ) : (
         <Button
           disabled={!selectedVariant}
+          variant="client"
           className="w-full uppercase font-bold py-6"
         >
           <Link to="/store/sign-in">
@@ -149,19 +151,19 @@ type Props = {
     variantValues: VariantValue[];
   };
   actionData:
-    | {
-        success: boolean;
-        intent: string;
-        errors?: {
-          apiErrors: string;
-        } & FormErrors;
-      }
-    | {
-        errors: FormErrors;
-        success: boolean;
-        intent: string;
-      }
-    | undefined;
+  | {
+    success: boolean;
+    intent: string;
+    errors?: {
+      apiErrors: string;
+    } & FormErrors;
+  }
+  | {
+    errors: FormErrors;
+    success: boolean;
+    intent: string;
+  }
+  | undefined;
 };
 
 type VariantValue = {

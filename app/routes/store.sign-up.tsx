@@ -113,6 +113,7 @@ export default function SignUpPage() {
               </span>
             </div>
             <Button
+              variant="client"
               type="submit"
               disabled={submitting}
               className="w-full uppercase"

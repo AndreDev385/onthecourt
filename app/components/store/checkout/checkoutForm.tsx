@@ -100,9 +100,8 @@ export function CheckoutForm({
             <div className="mb-4 space-y-2">
               <Label
                 htmlFor="promoCode"
-                className={`${selectedCode === null ? "text-red-500" : ""}${
-                  selectedCode ? "text-green-500" : ""
-                }`}
+                className={`${selectedCode === null ? "text-red-500" : ""}${selectedCode ? "text-green-500" : ""
+                  }`}
               >
                 Código de promoción
               </Label>
@@ -111,9 +110,8 @@ export function CheckoutForm({
                 onChange={(e) => setCode(e.target.value)}
                 name="promoCode"
                 type="text"
-                className={`${selectedCode === null ? "border-red-500" : ""}${
-                  selectedCode ? "border-green-500 text-green-500" : ""
-                }`}
+                className={`${selectedCode === null ? "border-red-500" : ""}${selectedCode ? "border-green-500 text-green-500" : ""
+                  }`}
               />
               {selectedCode === null ? (
                 <p className="text-sm text-red-500">
@@ -201,6 +199,7 @@ export function CheckoutForm({
               type="submit"
               name="intent"
               value="createOrder"
+              variant="client"
               disabled={!enableSubmit || submitting}
               className="w-full uppercase"
             >
@@ -222,8 +221,7 @@ export function CheckoutForm({
                     comprobante de pago al número de teléfono{" "}
                     <a
                       href={`https://api.whatsapp.com/send?phone=+584242710248&text=${encodeURIComponent(
-                        `Hola te escribe ${
-                          user!.name
+                        `Hola te escribe ${user!.name
                         } de On the Court. Adjunto te envio los datos de pago de mi orden.`
                       )}`}
                       target="_blank"
