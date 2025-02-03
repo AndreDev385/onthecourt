@@ -30,10 +30,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const form = Object.fromEntries(formData);
 
   if (String(form.intent) === "forgotPassword") {
-    return handleResetPassword(form);
+    return await handleResetPassword(form);
   }
 
-  return handleSignIn(request, form);
+  return await handleSignIn(request, form);
 }
 
 export function shouldRevalidate({ nextUrl }: ShouldRevalidateFunctionArgs) {
@@ -56,6 +56,15 @@ export default function SignInPage() {
               "Se te ha enviado un correo para reestablecer tu contraseña",
           });
         } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: actionData.errors?.apiError,
+          });
+        }
+      }
+      if (actionData?.intent === "signIn") {
+        if (actionData.errors?.apiError) {
           toast({
             variant: "destructive",
             title: "Error",
@@ -120,7 +129,10 @@ export default function SignInPage() {
               </span>
             </div>
             <Button
+              variant="client"
               type="submit"
+              name="intent"
+              value="signIn"
               disabled={submitting}
               className="w-full uppercase"
             >
@@ -154,7 +166,7 @@ async function handleSignIn(request: Request, form: Record<string, FormDataEntry
   );
 
   if (apiErrors && Object.values(apiErrors).length > 0) {
-    errors.apiError = "Ha ocurrido un error. No ha sido posible iniciar sesión";
+    errors.apiError = "Correo o contraseña incorrectos";
     return { errors, intent: String(form.intent), success: false };
   }
 

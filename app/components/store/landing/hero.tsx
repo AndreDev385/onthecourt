@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { Button } from "~/components/ui/button";
 
 export default function FullWidthHero() {
   return (
@@ -21,18 +22,20 @@ export default function FullWidthHero() {
           la cancha.
         </p>
         <div className="mt-10 flex items-center gap-x-6">
-          <Link
-            to="/store/products"
-            className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            Ver colección
-          </Link>
-          <Link
-            to="/store/cateogories"
-            className="text-sm font-semibold leading-6 text-white"
-          >
-            Categorías <span aria-hidden="true">→</span>
-          </Link>
+          <Button variant="client" size="default" className="font-bold">
+            <Link
+              to="/store/products"
+            >
+              Ver colección
+            </Link>
+          </Button>
+          <Button variant="ghost" className="text-white font-semibold">
+            <Link
+              to="/store/cateogories"
+            >
+              Categorías <span aria-hidden="true">→</span>
+            </Link>
+          </Button>
         </div>
       </div>
     </div>

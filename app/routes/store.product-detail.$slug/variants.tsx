@@ -51,17 +51,17 @@ type Props = {
   selectedVariantOptions: string[];
   changeVariantsValue: (value: string, variantIndex: number) => void;
   actionData:
-    | {
-        success: boolean;
-        intent: string;
-        errors?: {
-          apiErrors: string;
-        } & FormErrors;
-      }
-    | {
-        errors: FormErrors;
-        success: boolean;
-        intent: string;
-      }
-    | undefined;
+  | {
+    success: boolean;
+    intent: string;
+    errors?: {
+      apiErrors: string;
+    } & FormErrors;
+  }
+  | {
+    errors: FormErrors;
+    success: boolean;
+    intent: string;
+  }
+  | undefined;
 };

@@ -102,9 +102,10 @@ async function handleLogOut(request: Request) {
 
 async function handleChangeLocation(formData: FormData) {
   const location = formData.get("location");
+  const path = formData.get("path");
   if (!location) return null;
 
-  return redirect("/store", {
+  return redirect(String(path), {
     headers: {
       "Set-Cookie": await locationCookie.serialize(String(location)),
     },

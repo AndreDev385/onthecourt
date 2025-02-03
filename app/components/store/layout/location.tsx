@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, useLocation } from "@remix-run/react";
 import { MapPin } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
@@ -19,6 +19,9 @@ import {
 } from "~/components/ui/select";
 
 export function LocationIcon({ locations, selectedLocation }: Props) {
+
+  const location = useLocation();
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -32,6 +35,7 @@ export function LocationIcon({ locations, selectedLocation }: Props) {
           <DialogTitle>Sucursales</DialogTitle>
         </DialogHeader>
         <Form method="POST">
+          <input type="hidden" name="path" value={location.pathname} />
           <div className="flex flex-col gap-4">
             <Select name="location" defaultValue={selectedLocation}>
               <SelectTrigger>

@@ -60,8 +60,8 @@ export default function OrdersListPage() {
           comprar
         </p>
         <ShoppingCart className="w-24 h-24 text-primary" />
-        <Button className="p-6 uppercase font-bold">
-          <Link to="/store">Empieza a comprar</Link>
+        <Button variant="client" className="p-6 uppercase font-bold">
+          <Link to="/store/products">Empieza a comprar</Link>
         </Button>
       </div>
     </div>

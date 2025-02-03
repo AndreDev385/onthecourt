@@ -5,14 +5,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useRouteError,
-  isRouteErrorResponse,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
 import "@splidejs/react-splide/css";
 import { Toaster } from "./components/ui/toaster";
+import ErrorDisplay from "./components/shared/error";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -29,24 +28,7 @@ export const links: LinksFunction = () => [
 
 // root.tsx
 export function ErrorBoundary() {
-  const error = useRouteError();
-  return (
-    <html lang="es">
-      <head>
-        <title>Oops!</title>
-      </head>
-      <body>
-        <h1>
-          {isRouteErrorResponse(error)
-            ? `${error.status} ${error.statusText}`
-            : error instanceof Error
-            ? error.message
-            : "Ha ocurrido un error"}
-        </h1>
-        <Scripts />
-      </body>
-    </html>
-  );
+  return <ErrorDisplay />
 }
 
 export async function loader() {

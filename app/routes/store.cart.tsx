@@ -104,7 +104,7 @@ export default function CartPage() {
               <div className="text-2xl font-bold">${total}</div>
             </div>
             <div className="flex justify-end">
-              <Button className="px-8 uppercase font-bold">
+              <Button variant="client" className="px-8 uppercase font-bold">
                 <Link to="/store/checkout">Pagar</Link>
               </Button>
             </div>
@@ -121,8 +121,8 @@ export default function CartPage() {
               comprar
             </p>
             <ShoppingCart className="w-24 h-24 text-primary" />
-            <Button className="p-6 uppercase font-bold">
-              <Link to="/store">Empieza a comprar</Link>
+            <Button variant="client" className="p-6 uppercase font-bold">
+              <Link to="/store/products">Empieza a comprar</Link>
             </Button>
           </div>
         </div>

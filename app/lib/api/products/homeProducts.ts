@@ -13,7 +13,6 @@ export async function getHomeProducts(): Promise<ApiResponse<Response>> {
   });
 
   const { data, errors } = await response.json();
-  console.log({ errors: JSON.stringify(errors), data });
   return { data: data?.homeProducts, errors };
 }
 

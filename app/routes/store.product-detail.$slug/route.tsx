@@ -20,6 +20,7 @@ import { Suggestions } from "./suggestions";
 import { Variants } from "./variants";
 import { Separator } from "~/components/ui/separator";
 import ErrorDisplay from "~/components/shared/error";
+import { MapPin } from "lucide-react";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   invariant(params.slug, "Id de producto no encontrado");
@@ -103,6 +104,18 @@ export default function ProductDetailPage() {
     },
     [findVariantValue, selectedVariantOptions]
   );
+
+  React.useEffect(function showLocationToast() {
+    if (data?.selectedLocation && Object.values(data?.selectedLocation).length === 0) {
+      toast({
+        title: "Selecciona una sucursal",
+        description: <div className="flex gap-2 justify-start items-center">
+          <p>En la parte superior de la navegación</p>
+          <MapPin />
+        </div>
+      })
+    }
+  }, [])
 
   React.useEffect(() => {
     if (product) {
