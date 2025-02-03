@@ -1,9 +1,10 @@
-import { useRouteError, isRouteErrorResponse, Link } from "@remix-run/react";
+import { useRouteError, isRouteErrorResponse, Link, useNavigate } from "@remix-run/react";
 import {
   ExclamationTriangleIcon,
   ShieldExclamationIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+import { Button } from "../ui/button";
 
 export default function ErrorDisplay() {
   const error = useRouteError();
@@ -42,6 +43,21 @@ export default function ErrorDisplay() {
     ErrorIcon = ExclamationTriangleIcon;
   }
 
+  return <ErrorComponent ErrorIcon={ErrorIcon} errorTitle={errorTitle} errorMessage={errorMessage} />
+}
+
+export function ErrorComponent({
+  errorTitle,
+  errorMessage,
+  ErrorIcon = ExclamationTriangleIcon,
+}: {
+  errorTitle: string,
+  errorMessage: string,
+  ErrorIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
+}) {
+
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-md">
@@ -56,7 +72,14 @@ export default function ErrorDisplay() {
           <p className="mt-2 text-sm text-gray-600">{errorMessage}</p>
         </div>
         <div className="mt-8 space-y-6">
-          <div className="text-sm text-center">
+          <div className="flex flex-col gap-2 text-sm text-center">
+            <Button
+              variant="ghost"
+              className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out"
+              onMouseDown={() => navigate(-1)}
+            >
+              Ir atrás
+            </Button>
             <Link
               to="/"
               className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out"
@@ -67,5 +90,5 @@ export default function ErrorDisplay() {
         </div>
       </div>
     </div>
-  );
+  )
 }
