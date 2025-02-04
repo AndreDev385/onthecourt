@@ -12,6 +12,10 @@ export async function getLandingInfo(): Promise<ApiResponse<Response>> {
     }),
   });
 
+  if (response.status != 200) {
+    return { errors: { message: "Ha ocurrido un error" } }
+  }
+
   const { errors, data } = await response.json();
   return { errors, data: data?.currentSetting };
 }

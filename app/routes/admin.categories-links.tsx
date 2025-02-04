@@ -31,7 +31,6 @@ export async function action({ request }: ActionFunctionArgs) {
     .map(String);
 
   const { errors } = await updateFeaturedCategories({ categories });
-  console.log({ errors });
 
   if (errors && Object.values(errors).length > 0) {
     return {
@@ -57,12 +56,8 @@ export async function loader() {
     Object.values(featuredCategoriesErrors).length > 0
   )
     throw new Error("Error al cargar categorías destacadas");
-  invariant(
-    featuredCategories,
-    "No se pudieron cargar las categorías destacadas"
-  );
 
-  return { categories, featuredCategories: featuredCategories.categories };
+  return { categories, featuredCategories: featuredCategories?.categories ?? [] };
 }
 
 export default function CategoriesLinksPage() {

@@ -12,6 +12,7 @@ import {
 import React from "react";
 import invariant from "tiny-invariant";
 import { destroySession, getSession } from "~/clientSessions";
+import ErrorDisplay from "~/components/shared/error";
 import { Footer } from "~/components/store/layout/footer";
 import { Header } from "~/components/store/layout/header";
 import { locationCookie } from "~/cookies.server";
@@ -110,4 +111,8 @@ async function handleChangeLocation(formData: FormData) {
       "Set-Cookie": await locationCookie.serialize(String(location)),
     },
   });
+}
+
+export function ErrorBoundary() {
+  return <ErrorDisplay />
 }

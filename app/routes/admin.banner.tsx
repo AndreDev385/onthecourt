@@ -7,7 +7,6 @@ import {
 } from "@remix-run/react";
 import { Loader2 } from "lucide-react";
 import React from "react";
-import invariant from "tiny-invariant";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -43,13 +42,11 @@ export async function loader() {
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error al cargar datos del banner");
   }
-  invariant(data, "Error al cargar datos del banner");
-
   return data;
 }
 
 export default function BannerPage() {
-  const { banner } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const submitting = navigation.state === "submitting";
@@ -87,11 +84,11 @@ export default function BannerPage() {
             <Input
               placeholder="Banner"
               name="text"
-              defaultValue={banner.text}
+              defaultValue={data?.banner.text}
             />
           </div>
           <div className="mb-4 flex items-center space-x-2">
-            <Switch id="active" name="active" defaultChecked={banner.active} />
+            <Switch id="active" name="active" defaultChecked={data?.banner.active ?? false} />
             <Label htmlFor="active">Activo</Label>
           </div>
           <div className="flex justify-end">

@@ -21,6 +21,10 @@ export async function getLocations(): Promise<
     }),
   });
 
+  if (response.status != 200) {
+    return { data: [], errors: { message: "Ha ocurrido un error" } }
+  }
+
   const { data, errors } = await response.json();
   return { data: data?.locations, errors };
 }

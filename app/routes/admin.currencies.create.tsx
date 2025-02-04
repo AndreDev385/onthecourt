@@ -35,7 +35,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { data, errors: apiErrors } = await createCurrency({
       name: name as string,
       symbol: symbol as string,
-      rate: numberRate,
+      rate: numberRate * 100,
     });
 
     if (apiErrors && Object.values(apiErrors).length > 0) {
