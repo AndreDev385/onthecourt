@@ -39,7 +39,6 @@ function filter(
 ): Array<{
   [k: string]: unknown;
 }> {
-  console.log({ value, keys: Object.keys(data?.[0] ?? {}) });
   return matchSorter(data, value, {
     keys: Object.keys(data?.[0] ?? {}),
     threshold: matchSorter.rankings.CONTAINS,
@@ -141,9 +140,9 @@ export function DataTable<TData, TValue>({
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}

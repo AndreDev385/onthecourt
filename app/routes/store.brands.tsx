@@ -14,7 +14,7 @@ export async function loader() {
 export default function Brands() {
   const { brands } = useLoaderData<typeof loader>()
   return (
-    <div className="max-w-6xl mx-auto px-4 lg:px-0 my-12">
+    <div className="max-w-6xl mx-auto px-4 my-12">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Marcas</h1>
       </div>

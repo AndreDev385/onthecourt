@@ -28,7 +28,7 @@ export function DownloadInvoice({ invoice, order }: DownloadBillProps) {
         .createPdf(generateInvoiceDD(invoice, order))
         .download(`factura-${invoice.controlNumber}.pdf`);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setDisabled(false);
       nProgress.done();

@@ -24,8 +24,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     categories,
   });
 
-  console.log({ errors, brandErrors, categoryErrors })
-
   if (errors && Object.values(errors).length > 0)
     throw new Response("Ha ocurrido un error al buscar productos", {
       status: 500,

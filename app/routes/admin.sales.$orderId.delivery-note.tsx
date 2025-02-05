@@ -27,7 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   if (errors && Object.values(errors).length > 0) {
-    console.log(errors);
     return {
       success: false,
       error: "Ha ocurrido un error al generar la factura",

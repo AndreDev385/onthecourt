@@ -18,8 +18,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const errors: Record<string, string> = {};
 
-  console.log(values);
-
   if (!values.email) errors.email = "Correo Electrónico es requerido";
   if (values.email && !validateEmail(values.email as string))
     errors.email = "Correo Electrónico no válido";
@@ -28,7 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
     errors.password = "Contraseña debe tener al menos 8 caracteres";
 
   if (Object.values(errors).length > 0) {
-    console.log(errors);
     return Response.json({ errors }, { status: 400 });
   }
 

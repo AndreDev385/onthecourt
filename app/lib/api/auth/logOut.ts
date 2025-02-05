@@ -16,9 +16,6 @@ export async function logOut(
   });
 
   const { data, errors } = await response.json();
-  console.log({
-    logOutData: data,
-  });
   return { data: data?.signOut, errors };
 }
 

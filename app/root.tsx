@@ -28,7 +28,22 @@ export const links: LinksFunction = () => [
 
 // root.tsx
 export function ErrorBoundary() {
-  return <ErrorDisplay />
+  return (
+    <html lang="es">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ErrorDisplay />
+        <ScrollRestoration />
+        <Scripts />
+        <Toaster />
+      </body>
+    </html>
+  )
 }
 
 export async function loader() {

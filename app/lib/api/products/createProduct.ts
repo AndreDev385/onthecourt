@@ -15,7 +15,6 @@ export async function createProduct(record: CreateProductInput) {
   });
 
   const { data, errors } = await response.json();
-  console.log(data, "data", errors, "errors");
   return { data: data?.createProduct, errors };
 }
 
@@ -34,8 +33,8 @@ type CreateProductInput = {
   variants: Array<{ tags: Array<string>; title: string }>;
   variantValues: Array<{
     value:
-      | { variant1: string; variant2?: string; variant3?: string }
-      | undefined;
+    | { variant1: string; variant2?: string; variant3?: string }
+    | undefined;
     price: number;
     compareAtPrice: number;
     sku: string;

@@ -13,43 +13,42 @@ export async function updateProduct(record: UpdateProductInput) {
   });
 
   const { data, errors } = await response.json();
-  console.log(data, errors, "updateProduct");
   return { data: data?.updateProduct, errors };
 }
 
 type UpdateProductInput = {
   filter: { _id: string };
   data:
-    | {
+  | {
+    title: string;
+    description: string;
+    dataSheet: string;
+    priority: number;
+    isService: boolean;
+    volatileInventory: boolean;
+    price: number;
+    compareAtPrice: number;
+    photos: string[];
+    brand: string;
+    categories: string[];
+    variants: {
+      create: {
         title: string;
-        description: string;
-        dataSheet: string;
-        priority: number;
-        isService: boolean;
-        volatileInventory: boolean;
-        price: number;
-        compareAtPrice: number;
-        photos: string[];
-        brand: string;
-        categories: string[];
-        variants: {
-          create: {
-            title: string;
-            tags: string[];
-          }[];
-          update: {
-            _id: string;
-            title: string;
-            tags: string[];
-          }[];
-        };
-        variantValues: {
-          create: Omit<UpdateVariantValue, "_id">[];
-          update: UpdateVariantValue[];
-        };
-        extraInfo: { name: string; value: string }[];
-      }
-    | { active: boolean };
+        tags: string[];
+      }[];
+      update: {
+        _id: string;
+        title: string;
+        tags: string[];
+      }[];
+    };
+    variantValues: {
+      create: Omit<UpdateVariantValue, "_id">[];
+      update: UpdateVariantValue[];
+    };
+    extraInfo: { name: string; value: string }[];
+  }
+  | { active: boolean };
 };
 
 type UpdateVariantValue = {

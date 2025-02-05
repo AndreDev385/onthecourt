@@ -15,7 +15,6 @@ export async function createBrand(name: string): Promise<ApiResponse<Brand>> {
   });
 
   const { data, errors } = await response.json();
-  console.log(data, errors);
   return { data: data?.createBrand?.record, errors };
 }
 

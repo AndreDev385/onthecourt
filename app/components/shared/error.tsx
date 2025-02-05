@@ -14,7 +14,6 @@ export default function ErrorDisplay() {
   let ErrorIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
   if (isRouteErrorResponse(error)) {
-    console.log({ error });
     switch (error.status) {
       case 404:
         errorTitle = "Página no encontrada";

@@ -13,7 +13,6 @@ export async function loader() {
   }
 
   invariant(data);
-  console.log(data, "data");
   return data;
 }
 

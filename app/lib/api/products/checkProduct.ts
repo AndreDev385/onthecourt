@@ -68,7 +68,6 @@ function checkVariant(variants: Array<Variant>): TCheckErrorMessage {
   const preCheck = checkArray(variants, "Variantes");
   if (preCheck.success) {
     for (const variant of variants) {
-      console.log(variant.tags, "VARIANT TAGS");
       const tagsCheck = checkArray(variant.tags, "Valores de las Variantes");
       if (!tagsCheck.success) {
         return tagsCheck;

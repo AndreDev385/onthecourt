@@ -17,7 +17,6 @@ export async function loader() {
 
 export default function DeliveryNotesPage() {
   const deliveryNotes = useLoaderData<typeof loader>();
-  console.log(deliveryNotes);
 
   return (
     <section className="container mx-auto py-10">

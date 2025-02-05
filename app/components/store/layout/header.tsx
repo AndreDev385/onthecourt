@@ -22,7 +22,6 @@ export function Header({
     active: boolean;
   }[];
 }) {
-  console.log({ configCategories })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [

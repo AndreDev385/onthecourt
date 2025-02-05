@@ -35,8 +35,6 @@ import {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getAdminSession(request.headers.get("Cookie"));
-
-  console.log("Has token", session.has("token"), session.data);
   if (!session.has("token")) {
     // Redirect to the home page if they are already signed in.
     return redirect("/admin-access");

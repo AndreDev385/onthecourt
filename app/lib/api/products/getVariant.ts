@@ -19,7 +19,6 @@ export async function getVariant(
   });
 
   const { data, errors } = await response.json();
-  console.log(data, errors, "GET_VARIANT_VALUE");
   return { data: data?.variantValue, errors };
 }
 

@@ -5,8 +5,6 @@ import {
 } from "../../../../node_modules/@splidejs/react-splide";
 
 export function ProductPhotoSlider({ photos, isMobile, selectedPhoto }: Props) {
-  console.log({ selectedPhoto })
-
   const mainRef = React.useRef<Splide>(null);
   const thumbnailRef = React.useRef<Splide>(null);
 

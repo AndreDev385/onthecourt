@@ -22,12 +22,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const shippingOptions = formData.getAll("shippingOptions");
   const intent = formData.get("intent");
 
-  console.log({
-    name,
-    address,
-    shippingOptions,
-  });
-
   invariant(_id, "Error al cargar datos de la sucursal");
 
   const errors: LocationFormErrors = {};

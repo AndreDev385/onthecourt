@@ -44,7 +44,6 @@ export default function Image({
             const storageRef = ref(storage, `products/${uuid()}`);
             const url = await uploadString(storageRef, src, "data_url").then(
               (snapshot) => {
-                console.log("snapshot", snapshot);
                 return getDownloadURL(snapshot.ref);
               }
             );
@@ -53,7 +52,6 @@ export default function Image({
             updateSrc!(id as string, url);
           } catch (err) {
             if (err instanceof Error) {
-              console.log(err);
               toast({
                 variant: "destructive",
                 title: "Error al subir imagen",
@@ -95,11 +93,10 @@ export default function Image({
   drag(drop(divRef));
   return (
     <div
-      className={`block relative mr-2 mb-2 ${
-        isDragging || uploading
-          ? "opacity-25 border border-indigo-700 border-dashed"
-          : "opacity-100"
-      }`}
+      className={`block relative mr-2 mb-2 ${isDragging || uploading
+        ? "opacity-25 border border-indigo-700 border-dashed"
+        : "opacity-100"
+        }`}
       ref={divRef}
     >
       <img
