@@ -28,6 +28,7 @@ export function VariantList({ variantValues = [], _id }: VariantListProps) {
                   <Link
                     to={`/admin/product-variants/${_id}/${id}`}
                     className="my-auto text-gray-700"
+                    prefetch="intent"
                   >
                     {[value?.variant1, value?.variant2, value?.variant3]
                       .filter((x) => !!x)

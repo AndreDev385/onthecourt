@@ -117,14 +117,13 @@ export default function ProductDetailPage() {
     }
   }, [])
 
-  React.useEffect(() => {
+  React.useEffect(function updatePrice() {
     if (product) {
       if (!product?.isService && data?.selectedLocation) {
         setVariantValues(
           product.variantValues.filter(
-            (variantValue) =>
-              variantValue.location._id === data?.selectedLocation,
-          ),
+            (variantValue) => variantValue.location._id === data?.selectedLocation
+          )
         );
       }
     }
@@ -136,7 +135,7 @@ export default function ProductDetailPage() {
         {/* Div for desktop */}
         <div className="col-span-7 hidden lg:block top-24 self-start md:sticky">
           <div className="flex justify-center">
-            <ProductPhotoSlider isMobile={false} photos={product.photos} />
+            <ProductPhotoSlider isMobile={false} photos={product.photos} selectedPhoto={selectedVariant?.photo} />
           </div>
         </div>
         {/* aside for desktop - mobile complete*/}
@@ -151,7 +150,7 @@ export default function ProductDetailPage() {
           />
           {/* Images in mobile for mobile */}
           <div className="lg:hidden -mx-6 mb-4">
-            <ProductPhotoSlider isMobile photos={product.photos} />
+            <ProductPhotoSlider isMobile photos={product.photos} selectedPhoto={selectedVariant?.photo} />
           </div>
           {/* Variants*/}
           <div className="mb-4">
@@ -229,7 +228,6 @@ async function handleAddProductToCart(
   form: Record<string, FormDataEntryValue>
 ) {
   const errors: FormErrors = {};
-  console.log({ form });
 
   invariant(form.productId, "Ha ocurrido un error al agregar al carrito");
   invariant(form.shopCartId, "Ha ocurrido un error al agregar al carrito");
@@ -269,6 +267,7 @@ type SelectedVariant = {
   price: number;
   compareAtPrice: number;
   location: { _id: string };
+  photo?: string;
   quantity?: number;
 };
 

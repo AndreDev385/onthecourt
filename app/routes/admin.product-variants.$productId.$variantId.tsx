@@ -77,9 +77,9 @@ export async function action({ request }: ActionFunctionArgs) {
       variantId: String(variantId),
       record: {
         value: {
-          variant1: String(variant1),
-          variant2: String(variant2),
-          variant3: String(variant3),
+          variant1: variant1 ? String(variant1) : "",
+          variant2: variant2 ? String(variant2) : "",
+          variant3: variant3 ? String(variant3) : "",
         },
         price: Number(price) * 100,
         compareAtPrice: Number(compareAtPrice) * 100,
@@ -122,7 +122,7 @@ export default function ProductVariants() {
   const [prev, setPrev] = React.useState<string>();
   const [next, setNext] = React.useState<string>();
 
-  React.useEffect(() => {
+  React.useEffect(function showToast() {
     if (actionData) {
       if (actionData.success) {
         toast({
@@ -134,9 +134,7 @@ export default function ProductVariants() {
       } else if (actionData.errors?.apiError) {
         toast({
           title: "Error",
-          description: `${
-            actionData.errors?.apiError
-          }\nNo se ha podido ${mapIntentToMessage(
+          description: `${actionData.errors?.apiError}\nNo se ha podido ${mapIntentToMessage(
             actionData.intent
           )} la variante.`,
           variant: "destructive",
@@ -145,7 +143,7 @@ export default function ProductVariants() {
     }
   }, [actionData, toast]);
 
-  React.useEffect(() => {
+  React.useEffect(function changeVariant() {
     if (product.variantValues && product.variantValues.length > 1) {
       const idx = product.variantValues.findIndex(
         (vv) => vv._id === variant._id
@@ -202,6 +200,7 @@ export default function ProductVariants() {
                   variant2={variant.value?.variant2 as string}
                   variant3={variant.value?.variant3 as string}
                   photo={variant.photo}
+                  photos={product.photos ?? []}
                   titles={product.variants?.map(({ title }) => title)}
                   errors={actionData?.errors}
                 />
@@ -234,8 +233,8 @@ export default function ProductVariants() {
                       ? "Activando"
                       : "Activar"
                     : isToggling
-                    ? "Eliminando"
-                    : "Eliminar"}
+                      ? "Eliminando"
+                      : "Eliminar"}
                 </Button>
                 <Button
                   disabled={isToggling || isSaving}
