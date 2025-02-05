@@ -24,9 +24,6 @@ export function ProductForm({
 }: Props) {
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  console.log("PRODUCT FORM");
-
   /* other state */
   const [basicInfo, setBasicInfo] = React.useState<BasicInfo>({
     title: "",
@@ -48,7 +45,6 @@ export function ProductForm({
     []
   );
 
-  console.log(variantValues, "variantValues");
   const [disabledButton, setDisabledButton] = React.useState(false);
   const updateBasicInfo = React.useCallback(setBasicInfo, [setBasicInfo]);
   const updateVariants = React.useCallback(setVariants, [setVariants]);

@@ -10,7 +10,6 @@ export async function getProducts(
 ): Promise<ApiResponse<Response>> {
   if (filter.categories?.length === 0) delete filter.categories;
   const cleanFilters = removeFalsyValues(filter);
-  console.log({ cleanFilters });
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {

@@ -18,7 +18,6 @@ export async function updateShipping(
   });
 
   const { errors } = await response.json();
-  console.log(errors, "errors api call");
   return { data: null, errors };
 }
 

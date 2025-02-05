@@ -19,7 +19,6 @@ export async function getOrder(
   });
 
   const { data, errors } = await response.json();
-  console.log({ data, errors });
   return { errors, data: data };
 }
 

@@ -68,8 +68,6 @@ export default function OrderSectionPage() {
 
   const { toast } = useToast();
 
-  console.log(order.status, "STATUS");
-
   React.useEffect(() => {
     if (actionData?.error) {
       toast({

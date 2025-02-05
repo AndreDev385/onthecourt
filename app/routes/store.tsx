@@ -18,6 +18,7 @@ import { Header } from "~/components/store/layout/header";
 import { locationCookie } from "~/cookies.server";
 import { useToast } from "~/hooks/use-toast";
 import { logOut } from "~/lib/api/auth/logOut";
+import { getFeaturedCategories } from "~/lib/api/cms/getCategories";
 import { getLocations } from "~/lib/api/locations/getLocations";
 import { getCurrentUser } from "~/lib/api/users/getCurrentUser";
 
@@ -32,13 +33,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const selectedLocation = (await locationCookie.parse(cookieHeader)) || {};
 
   const { data: locations } = await getLocations();
+  const { data: configCategories } = await getFeaturedCategories();
+
   if (!session.has("token")) {
-    return { user: null, locations, selectedLocation };
+    return { user: null, locations, selectedLocation, configCategories };
   }
 
   const { data } = await getCurrentUser(session.data.token!);
   invariant(data, "Usuario no encontrado");
-  return { user: data, locations, selectedLocation };
+  return { user: data, locations, selectedLocation, configCategories };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -76,6 +79,7 @@ export default function Store() {
         user={data.user}
         locations={data.locations}
         selectedLocation={data.selectedLocation}
+        configCategories={data.configCategories?.categories}
       />
       <div className="flex-1">
         <Outlet />

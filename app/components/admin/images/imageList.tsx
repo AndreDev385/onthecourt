@@ -22,7 +22,6 @@ export default function ImageList({
         const copyOfImages = _images.slice();
         const idx = copyOfImages.findIndex((img) => img.id === id);
         copyOfImages[idx] = { id, src };
-        console.log(copyOfImages, "images");
         return copyOfImages;
       });
     },

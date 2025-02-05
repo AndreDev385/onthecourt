@@ -29,8 +29,6 @@ export async function action({ request }: ActionFunctionArgs) {
   if (isNaN(numberPrice)) errors.price = "El precio debe ser un número";
   if (numberPrice <= 0) errors.price = "El precio debe ser mayor a cero";
 
-  console.log(errors, "form errors");
-
   if (Object.values(errors).length > 0) {
     return { errors, intent: String(intent) };
   }
@@ -54,7 +52,6 @@ export async function action({ request }: ActionFunctionArgs) {
       });
     }
   } catch (error) {
-    console.log(error, "error");
     errors.apiError = true;
     return { errors, intent: String(intent) };
   }

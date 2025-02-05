@@ -21,15 +21,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const type = formData.get("type");
   const expirationDate = formData.get("expirationDate");
 
-  console.log(formData);
-  console.log({
-    name,
-    code,
-    discount,
-    type,
-    expirationDate,
-  });
-
   const errors: PromoCodeFormErrors = {};
 
   if (!name) errors.name = "El nombre es obligatorio";

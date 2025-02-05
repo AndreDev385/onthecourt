@@ -27,7 +27,6 @@ export async function createInvoice(
   });
 
   const { errors } = await response.json();
-  console.log(JSON.stringify(errors), "CREATE_BILL");
   if (errors && Object.values(errors).length > 0) {
     await updateDeliveryNote(input.deliveryNoteId, false);
     return { errors, data: null };
@@ -71,7 +70,6 @@ async function updateDeliveryNote(
   });
 
   const { errors } = await response.json();
-  console.log(errors, "UPDATE_DELIVERY_NOTE");
   return { data: null, errors };
 }
 

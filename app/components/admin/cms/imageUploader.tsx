@@ -51,7 +51,6 @@ const ImageUploader = ({ image, updateImage, canEdit, src }: Props) => {
                   src,
                   "data_url"
                 ).then((snapshot) => {
-                  console.log("snapshot", snapshot);
                   return getDownloadURL(snapshot.ref);
                 });
 
@@ -83,11 +82,10 @@ const ImageUploader = ({ image, updateImage, canEdit, src }: Props) => {
     <>
       {image && (
         <div
-          className={`w-32 relative mt-4 ${
-            uploading
+          className={`w-32 relative mt-4 ${uploading
               ? "opacity-25 border border-indigo-700 border-dashed"
               : "opacity-100"
-          }`}
+            }`}
         >
           <img className="w-full" src={image.src as string} alt="Slider" />
           {canEdit && (

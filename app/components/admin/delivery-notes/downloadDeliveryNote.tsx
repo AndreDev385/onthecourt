@@ -29,7 +29,7 @@ export function DownloadDeliveryNote({ deliveryNote, order }: Props) {
         .createPdf(generateDeliveryNoteDD(deliveryNote, order))
         .download(`nota-de-entrega-${deliveryNote.controlNumber}.pdf`);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setDisabled(false);
       nProgress.done();

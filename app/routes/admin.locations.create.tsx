@@ -18,12 +18,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const address = formData.get("address");
   const shippingOptions = formData.getAll("shippingOptions");
 
-  console.log({
-    name,
-    address,
-    shippingOptions,
-  });
-
   const errors: LocationFormErrors = {};
   if (!name) errors.name = "El nombre es obligatorio";
   if (!address) errors.address = "La dirección es obligatoria";

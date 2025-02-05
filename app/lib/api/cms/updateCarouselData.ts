@@ -18,8 +18,7 @@ export async function updateCarouselData(
       },
     }),
   });
-  const { errors, data } = await response.json();
-  console.log({ data: data.updateSetting });
+  const { errors } = await response.json();
   return { errors, data: null };
 }
 

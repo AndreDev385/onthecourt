@@ -89,7 +89,6 @@ export function getDiscount(subtotal: number, _promoCode: PromoCode | null) {
   if (_discount < 0) {
     _discount = subtotal;
   }
-  console.log(_discount, subtotal, _promoCode.discount, "DESCUENTO");
   return _discount;
 }
 

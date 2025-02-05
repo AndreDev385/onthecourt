@@ -16,8 +16,7 @@ export async function updateBanner(input: Input): Promise<ApiResponse<null>> {
       },
     }),
   });
-  const { errors, data } = await response.json();
-  console.log({ data: data.updateSetting });
+  const { errors } = await response.json();
   return { errors, data: null };
 }
 
