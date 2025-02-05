@@ -11,7 +11,7 @@ import type { LinksFunction } from "@remix-run/node";
 import "./tailwind.css";
 import "@splidejs/react-splide/css";
 import { Toaster } from "./components/ui/toaster";
-import ErrorDisplay from "./components/shared/error";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,25 +26,6 @@ export const links: LinksFunction = () => [
   },
 ];
 
-// root.tsx
-export function ErrorBoundary() {
-  return (
-    <html lang="es">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <ErrorDisplay />
-        <ScrollRestoration />
-        <Scripts />
-        <Toaster />
-      </body>
-    </html>
-  )
-}
 
 export async function loader() {
   return {
@@ -83,8 +64,70 @@ export default function Root() {
         />
         <ScrollRestoration />
         <Scripts />
-        <Toaster />
+        {typeof document !== 'undefined' && <Toaster />}
       </body>
     </html>
+  );
+}
+
+export function ErrorBoundary() {
+  return (<html lang="es">
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <Meta />
+      <Links />
+    </head>
+    <body>
+      <SimpleError />
+      <ScrollRestoration />
+      <Scripts />
+    </body>
+  </html>)
+}
+
+function SimpleError() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: '1rem',
+      backgroundColor: '#f8f9fa'
+    }}>
+      <ExclamationTriangleIcon
+        style={{
+          width: '48px',
+          height: '48px',
+          color: '#dc3545',
+          marginBottom: '1rem'
+        }}
+      />
+
+      <h1 style={{
+        fontSize: '1.5rem',
+        color: '#212529',
+        marginBottom: '2rem'
+      }}>
+        Ha ocurrido un error
+      </h1>
+
+      <a
+        href="/"
+        style={{
+          padding: '0.5rem 1rem',
+          backgroundColor: '#3ABF33',
+          color: 'white',
+          textDecoration: 'none',
+          borderRadius: '0.375rem',
+          fontSize: '1rem'
+        }}
+      >
+        Ir a la página de inicio
+      </a>
+    </div>
   );
 }
