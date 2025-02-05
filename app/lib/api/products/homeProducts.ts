@@ -12,6 +12,10 @@ export async function getHomeProducts(): Promise<ApiResponse<Response>> {
     }),
   });
 
+  if (response.status != 200) {
+    return { errors: { message: "Ha ocurrido un error" } }
+  }
+
   const { data, errors } = await response.json();
   return { data: data?.homeProducts, errors };
 }

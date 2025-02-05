@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import ErrorDisplay from "~/components/shared/error";
+import ErrorDisplay, { ErrorComponent } from "~/components/shared/error";
 import { ProductCard } from "~/components/store/products/productCard";
 import { getBrands } from "~/lib/api/brands/getBrands";
 import { getCategories } from "~/lib/api/categories/getCategories";
@@ -23,6 +23,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
     brand,
     categories,
   });
+
+  console.log({ errors, brandErrors, categoryErrors })
 
   if (errors && Object.values(errors).length > 0)
     throw new Response("Ha ocurrido un error al buscar productos", {
@@ -47,7 +49,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export default function Page() {
   const { items } = useLoaderData<typeof loader>();
 
-  return (
+  return items.length > 0 ? (
     <div className="my-16 px-2 grid grid-cols-1 gap-4 md:grid-cols-[auto,1fr]">
       <div></div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -56,7 +58,9 @@ export default function Page() {
         ))}
       </div>
     </div>
-  );
+  ) : (
+    <ErrorComponent errorTitle="No encontrado" errorMessage="No se han encontrado productos con los criterios de búsqueda" />
+  )
 }
 
 export function ErrorBoundary() {

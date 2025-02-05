@@ -8,7 +8,6 @@ import {
 import { Button } from "~/components/ui/button";
 import { ActionFunctionArgs } from "@remix-run/node";
 import { getCarouselData } from "~/lib/api/cms/getCarouselData";
-import invariant from "tiny-invariant";
 import { SlideForm } from "~/components/admin/cms/slideForm";
 import { Loader2, Plus } from "lucide-react";
 import { Separator } from "~/components/ui/separator";
@@ -27,8 +26,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const carouselData: { title: string; description: string; url: string }[] =
     [];
 
-  console.log({ data });
-
   for (const idx in data.url) {
     if (String(data.url[idx]) == "") {
       return { error: "Todos los slides deben tener una imagen" };
@@ -39,7 +36,6 @@ export async function action({ request }: ActionFunctionArgs) {
       url: String(data.url[idx]),
     });
   }
-  console.log({ carouselData });
 
   const { errors } = await updateCarouselData({ carouselImages: carouselData });
 
@@ -58,19 +54,18 @@ export async function loader() {
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error cargando carousel");
   }
-  invariant(data, "Error cargando carousel");
   return data;
 }
 
 export default function CarouselPage() {
-  const { carouselImages: _carouselImages } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
 
   const submitting = navigation.state === "submitting";
   const { toast } = useToast();
 
-  const [carouselImages, setCarouselImages] = React.useState(_carouselImages);
+  const [carouselImages, setCarouselImages] = React.useState(data?.carouselImages ?? []);
   function addSlide() {
     setCarouselImages((prevState) => [
       ...prevState,

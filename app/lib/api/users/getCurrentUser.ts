@@ -15,6 +15,10 @@ export async function getCurrentUser(
     }),
   });
 
+  if (response.status != 200) {
+    return { errors: { message: "Ha ocurrido un error" } }
+  }
+
   const { data, errors } = await response.json();
   return { data: data.me, errors };
 }

@@ -7,7 +7,6 @@ import {
 } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { ActionFunctionArgs } from "@remix-run/node";
-import invariant from "tiny-invariant";
 import { SlideForm } from "~/components/admin/cms/slideForm";
 import { Loader2, Plus } from "lucide-react";
 import { Separator } from "~/components/ui/separator";
@@ -26,8 +25,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const promotions: { title: string; description: string; url: string }[] = [];
 
-  console.log({ data });
-
   for (const idx in data.url) {
     if (String(data.url[idx]) == "") {
       return { error: "Todos los slides deben tener una imagen" };
@@ -38,7 +35,6 @@ export async function action({ request }: ActionFunctionArgs) {
       url: String(data.url[idx]),
     });
   }
-  console.log({ promotions });
 
   const { errors } = await updatePromotions({ promotions });
 
@@ -57,19 +53,18 @@ export async function loader() {
   if (errors && Object.values(errors).length > 0) {
     throw new Error("Error cargando promociones");
   }
-  invariant(data, "Error cargando promociones");
   return data;
 }
 
 export default function PromotionsPage() {
-  const { promotions: _promotions } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
 
   const submitting = navigation.state === "submitting";
   const { toast } = useToast();
 
-  const [promotions, setPromotions] = React.useState(_promotions);
+  const [promotions, setPromotions] = React.useState(data?.promotions ?? []);
   function addSlide() {
     setPromotions((prevState) => [
       ...prevState,

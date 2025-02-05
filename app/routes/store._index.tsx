@@ -1,5 +1,4 @@
 import { useLoaderData } from "@remix-run/react";
-import invariant from "tiny-invariant";
 import ErrorDisplay from "~/components/shared/error";
 import { Carousel } from "~/components/store/landing/carousel";
 import Hero from "~/components/store/landing/hero";
@@ -15,7 +14,6 @@ export async function loader() {
       status: 500,
     });
   }
-  invariant(products, "Ha ocurrido un error al cargar los productos");
 
   const { data: landingInfo, errors: landingErrors } = await getLandingInfo();
   if (landingErrors && Object.values(landingErrors).length > 0)
@@ -25,10 +23,7 @@ export async function loader() {
         status: 500,
       }
     );
-  invariant(
-    landingInfo,
-    "Ha ocurrido un error al cargar la información de inicio"
-  );
+
   return { products, ...landingInfo };
 }
 
@@ -38,7 +33,11 @@ export default function LandingPage() {
 
   return (
     <div>
-      <SportsBanner message={banner.text} visible={banner.active} />
+      {
+        banner ? (
+          <SportsBanner message={banner.text} visible={banner.active} />
+        ) : null
+      }
       <section className="" id="hero">
         <Hero />
       </section>
@@ -58,13 +57,21 @@ export default function LandingPage() {
         </div>
       </section>
       <section id="carousel">
-        <Carousel carouselImages={carouselImages} />
+        {
+          carouselImages ? (
+            <Carousel carouselImages={carouselImages} />
+          ) : null
+        }
       </section>
       <section className="my-24" id="popular">
-        <HomeProducts products={products} />
+        <HomeProducts products={products ?? []} />
       </section>
       <section id="banner">
-        <Carousel carouselImages={promotions} />
+        {
+          promotions ? (
+            <Carousel carouselImages={promotions} />
+          ) : null
+        }
       </section>
     </div>
   );

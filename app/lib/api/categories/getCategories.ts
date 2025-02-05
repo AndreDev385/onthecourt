@@ -22,6 +22,7 @@ export const GET_CATEGORIES = `#graphql
     categories(skip: $skip, limit: $limit) {
       _id
       name
+      slug
       active
     }
   }

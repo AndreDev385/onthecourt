@@ -31,7 +31,7 @@ export default function FullWidthHero() {
           </Button>
           <Button variant="ghost" className="text-white font-semibold">
             <Link
-              to="/store/cateogories"
+              to="/store/categories"
             >
               Categorías <span aria-hidden="true">→</span>
             </Link>
