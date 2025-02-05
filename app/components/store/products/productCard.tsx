@@ -15,6 +15,7 @@ export function ProductCard({ product }: Props) {
       <Link
         className="w-full aspect-square flex"
         to={`/store/product-detail/${product.slug}`}
+        prefetch="viewport"
       >
         <img
           className="block h-auto w-full object-cover object-center"
@@ -24,7 +25,7 @@ export function ProductCard({ product }: Props) {
       </Link>
       <div className="p-4 w-full">
         <h2 className="text-gray-800">{product?.title}</h2>
-        <ProductRating rating={product.rating!} readonly={true} />
+        <ProductRating rating={product.rating!} />
         {getPrice(product.variantValues!) ? (
           <p className="leading-normal my-1 font-bold">
             $ {formatMoney(getPrice(product.variantValues!))}

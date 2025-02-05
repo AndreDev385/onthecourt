@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { Outlet } from "@remix-run/react";
+import { Outlet, useLocation } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getProductDashboard } from "~/lib/api/products/getProductDashboard";
 
@@ -14,5 +14,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function ProductVariants() {
-  return <Outlet />;
+  const { pathname } = useLocation();
+  return <Outlet key={pathname} />;
 }

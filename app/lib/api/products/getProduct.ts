@@ -65,6 +65,7 @@ type Response = {
       };
       price: number;
       compareAtPrice: number;
+      photo?: string;
       quantity: number;
       _id: string;
     }[];
@@ -126,6 +127,7 @@ const GET_PRODUCT = `#graphql
             _id
           }
           price
+          photo
           compareAtPrice
           quantity
           _id

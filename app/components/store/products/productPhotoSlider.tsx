@@ -4,7 +4,9 @@ import {
   SplideSlide,
 } from "../../../../node_modules/@splidejs/react-splide";
 
-export function ProductPhotoSlider({ photos, isMobile }: Props) {
+export function ProductPhotoSlider({ photos, isMobile, selectedPhoto }: Props) {
+  console.log({ selectedPhoto })
+
   const mainRef = React.useRef<Splide>(null);
   const thumbnailRef = React.useRef<Splide>(null);
 
@@ -18,9 +20,34 @@ export function ProductPhotoSlider({ photos, isMobile }: Props) {
     }
   }, []);
 
+  const initialSlide = React.useMemo(() => {
+    if (!selectedPhoto) return 0;
+    const index = photos.indexOf(selectedPhoto);
+    return index !== -1 ? index : 0;
+  }, [selectedPhoto, photos]);
+
+  React.useEffect(() => {
+    if (
+      mainRef.current &&
+      thumbnailRef.current &&
+      thumbnailRef.current.splide
+    ) {
+      mainRef.current.sync(thumbnailRef.current.splide);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    if (selectedPhoto) {
+      const index = photos.indexOf(selectedPhoto);
+      if (index !== -1 && mainRef.current?.splide) {
+        mainRef.current.go(index);
+      }
+    }
+  }, [selectedPhoto, photos]);
+
   return (
     <div className="w-full h-full flex flex-col md:flex-row gap-4">
-      {!isMobile && (
+      {!isMobile ? (
         <div className=" w-24 xl:w-36 h-full">
           <Splide
             ref={thumbnailRef}
@@ -49,7 +76,7 @@ export function ProductPhotoSlider({ photos, isMobile }: Props) {
             ))}
           </Splide>
         </div>
-      )}
+      ) : null}
       <div className="flex-1">
         <Splide
           ref={mainRef}
@@ -60,6 +87,7 @@ export function ProductPhotoSlider({ photos, isMobile }: Props) {
             pagination: isMobile,
             arrows: false,
             height: isMobile ? "auto" : "100%",
+            start: initialSlide,
           }}
           aria-label="Product Photos"
           className="h-full"
@@ -82,6 +110,7 @@ export function ProductPhotoSlider({ photos, isMobile }: Props) {
 }
 
 type Props = {
+  selectedPhoto?: string;
   isMobile: boolean;
   photos: string[];
 };
