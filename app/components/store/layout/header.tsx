@@ -10,8 +10,10 @@ export function Header({
   user,
   locations,
   selectedLocation,
+  configCategories,
 }: {
   selectedLocation?: string;
+  configCategories?: { name: string; slug: string, _id: string }[]
   user?: CurrentUser | null;
   locations?: {
     _id: string;
@@ -20,6 +22,7 @@ export function Header({
     active: boolean;
   }[];
 }) {
+  console.log({ configCategories })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
@@ -31,13 +34,21 @@ export function Header({
       href: "/store/products",
       text: "Productos",
     },
+    {
+      href: "/store/brands",
+      text: "Marcas",
+    },
+    {
+      href: "/store/categories",
+      text: "Categorías",
+    },
   ];
 
   const isLoggedIn = !!user;
 
   return (
     <header className="bg-gray-900 text-white">
-      <div className="container mx-auto py-4 grid grid-cols-3 items-center justify-between">
+      <div className="container mx-auto pt-4 grid grid-cols-3 items-center justify-between">
         {/* Mobile Menu Icon */}
         <div className="lg:hidden ml-4">
           <Menu
@@ -66,7 +77,7 @@ export function Header({
               <li className="flex justify-center items-center" key={link.href}>
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg text-white"
+                  className="text-lg text-white hover:text-[#3ABF33]"
                   to={link.href}
                   prefetch="intent"
                 >
@@ -78,7 +89,7 @@ export function Header({
               <li className="flex justify-center items-center">
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg text-white"
+                  className="text-lg text-white hover:text-[#3ABF33]"
                   to="/store/orders/list"
                   prefetch="intent"
                 >
@@ -89,7 +100,7 @@ export function Header({
               <li className="flex justify-center items-center">
                 <Link
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg text-white"
+                  className="text-lg text-white hover:text-[#3ABF33]"
                   to="/store/sign-in"
                 >
                   Ingresar
@@ -185,6 +196,23 @@ export function Header({
           </div>
         </div>
       ) : null}
+      <div
+        className="px-0 sm:px-14 text-xs xl:text-sm leading-normal text-gray-100 py-2"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
+      >
+        <ul className="flex flex-row justify-around items-center border-0 overflow-x-auto">
+          {configCategories?.map((category) => (
+            <li key={category.name} className="px-4 py-1 lg:px-2">
+              <Link
+                to={`/store/products/1?category=${category._id}`}
+                className={`block relative hover:text-[#3ABF33] outline-none focus:outline-none`}
+              >
+                {category.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </header>
   );
 }
