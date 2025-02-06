@@ -47,7 +47,7 @@ export function Header({
 
   return (
     <header className="bg-gray-900 text-white">
-      <div className="container mx-auto pt-4 grid grid-cols-3 items-center justify-between">
+      <div className="container mx-auto py-2 grid grid-cols-3 items-center justify-between">
         {/* Mobile Menu Icon */}
         <div className="lg:hidden ml-4">
           <Menu
