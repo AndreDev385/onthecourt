@@ -201,10 +201,10 @@ export function Header({
       >
         <ul className="flex flex-row justify-around items-center border-0 overflow-x-auto">
           {configCategories?.map((category) => (
-            <li key={category.name} className="px-4 py-1 lg:px-2">
+            <li key={category.name} className="py-1 px-2 lg:px-0">
               <Link
                 to={`/store/products/1?category=${category._id}`}
-                className={`block relative hover:text-[#3ABF33] outline-none focus:outline-none`}
+                className={`text-sm block relative hover:text-[#3ABF33] outline-none focus:outline-none`}
               >
                 {category.name}
               </Link>
