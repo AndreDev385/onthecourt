@@ -64,6 +64,7 @@ export default function Root() {
         />
         <ScrollRestoration />
         <Scripts />
+        <Toaster />
         {typeof document !== 'undefined' && <Toaster />}
       </body>
     </html>

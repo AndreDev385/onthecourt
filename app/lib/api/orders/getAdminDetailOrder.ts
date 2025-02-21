@@ -37,6 +37,7 @@ type Response = {
     total: number;
     commission: number;
     phone: string;
+    address: string;
     products: {
       title: string;
       photo: string;
@@ -58,6 +59,7 @@ type Response = {
       bank: string;
       method: string;
       amount: number;
+      capture?: string;
       createdAt: string;
     }[];
     updatedAt: string;
@@ -81,6 +83,7 @@ export const GET_ORDER = `#graphql
       total
       commission
       phone
+      address
       products {
         title
         photo
@@ -103,6 +106,7 @@ export const GET_ORDER = `#graphql
         method
         amount
         createdAt
+        capture
       }
       updatedAt
       createdAt

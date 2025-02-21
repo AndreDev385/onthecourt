@@ -25,6 +25,7 @@ type CreateOrderInput = {
   charges: {
     method: string;
     bank: string;
+    capture: string;
     ref: string;
     amount: number;
   }[];

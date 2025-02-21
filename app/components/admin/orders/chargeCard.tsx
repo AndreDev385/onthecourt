@@ -1,6 +1,6 @@
 import { formatDistance } from "date-fns";
 import { es } from "date-fns/locale";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { Card, CardContent } from "~/components/ui/card";
 import { formatMoney } from "~/lib/utils";
 
 type ChargeCardProps = {
@@ -9,6 +9,7 @@ type ChargeCardProps = {
     bank: string;
     method: string;
     amount: number;
+    capture?: string;
     createdAt: string;
   }[];
 };
@@ -43,6 +44,18 @@ function ChargeCard({ charges }: ChargeCardProps) {
                 <div className="flex justify-between">
                   <p>Referencia</p>
                   <p className="">{charge.ref}</p>
+                </div>
+              ) : null}
+              {charge.capture ? (
+                <div className="flex justify-between">
+                  <a
+                    href={charge.capture}
+                    className="underline"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Ver capture
+                  </a>
                 </div>
               ) : null}
             </li>

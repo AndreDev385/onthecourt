@@ -1,6 +1,6 @@
 import { Card, CardContent } from "~/components/ui/card";
 
-export function ClientCard({ name, email, phone = "" }: Props) {
+export function ClientCard({ name, email, address = "", phone = "" }: Props) {
   return (
     <Card>
       <CardContent className="p-4 flex flex-col gap-2">
@@ -8,6 +8,7 @@ export function ClientCard({ name, email, phone = "" }: Props) {
         <p>{name}</p>
         <p>{email}</p>
         <p>{phone ?? ""}</p>
+        <p>{address ?? ""}</p>
       </CardContent>
     </Card>
   );
@@ -16,5 +17,6 @@ export function ClientCard({ name, email, phone = "" }: Props) {
 type Props = {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
+  address: string;
 };

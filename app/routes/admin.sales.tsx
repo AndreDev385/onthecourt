@@ -31,14 +31,16 @@ export default function SalesLayout() {
           {orders.length > 0 ? (
             <div className="grid grid-cols-[auto,1fr] gap-4 border border-gray-200 rounded-lg min-h-[60vh]">
               {/* Orders List */}
-              <div className="sticky h-full overflow-y-scroll px-4">
+              <div className="sticky h-full overflow-y-scroll p-4">
                 {orders.map((o) => (
                   <Link
                     key={o._id}
                     to={`/admin/sales/${o._id}`}
                     prefetch="intent"
                   >
-                    <div className="flex flex-col gap-2 border-b border-gray-200 py-4 px-2 last:border-none w-[300px]">
+                    <div
+                      className="flex flex-col gap-2 border-b border-gray-200 py-4 px-2 last:border-none w-[300px] hover:bg-gray-100"
+                    >
                       <div className="flex justify-between">
                         <p>{o.client.name}</p>
                         <p>${formatMoney(o.total)}</p>

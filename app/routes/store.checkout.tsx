@@ -82,6 +82,7 @@ export async function action({ request }: ActionFunctionArgs) {
         bank: "",
         ref: form.payMethod === "efectivo" ? "efectivo" : String(form.ref),
         amount: (subTotal - discount + selectedShipping.price) * rate,
+        capture: String(form.image),
       },
     ],
     phone: String(form.phoneNumber),

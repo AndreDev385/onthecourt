@@ -33,11 +33,21 @@ export type OrderValue = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 
 type Methods = Array<{ title: string; value: string; currency: string }>;
 
+export function requiresCapture(method: typeof PAYMETHODS_VALUES[keyof typeof PAYMETHODS_VALUES]) {
+  if (method === "punto") return false;
+  if (method === "efectivo") return false
+  return true;
+}
+
 export const PAYMETHODS_VALUES = {
-  paypal: "paypal",
-  zelle: "zelle",
+  // bs
   transferencia: "transferencia",
   pago_movil: "pago movil",
+  punto: "punto",
+  // $
+  zelle: "zelle",
+  paypal: "paypal",
+  efectivo: "efectivo"
 } as const;
 
 export const PAYMENT_METHODS: Methods = [
@@ -50,6 +60,11 @@ export const PAYMENT_METHODS: Methods = [
     title: "Pago móvil",
     value: "pago movil",
     currency: "Bolivar",
+  },
+  {
+    title: "Punto",
+    value: "punto",
+    currency: "Bolivar"
   },
   {
     title: "Zelle",

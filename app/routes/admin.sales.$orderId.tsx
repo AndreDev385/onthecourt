@@ -43,11 +43,10 @@ export default function OrderDetailPage() {
                 <Button variant="ghost">
                   <Link
                     prefetch="intent"
-                    className={`text-lg ${
-                      location.pathname === route.path
-                        ? "text-black font-bold"
-                        : "text-gray-500"
-                    }`}
+                    className={`text-lg ${location.pathname === route.path
+                      ? "text-black font-bold"
+                      : "text-gray-500"
+                      }`}
                     to={route.path}
                   >
                     {route.label}
@@ -63,7 +62,8 @@ export default function OrderDetailPage() {
               <ClientCard
                 name={order.client.name ?? ""}
                 email={order.client.email ?? ""}
-                phone={order.phone ?? ""}
+                phone={order.phone}
+                address={order.address}
               />
               <ChargeCard charges={order.charges} />
             </div>
