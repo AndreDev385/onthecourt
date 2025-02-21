@@ -28,6 +28,7 @@ export function ProductCardSlider({ products }: ProductCardSliderProps) {
         arrows: false,
       }}
       aria-label="Product Slider"
+      className="w-full"
     >
       {products.map((product) => (
         <SplideSlide key={product._id}>

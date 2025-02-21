@@ -7,7 +7,9 @@ import {
   Outlet,
   redirect,
   useActionData,
+  useFetcher,
   useLoaderData,
+  useLocation,
 } from "@remix-run/react";
 import React from "react";
 import invariant from "tiny-invariant";
@@ -62,6 +64,25 @@ export default function Store() {
   const data = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { toast } = useToast();
+
+  const location = useLocation();
+  const fetcher = useFetcher()
+
+  React.useEffect(function defaultLocation() {
+    console.log({
+      first: Object.values(data.selectedLocation).length,
+      second: data.locations?.length === 1
+    })
+    if (Object.values(data.selectedLocation).length === 0 && data.locations?.length === 1) {
+      console.log("enter if")
+      const formData = new FormData();
+      formData.set("location", data.locations[0]._id);
+      formData.set("path", location.pathname);
+      formData.set("intent", "change-location");
+      fetcher.submit(formData, { method: "post" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   React.useEffect(() => {
     if (actionData?.error) {

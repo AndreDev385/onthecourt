@@ -16,7 +16,8 @@ import { getPromoCode } from "~/lib/api/promoCodes/getPromoCode";
 import { Loader2 } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { CurrentUser } from "~/lib/api/users/getCurrentUser";
-import { PAYMENT_METHODS, PAYMETHODS_VALUES } from "~/lib/constants";
+import { PAYMENT_METHODS, PAYMETHODS_VALUES, requiresCapture } from "~/lib/constants";
+import { UploadCapture } from "./uploadCapture";
 
 export function CheckoutForm({
   user,
@@ -37,7 +38,11 @@ export function CheckoutForm({
   const [code, setCode] = React.useState<string>("");
   const debouncedCode = useDebounce(code, 500);
 
-  const [selectedPayMethod, setSelectedPayMethod] = React.useState<string>("");
+  const [image, setImage] = React.useState<string | null>(null)
+  const [phoneNumber, setPhoneNumber] = React.useState<string>("")
+
+  type AllowedPayMethods = typeof PAYMETHODS_VALUES[keyof typeof PAYMETHODS_VALUES]
+  const [selectedPayMethod, setSelectedPayMethod] = React.useState<AllowedPayMethods>();
 
   React.useEffect(
     function validatePromoCode() {
@@ -59,10 +64,14 @@ export function CheckoutForm({
     [debouncedCode, setSelectedCode]
   );
 
-  const enableSubmit =
+  const REQUIRES_CAPTURE = selectedPayMethod ? requiresCapture(selectedPayMethod) : false;
+
+  const ENABLE_SUBMIT =
     Boolean(selectedCurrencyId) &&
     Boolean(selectedPayMethod) &&
-    Boolean(selectedShipping);
+    Boolean(selectedShipping) &&
+    Boolean(phoneNumber) &&
+    (REQUIRES_CAPTURE ? Boolean(image) : true);
 
   return (
     <div className="flex justify-center md:justify-end order-last md:order-first">
@@ -146,7 +155,7 @@ export function CheckoutForm({
               <Select
                 name="payMethod"
                 value={selectedPayMethod}
-                onValueChange={setSelectedPayMethod}
+                onValueChange={(v) => setSelectedPayMethod(v as AllowedPayMethods)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Seleccione un método de pago" />
@@ -172,6 +181,8 @@ export function CheckoutForm({
               <Input
                 required
                 name="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
                 type="text"
                 placeholder="0414-1234567"
               />
@@ -186,6 +197,11 @@ export function CheckoutForm({
                 <p className="text-sm text-red-500">{errors.address}</p>
               ) : null}
             </div>
+            {
+              REQUIRES_CAPTURE ? (
+                <UploadCapture image={image} setImage={setImage} />
+              ) : null
+            }
             <div className="space-y-2">
               <Label htmlFor="ref">Referencia</Label>
               <Input name="ref" type="text" />
@@ -200,7 +216,7 @@ export function CheckoutForm({
               name="intent"
               value="createOrder"
               variant="client"
-              disabled={!enableSubmit || submitting}
+              disabled={!ENABLE_SUBMIT || submitting}
               className="w-full uppercase"
             >
               {submitting ? (
@@ -213,23 +229,10 @@ export function CheckoutForm({
               )}
             </Button>
             <div className="block mt-4">
-              {selectedPayMethod !== "" ? (
+              {selectedPayMethod ? (
                 <div className="text-center mb-4">
                   <p>
-                    Gracias por comprar en On The Court, utilice los siguientes
-                    datos para realizar su pago, al terminar recuerde enviar su
-                    comprobante de pago al número de teléfono{" "}
-                    <a
-                      href={`https://api.whatsapp.com/send?phone=+584242710248&text=${encodeURIComponent(
-                        `Hola te escribe ${user!.name
-                        } de On the Court. Adjunto te envio los datos de pago de mi orden.`
-                      )}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-green-500"
-                    >
-                      0424-2710248
-                    </a>
+                    Gracias por comprar en On The Court
                   </p>
                 </div>
               ) : null}
